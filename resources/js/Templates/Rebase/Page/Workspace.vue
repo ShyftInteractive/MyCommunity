@@ -6,6 +6,8 @@ import IdentityNavigation from "./Components/IdentityNavigation"
 export default {
    props: {
       nav: String,
+      secondary: String,
+      tertiary: String,
    },
 
    components: {
@@ -34,7 +36,7 @@ export default {
             </div>
          </main>
          <aside class="js-sidebar">
-            <WorkspaceSidebar :nav="nav" />
+            <WorkspaceSidebar :nav="nav" :secondary="secondary" :tertiary="tertiary" />
          </aside>
       </div>
    </section>

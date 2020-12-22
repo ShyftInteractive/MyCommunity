@@ -77,6 +77,34 @@ export default {
       &.selected {
          color: var(--color-blueGray-100);
       }
+      &.selected {
+         font-weight: 500;
+      }
+   }
+
+   a.selected + ul.navigation--secondary {
+      display: block;
+   }
+   .navigation--secondary {
+      display: none;
+      margin-top: calc(var(--px-12) * -1);
+      margin-bottom: var(--px-4);
+      a {
+         padding-left: var(--px-16);
+      }
+   }
+
+   a.selected + ul.navigation--tertiary {
+      display: block;
+   }
+
+   .navigation--tertiary {
+      display: none;
+      margin-top: calc(var(--px-12) * -1);
+      margin-bottom: var(--px-4);
+      a {
+         padding-left: var(--px-32);
+      }
    }
 
    @media ($md-and-up) {
