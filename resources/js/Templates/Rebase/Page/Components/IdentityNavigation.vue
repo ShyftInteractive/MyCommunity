@@ -20,7 +20,7 @@ export default {
 <template>
    <ActionMenu>
       <template v-slot:buttonText>
-         <Icon name="person" /> <span class="identity-name">{{ $page.props.auth.user.email }}</span> <Icon name="chevron-down" />
+         <Icon name="person" />&nbsp;<span class="identity-name">{{ $page.props.auth.user.email }}</span> <Icon name="chevron-down" />
       </template>
       <ActionLink v- :inertia="false" :link="route('pick', $page.props.customer_id)">Switch Website</ActionLink>
       <ActionLink v-if="$RoleCheck.gte.accountAdmin($page.props.auth.user.roles)" :inertia="false" :link="route('customer.index', $page.props.customer_id)">Billing &amp; Customer Settings</ActionLink>
