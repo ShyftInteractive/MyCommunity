@@ -22,7 +22,7 @@ export default {
       <li>
          <inertia-link :href="route('media.index')" :class="{ selected: this.nav === 'documents' }">Documents &amp; Media</inertia-link>
          <ul class="navigation--secondary">
-            <li><inertia-link :href="route('dashboard')" :class="{ selected: this.secondary === 'florida-checklist' }">Florida HOA Checklist</inertia-link></li>
+            <li><inertia-link :href="route('checklist.index', 'florida')" :class="{ selected: this.secondary === 'checklist' }">Florida HOA Checklist</inertia-link></li>
          </ul>
       </li>
       <li><inertia-link :href="route('event.index')" :class="{ selected: this.nav === 'events' }">Events</inertia-link></li>
@@ -32,8 +32,6 @@ export default {
       <li>
          <inertia-link :href="route('setting.index')" :class="{ selected: this.nav === 'site-settings' }">Site Settings</inertia-link>
          <ul class="navigation--secondary">
-            <li><inertia-link href="#" :class="{ selected: this.secondary === 'members' }">Members</inertia-link></li>
-            <li><inertia-link :href="route('dashboard')" :class="{ selected: this.secondary === 'workspace-settings' }">Website Settings</inertia-link></li>
             <li>
                <inertia-link :href="route('design.index')" :class="{ selected: this.secondary === 'design' }">Design</inertia-link>
                <ul class="navigation--tertiary">
@@ -41,6 +39,8 @@ export default {
                   <li><inertia-link :href="route('site-theme.index')" :class="{ selected: this.tertiary === 'themes' }">Site Themes</inertia-link></li>
                </ul>
             </li>
+            <li><inertia-link href="#" :class="{ selected: this.secondary === 'members' }">Members</inertia-link></li>
+            <li><inertia-link :href="route('dashboard')" :class="{ selected: this.secondary === 'workspace-settings' }">Website Settings</inertia-link></li>
          </ul>
       </li>
    </MainNavigation>

@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="notifications">
+   <Workspace nav="notification">
       <template #header>Notification Center</template>
       <template v-slot:body>
          <div class="grid"></div>

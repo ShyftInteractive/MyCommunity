@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="design">
+   <Workspace nav="site-settings" secondary="design">
       <template #header>Design Settings</template>
       <template v-slot:body>
          <div class="grid"></div>

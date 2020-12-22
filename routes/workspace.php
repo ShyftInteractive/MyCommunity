@@ -17,6 +17,7 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::get('/members', Rebase\Workspace\Members\WorkspaceMemberIndex::class)->name('workspace-members.index');
 
         Route::get('/media', MCS\Workspace\Media\MediaIndex::class)->name('media.index');
+        Route::get('/media/checklists/{state}', MCS\Workspace\Checklists\ChecklistIndex::class)->name('checklist.index');
 
         Route::get('/events', MCS\Workspace\Events\EventIndex::class)->name('event.index');
 

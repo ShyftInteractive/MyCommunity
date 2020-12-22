@@ -4,7 +4,7 @@ import Workspace from "@/Templates/Rebase/Page/Workspace"
 
 export default {
    layout: Layout,
-   metaInfo: { title: "Themes" },
+   metaInfo: { title: "Website Settings" },
 
    components: {
       Workspace,
@@ -20,8 +20,8 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="site-settings" secondary="design" tertiary="themes">
-      <template #header>Themes</template>
+   <Workspace nav="site-settings">
+      <template #header>Settings</template>
       <template v-slot:body>
          <div class="grid"></div>
       </template>
