@@ -15,5 +15,23 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::post('/onboarding/complete', Rebase\Workspace\Onboarding\OnboardingComplete::class)->name('onboarding.complete');
 
         Route::get('/members', Rebase\Workspace\Members\WorkspaceMemberIndex::class)->name('workspace-members.index');
+
+        Route::get('/media', MCS\Workspace\Media\MediaIndex::class)->name('media.index');
+
+        Route::get('/events', MCS\Workspace\Events\EventIndex::class)->name('event.index');
+
+        Route::get('/notifications', MCS\Workspace\Notifications\NotificationIndex::class)->name('notification.index');
+
+        Route::get('/pages', MCS\Workspace\Pages\PageIndex::class)->name('page.index');
+
+        Route::get('/posts', MCS\Workspace\Posts\PostIndex::class)->name('post.index');
+
+        Route::get('/settings', MCS\Workspace\Settings\SettingIndex::class)->name('setting.index');
+
+        Route::get('/settings/design', MCS\Workspace\Design\DesignIndex::class)->name('design.index');
+
+        Route::get('/settings/design/templates', MCS\Workspace\SiteTemplates\SiteTemplateIndex::class)->name('site-template.index');
+
+        Route::get('/settings/design/themes', MCS\Workspace\SiteThemes\SiteThemeIndex::class)->name('site-theme.index');
     });
 });
