@@ -4,7 +4,7 @@ import Workspace from "@/Templates/Rebase/Page/Workspace"
 
 export default {
    layout: Layout,
-   metaInfo: { title: "Design Settings" },
+   metaInfo: { title: "Notification Center" },
 
    components: {
       Workspace,
@@ -20,8 +20,8 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="design">
-      <template #header>Design Settings</template>
+   <Workspace nav="notifications">
+      <template #header>Notification Center</template>
       <template v-slot:body>
          <div class="grid"></div>
       </template>
