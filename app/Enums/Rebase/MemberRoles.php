@@ -14,7 +14,7 @@ use MyCLabs\Enum\Enum;
  * @method static MemberRoles ELEVATED()
  * @method static MemberRoles MEMBER()
  * @method static MemberRoles LIMITED()
- * @method static MemberRoles ACCESS_ONLY()
+ * @method static MemberRoles PUBLIC_ACCESS()
  *
  * @psalm-immutable
  */
@@ -29,5 +29,5 @@ class MemberRoles extends Enum
     private const ELEVATED = 'elevated';
     private const MEMBER = 'member';
     private const LIMITED = 'limited';
-    private const ACCESS_ONLY = 'access';
+    private const PUBLIC_ACCESS = 'public';
 }
