@@ -27,52 +27,65 @@ export default {
       form: {},
    }),
 
-   methods: {},
+   methods: {
+      confirmDelete(id) {
+         if (confirm("Are you sure you want to delete this page?")) {
+            this.$inertia.delete(
+               route("page.delete", { pageID: id }),
+               {},
+               {
+                  onStart: () => (this.sending = true),
+                  onFinish: () => (this.sending = false),
+               }
+            )
+         }
+      },
+   },
 }
 </script>
 
 <template>
    <Workspace nav="pages">
       <template #header>Pages</template>
+      <template #ribbon>
+         <li><inertia-link :href="route('page.create')" class="button:small">Make a New Page</inertia-link></li>
+      </template>
       <template #body v-if="pages.data.length > 0">
-         <DataTable :links="pages.links">
-            <template #header>
-               <th>&nbsp;</th>
-               <th>Title</th>
-               <th>URL</th>
-               <th>Status</th>
-               <th>Role</th>
-               <th>&nbsp;</th>
-            </template>
-            <template #contents>
-               <tr v-for="page in pages.data" :key="page.id">
-                  <td><input type="checkbox" /></td>
-                  <td title="Name">{{ page.title }}</td>
-                  <td title="Slug">{{ page.slug }}</td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                     <ActionMenu>
-                        <ActionLink link="#">Edit</ActionLink>
-                        <ActionLink link="#">Publish</ActionLink>
-                        <ActionButton>Delete</ActionButton>
-                     </ActionMenu>
-                  </td>
-               </tr>
-            </template>
-         </DataTable>
+         <div class="grid">
+            <div class="col-12">
+               <DataTable :links="pages.links">
+                  <template #header>
+                     <th>&nbsp;</th>
+                     <th>Title</th>
+                     <th>URL</th>
+                     <th>&nbsp;</th>
+                  </template>
+                  <template #contents>
+                     <tr v-for="page in pages.data" :key="page.id">
+                        <td><input type="checkbox" /></td>
+                        <td title="Name">{{ page.title }}</td>
+                        <td title="Slug">{{ page.slug }}</td>
+                        <td>
+                           <ActionMenu>
+                              <ActionLink :inertia="true" :link="route('page.edit', { pageID: page.id })">Edit</ActionLink>
+                              <ActionLink link="#">Publish</ActionLink>
+                              <ActionButton @click="confirmDelete(page.id)">Delete</ActionButton>
+                           </ActionMenu>
+                        </td>
+                     </tr>
+                  </template>
+               </DataTable>
+            </div>
+         </div>
       </template>
       <template #body v-else>
-         <inertia-link :href="route('page.create')" class="button:xlarge">Add Your First Page</inertia-link>
+         <div class="grid--center">
+            <div class="col-8--centered sm::col-6--centered md::col-4--centered">
+               <inertia-link :href="route('page.create')" class="button:xlarge">Make Your First Page</inertia-link>
+            </div>
+         </div>
       </template>
    </Workspace>
 </template>
 
-<style lang="scss">
-.content-container {
-   display: grid;
-   justify-content: center;
-   align-content: center;
-   height: 100%;
-}
-</style>
+<style lang="scss"></style>

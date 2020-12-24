@@ -85,13 +85,4 @@ export default {
    </Workspace>
 </template>
 
-<style lang="scss">
-.content-container {
-   display: grid;
-   height: 100%;
-}
-
-.grid {
-   align-items: end;
-}
-</style>
+<style lang="scss"></style>

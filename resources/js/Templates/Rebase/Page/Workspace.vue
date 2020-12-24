@@ -31,6 +31,11 @@ export default {
             </div>
          </header>
          <main>
+            <div class="content-ribbon">
+               <ul class="ribbon--menu">
+                  <slot name="ribbon"></slot>
+               </ul>
+            </div>
             <div class="content-container">
                <slot name="body"></slot>
             </div>
@@ -110,8 +115,30 @@ $headerbar-height: 40px;
       }
 
       @media ($md-and-up) {
-         padding-top: var(--px-60);
          padding-right: var(--px-16);
+      }
+
+      .content-ribbon {
+         align-content: center;
+         align-items: center;
+         display: flex;
+         height: 5vh;
+         justify-content: flex-start;
+         padding: 0 var(--px-16);
+
+         @media ($md-and-up) {
+            justify-content: flex-end;
+            padding: var(--px-16) 0;
+         }
+      }
+
+      .content-container {
+         height: calc(95vh - #{$headerbar-height * 2});
+         padding: 0 var(--px-16);
+
+         @media ($md-and-up) {
+            padding: 0;
+         }
       }
    }
 
@@ -122,6 +149,24 @@ $headerbar-height: 40px;
 
       @media ($md-and-up) {
          padding-top: var(--px-60);
+      }
+   }
+}
+
+.ribbon--menu {
+   list-style-type: none;
+
+   li {
+      display: inline-block;
+      margin: 0 var(--px-16px);
+      padding: 0;
+
+      &:first-of-type {
+         margin-left: 0;
+      }
+
+      &:last-of-type {
+         margin-right: 0;
       }
    }
 }

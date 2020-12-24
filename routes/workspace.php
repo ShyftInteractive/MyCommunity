@@ -33,6 +33,7 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::get('/pages/create',         MCS\Workspace\Pages\PageCreate::class)->name('page.create');
         Route::post('/pages',               MCS\Workspace\Pages\PageStore::class)->name('page.store');
         Route::get('/pages/{pageID}/edit',  MCS\Workspace\Pages\PageEdit::class)->name('page.edit');
+        Route::delete('/pages/{pageID}',   MCS\Workspace\Pages\PageDelete::class)->name('page.delete');
 
         // Posts...
         Route::get('/posts', MCS\Workspace\Posts\PostIndex::class)->name('post.index');
