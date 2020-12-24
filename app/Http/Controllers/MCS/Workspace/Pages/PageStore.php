@@ -14,7 +14,10 @@ class PageStore extends Controller
     {
         $request->validate($this->rules($request->get('workspace_id')));
 
-        Page::modelFactory()->create($request->input());
+        $page = Page::modelFactory()->create($request->input());
+        return redirect()->route('page.edit', [
+            'pageID' => $page->id,
+        ]);
     }
 
     private function rules(string $workspaceID): array
@@ -22,6 +25,7 @@ class PageStore extends Controller
     return [
             'title' => ['string', 'required', 'max:100'],
             'slug' => ['string', 'required', 'max:100', Rule::unique('workspace.pages')->where('workspace_id', $workspaceID)],
+            'visibility' => ['required'],
         ];
     }
 }

@@ -14,9 +14,10 @@ class Page extends Model
 {
     // Traits...
 
-
     // Connection...
     protected $connection = 'workspace';
+
+    public $incrementing = false;
 
     // Fillable Attributes...
     protected $fillable = [
