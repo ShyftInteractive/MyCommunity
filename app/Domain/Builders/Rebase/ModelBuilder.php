@@ -27,6 +27,11 @@ class ModelBuilder extends Builder
         return $this;
     }
 
+    public function byWorkspace(string $id)
+    {
+        return $this->where('workspace_id', $id);
+    }
+
     public function searchable(string $searchTerm = null, array $searchFields = []): ModelBuilder
     {
         if ($searchTerm || count($searchFields)) {

@@ -21,13 +21,13 @@ use MyCLabs\Enum\Enum;
 class MemberRoles extends Enum
 {
     private const SUPER = 'super';
-    private const ACCOUNT_OWNER = 'account_owner';
-    private const ACCOUNT_ADMIN = 'account_admin';
-    private const WORKSPACE_OWNER = 'workspace_owner';
-    private const WORKSPACE_ADMIN = 'workspace_admin';
-    private const EDITOR = 'editor';
-    private const ELEVATED = 'elevated';
-    private const MEMBER = 'member';
-    private const LIMITED = 'limited';
-    private const PUBLIC_ACCESS = 'public';
+    private const ACCOUNT_OWNER = 'Account Owner';
+    private const ACCOUNT_ADMIN = 'Account Admin';
+    private const WORKSPACE_OWNER = 'Website Owner';
+    private const WORKSPACE_ADMIN = 'Website Admin';
+    private const EDITOR = 'Editor';
+    private const ELEVATED = 'Elevated Member';
+    private const MEMBER = 'Member';
+    private const LIMITED = 'Limited Access Member';
+    private const PUBLIC_ACCESS = 'Public';
 }

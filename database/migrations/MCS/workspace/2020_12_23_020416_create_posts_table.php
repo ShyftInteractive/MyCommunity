@@ -33,7 +33,7 @@ class CreatePostsTable extends Migration
 
             $table->foreign('member_id')
                 ->references('id')
-                ->on('workspaces')
+                ->on('members')
                 ->onDelete('cascade');
 
             $table->foreign('workspace_id')

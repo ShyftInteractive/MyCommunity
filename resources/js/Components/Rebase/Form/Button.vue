@@ -41,7 +41,7 @@ export default {
    </button>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@@/abstract";
 
 @mixin button {
@@ -57,7 +57,7 @@ export default {
    line-height: var(--leading-normal);
    margin: 0;
    min-height: var(--px-40);
-   padding: var(--px-8) var(--px-16);
+   padding: 0 var(--px-16);
    position: relative;
    text-align: center;
    text-decoration: none;
