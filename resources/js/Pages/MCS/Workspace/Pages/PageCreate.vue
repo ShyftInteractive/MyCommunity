@@ -70,7 +70,7 @@ export default {
 
                <FormField validate="template" class="col-10--centered wd::col-3">
                   <FieldLabel>Pick a Template:</FieldLabel>
-                  <FormSelect v-model="form.template" defaultText="Select" :options="[]" />
+                  <FormSelect v-model="form.template" defaultText="Select" :options="['big-header', 'small-header']" />
                </FormField>
 
                <Button class="col-10--centered wd::col-1 button--link" type="submit" @click="preview">Preview</Button>

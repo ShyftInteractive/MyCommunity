@@ -47,4 +47,9 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
 
         Route::get('/settings/design/themes', MCS\Workspace\SiteThemes\SiteThemeIndex::class)->name('site-theme.index');
     });
+
+    // This *MUST* be last as it's a catch-all route
+    Route::get('/{page}', MCS\Workspace\Front\Index::class)
+        ->where('page', '.*')
+        ->name('front.index');
 });

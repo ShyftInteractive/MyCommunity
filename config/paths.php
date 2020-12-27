@@ -10,6 +10,7 @@ return [
         'auth' => env('AUTH_SUBDOMAIN', 'auth'),
     ],
     'views' => [
+        'customer' => env('CUSTOMER_PUBLIC_FOLDER', 'customer'),
         'pages' => env('PATH_VIEW_PAGES', '/Pages'),
         'components' => env('PATH_VIEW_COMPONENTS', '/Components'),
         'templates' => env('PATH_VIEW_TEMPLATES', '/Templates'),

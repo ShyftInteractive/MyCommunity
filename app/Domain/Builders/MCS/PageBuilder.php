@@ -7,5 +7,8 @@ use App\Domain\Builders\Rebase\ModelBuilder;
 
 class PageBuilder extends ModelBuilder
 {
-
+    public function byID(string $pageID)
+    {
+        return $this->where('id', $pageID);
+    }
 }

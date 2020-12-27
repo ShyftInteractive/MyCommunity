@@ -6,7 +6,9 @@ use App\Actions\Action;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Domain\Models\MCS\Workspace\Page;
+use App\Domain\Models\MCS\Workspace\Content;
 
 class PageStore extends Controller
 {
@@ -15,6 +17,12 @@ class PageStore extends Controller
         $request->validate($this->rules($request->get('workspace_id')));
 
         $page = Page::modelFactory()->create($request->input());
+        $pageContent = Content::modelFactory()->create([
+            'page_id' => $page->id,
+            'template_name' => $request->input('template'),
+            'content' => Storage::disk('customer')->get('templates/homepage.htm'),
+        ]);
+
         return redirect()->route('page.edit', [
             'pageID' => $page->id,
         ]);

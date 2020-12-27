@@ -53,6 +53,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'customer' => [
+            'driver' => 'local',
+            'root' => base_path('resources/views/customers'),
+            'visibility' => 'public',
+        ],
+
         'console' => [
             'driver' => 'local',
             'root' => base_path('/'),

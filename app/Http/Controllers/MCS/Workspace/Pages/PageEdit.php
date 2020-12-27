@@ -11,6 +11,11 @@ class PageEdit extends Controller
 {
     public function __invoke(string $pageID, Request $request)
     {
-        return inertia(Action::getView($this));
+        $page = Page::with('content')->byID($pageID)->first();
+
+        return inertia(Action::getView($this), [
+            'page' => $page,
+            'content' => $page->content->content,
+        ]);
     }
 }
