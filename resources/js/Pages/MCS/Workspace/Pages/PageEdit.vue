@@ -24,7 +24,7 @@ export default {
       pages: Array | Object,
       content: String,
    },
-   watch: {},
+
    data: () => ({
       sending: false,
       form: {},
@@ -91,6 +91,14 @@ export default {
 
    methods: {
       save() {},
+      addColumn(index) {
+         this.page[index].push({
+            span: 1,
+            component: "",
+            content: "",
+            height: "400px",
+         })
+      },
       resize(update, row, col, centered) {
          let currentSize = this.page[row][col].span
          if (centered) {
@@ -121,6 +129,27 @@ export default {
 
          this.page[row][col].center = !this.page[row][col].center
       },
+      allowMoreColumns(row) {
+         row = this.page[row]
+         if (row.length == 1 && row[0].center) {
+            return false
+         }
+
+         let total = 0
+         row.forEach(function (col) {
+            total += col.span
+         })
+
+         return total < 12
+      },
+      addNewRow() {
+         this.page.push([
+            {
+               span: 4,
+               center: true,
+            },
+         ])
+      },
    },
 }
 </script>
@@ -145,8 +174,10 @@ export default {
                               <button @click="remove(index, key)"><Icon name="close" /></button>
                            </div>
                         </div>
+                        <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>
                      </div>
                   </div>
+                  <button @click="addNewRow">Add New Row</button>
                </div>
             </div>
             <div class="col-12 sm::col-2">
