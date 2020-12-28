@@ -17,11 +17,15 @@ class PageStore extends Controller
         $request->validate($this->rules($request->get('workspace_id')));
 
         $page = Page::modelFactory()->create($request->input());
-        $pageContent = Content::modelFactory()->create([
-            'page_id' => $page->id,
-            'template_name' => $request->input('template'),
-            'content' => Storage::disk('customer')->get('templates/homepage.htm'),
-        ]);
+        $page->content = [[
+            [
+                'span' => 12,
+                'center' => false,
+                'component' => "",
+                'height' => "300px",
+            ],
+        ]];
+        $page->save();
 
         return redirect()->route('page.edit', [
             'pageID' => $page->id,

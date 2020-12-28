@@ -31,6 +31,7 @@ export default {
             isHomepage: false,
             visibility: null,
             template: null,
+            content: null,
          },
       }
    },

@@ -21,78 +21,31 @@ export default {
    },
 
    props: {
-      pages: Array | Object,
-      content: String,
+      page: Array | Object,
    },
 
-   data: () => ({
-      sending: false,
-      form: {},
-      page: [
-         [
-            {
-               span: 6,
-               center: true,
-               component: "",
-               content: "",
-               height: "400px",
-            },
-         ],
-         [
-            {
-               span: 6,
-               component: "card",
-               content: "",
-               height: "400px",
-            },
-            {
-               span: 6,
-               component: "foo",
-               content: "",
-               height: "400px",
-            },
-         ],
-         [
-            {
-               span: 4,
-               component: "card",
-               content: "",
-               height: "400px",
-            },
-            {
-               span: 8,
-               component: "foo",
-               content: "",
-               height: "400px",
-            },
-         ],
-         [
-            {
-               span: 4,
-               component: "card",
-               content: "",
-               height: "400px",
-            },
-            {
-               span: 4,
-               component: "card",
-               content: "",
-               height: "400px",
-            },
-            {
-               span: 4,
-               component: "foo",
-               content: "",
-               height: "400px",
-            },
-         ],
-      ],
-   }),
+   data() {
+      return {
+         sending: false,
+         form: {
+            page: this.page,
+         },
+      }
+   },
 
    methods: {
-      save() {},
+      save() {
+         this.$inertia.put(
+            route("page.update", { pageID: page.id }),
+            {},
+            {
+               onStart: () => (this.sending = true),
+               onFinish: () => (this.sending = false),
+            }
+         )
+      },
       addColumn(index) {
-         this.page[index].push({
+         this.form.page.content[index].push({
             span: 1,
             component: "",
             content: "",
@@ -100,7 +53,7 @@ export default {
          })
       },
       resize(update, row, col, centered) {
-         let currentSize = this.page[row][col].span
+         let currentSize = this.form.page.content[row][col].span
          if (centered) {
             update *= 2
          }
@@ -108,18 +61,18 @@ export default {
          let newSize = currentSize + update
 
          if (newSize >= 1 && newSize <= 12) {
-            this.page[row][col].span = newSize
+            this.form.page.content[row][col].span = newSize
          }
       },
       remove(row, col) {
-         this.page[row].splice(col, 1)
-         if (this.page[row].length <= 0) {
-            this.page.splice(row, 1)
+         this.form.page.content[row].splice(col, 1)
+         if (this.form.page.content[row].length <= 0) {
+            this.form.page.content.splice(row, 1)
          }
       },
       toggleCenter(row, col, centered) {
-         let currentCol = this.page[row][col]
-         if (this.page[row].length > 1) {
+         let currentCol = this.form.page.content[row][col]
+         if (this.form.page.content[row].length > 1) {
             return false
          }
 
@@ -127,10 +80,10 @@ export default {
             currentCol.span++
          }
 
-         this.page[row][col].center = !this.page[row][col].center
+         this.form.page.content[row][col].center = !this.form.page.content[row][col].center
       },
       allowMoreColumns(row) {
-         row = this.page[row]
+         row = this.form.page.content[row]
          if (row.length == 1 && row[0].center) {
             return false
          }
@@ -143,12 +96,23 @@ export default {
          return total < 12
       },
       addNewRow() {
-         this.page.push([
+         this.form.page.content.push([
             {
                span: 4,
                center: true,
             },
          ])
+      },
+      componentPicker() {
+         // this does need to trigger a save too
+         this.$inertia.get(
+            route("component.show", { componentID: "mediabox" }),
+            {},
+            {
+               onStart: () => (this.sending = true),
+               onFinish: () => (this.sending = false),
+            }
+         )
       },
    },
 }
@@ -162,9 +126,16 @@ export default {
             <div class="col-12 sm::col-10">
                <div class="js-content">
                   <div class="mcs--template">
-                     <div class="grid" v-for="(row, index) in page" :key="index">
-                        <div v-model="page[index]" class="col-12" v-for="(col, key) in row" :class="col.center ? `md::col-${col.span}--centered` : `md::col-${col.span}`" :key="`row-${index}-col-${key}`" :style="{ height: `${col.height}` }">
-                           <div class="">
+                     <div class="grid" v-for="(row, index) in form.page.content" :key="index">
+                        <div
+                           v-model="form.page.content[index]"
+                           class="col-12"
+                           v-for="(col, key) in row"
+                           :class="col.center ? `md::col-${col.span}--centered` : `md::col-${col.span}`"
+                           :key="`row-${index}-col-${key}`"
+                           :style="{ height: `${col.height}` }"
+                        >
+                           <div class="inner-stuff">
                               <button @click="resize(-1, index, key, col.center)"><Icon name="minus" /></button>
                               <button @click="resize(1, index, key, col.center)"><Icon name="plus" /></button>
                               <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
@@ -172,6 +143,9 @@ export default {
                                  <Icon v-else name="center" />
                               </button>
                               <button @click="remove(index, key)"><Icon name="close" /></button>
+                           </div>
+                           <div class="mcs--component">
+                              <button @click="componentPicker">Pick a Component</button>
                            </div>
                         </div>
                         <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>
@@ -195,4 +169,7 @@ export default {
    </Workspace>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.mcs--component {
+}
+</style>

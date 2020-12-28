@@ -59,6 +59,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'components' => [
+            'driver' => 'local',
+            'root' => base_path('resources/views/components'),
+            'visibility' => 'public',
+        ],
+
         'console' => [
             'driver' => 'local',
             'root' => base_path('/'),

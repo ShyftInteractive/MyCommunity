@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Builders\MCS\PageBuilder;
 use Illuminate\Database\Eloquent\Builder;
-use App\Domain\Models\MCS\Workspace\Content;
 use App\Domain\Collections\MCS\PageCollection;
 use App\Domain\Factories\MCS\PageModelFactory;
 use App\Domain\Models\Rebase\Workspace\Workspace;
@@ -29,6 +28,7 @@ class Page extends Model
         'path',
         'title',                // required
         'description',
+        'content',
         'visibility',           // required
         'published_at',
         'created_at',
@@ -40,6 +40,7 @@ class Page extends Model
         'id' => 'string',
         'member_id' => 'string',
         'workspace_id' => 'string',
+        'content' => 'array',
         'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -61,11 +62,6 @@ class Page extends Model
     public function workspace(): HasOne
     {
         return $this->hasOne(Workspace::class);
-    }
-
-    public function content(): HasOne
-    {
-        return $this->hasOne(Content::class);
     }
 
     // Collection Override....

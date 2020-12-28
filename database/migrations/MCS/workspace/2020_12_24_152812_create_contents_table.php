@@ -17,7 +17,7 @@ class CreateContentsTable extends Migration
             $table->id();
             $table->uuid('page_id');
             $table->string('template_name');
-            $table->mediumText('content')->nullable();
+            $table->json('content')->nullable();
             $table->timestamps();
 
             $table->foreign('page_id')
