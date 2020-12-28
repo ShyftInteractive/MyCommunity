@@ -22,6 +22,18 @@
       align-items: center;
       height: 100%;
    }
+
+   &--top {
+      @extend .grid;
+      align-items: start;
+      height: 100%;
+   }
+
+   &--bottom {
+      @extend .grid;
+      align-items: end;
+      height: 100%;
+   }
 }
 
 @mixin base-column {
@@ -31,7 +43,6 @@
 
    @content;
 }
-
 
 @mixin grid-maker {
    @for $count from $grid-cols through 1 {
@@ -52,7 +63,6 @@
                justify-content: start;
             }
 
-
             @if ($count > 1 and $count < $grid-cols) {
                @for $col-count from $grid-cols through 1 {
                   @include for-variant('at-#{$col-count}') {
@@ -62,9 +72,7 @@
                      }
                   }
                }
-
             }
-
          }
 
          @if ($count % 2 == 0 and $count < $grid-cols) {
@@ -78,7 +86,6 @@
       }
    }
 }
-
 
 .col {
    @include with-queries {

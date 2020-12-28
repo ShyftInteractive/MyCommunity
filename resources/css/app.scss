@@ -8,24 +8,15 @@
 @import 'rebase/grid';
 @import 'rebase/baseline';
 
-.mcs--template--homepage {
-   display: grid;
+.mcs--template {
+   align-content: stretch;
+   align-items: flex-start;
    height: 100%;
-   border: 2px solid #444;
-   grid-template-areas:
-      'header header header'
-      'box1 box2 box3';
 
-   .header {
-      grid-area: header;
-   }
-   .box1 {
-      grid-area: box1;
-   }
-   .box2 {
-      grid-area: box2;
-   }
-   .box3 {
-      grid-area: box3;
+   .grid > div {
+      min-height: 300px;
+      border: 2px dotted #444;
+      resize: vertical;
+      overflow: auto;
    }
 }

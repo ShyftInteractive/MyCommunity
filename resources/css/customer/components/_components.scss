@@ -1,22 +1,31 @@
-/*
- * Mediabox
- * ----------------------------------------------------------------------------
- */
+//-----------------------------------------------------------------------------
 .mediabox {
    display: grid;
    grid-gap: 16px;
    grid-template-areas: 'media content';
    grid-template-columns: minmax(200px, 30%) 1fr;
    height: 100%;
+
+   &--media {
+      background: #ccc;
+      grid-area: media;
+   }
+   &--content {
+      grid-area: content;
+   }
 }
-.mediabox--media {
-   background: #ccc;
-   grid-area: media;
-}
-.mediabox--content {
-   grid-area: content;
-}
+
 .mediabox--right {
    grid-template-areas: 'content media';
    grid-template-columns: 1fr minmax(200px, 30%);
+}
+
+//-----------------------------------------------------------------------------
+.feature--image {
+   background-position: 50% 50%;
+   background-size: cover;
+}
+
+//-----------------------------------------------------------------------------
+.card {
 }
