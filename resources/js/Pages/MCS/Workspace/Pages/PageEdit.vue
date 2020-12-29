@@ -170,17 +170,27 @@ export default {
                            :data-row="index"
                            :data-col="key"
                         >
-                           <div class="inner-stuff">
-                              <button @click="resize(-1, index, key, col.center)"><Icon name="minus" /></button>
-                              <button @click="resize(1, index, key, col.center)"><Icon name="plus" /></button>
-                              <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
-                                 <Icon v-if="col.center" name="left" />
-                                 <Icon v-else name="center" />
-                              </button>
-                              <button @click="remove(index, key)"><Icon name="close" /></button>
+                           <div class="column-menu">
+                              <ul>
+                                 <li>
+                                    <button @click="resize(-1, index, key, col.center)"><Icon name="minus" size="18" /></button>
+                                 </li>
+                                 <li>
+                                    <button @click="resize(1, index, key, col.center)"><Icon name="plus" size="18" /></button>
+                                 </li>
+                                 <li>
+                                    <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
+                                       <Icon v-if="col.center" name="left" size="18" />
+                                       <Icon v-else name="center" size="18" />
+                                    </button>
+                                 </li>
+                                 <li><button @click="componentPicker(index, key)">Pick a Component</button></li>
+                                 <li>
+                                    <button @click="remove(index, key)"><Icon name="close" size="18" /></button>
+                                 </li>
+                              </ul>
                            </div>
                            <div class="mcs--component">
-                              <button @click="componentPicker(index, key)">Pick a Component</button>
                               <div class="js-component" v-html="col.component" @focusout="contentUpdate($event, index, key)"></div>
                            </div>
                         </div>
@@ -206,6 +216,30 @@ export default {
 </template>
 
 <style lang="scss">
-.mcs--component {
+.grid > .col-12 {
+   position: relative;
+}
+
+.column-menu {
+   position: absolute;
+   width: 100%;
+
+   ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      li {
+         display: inline-block;
+         margin: 0;
+         padding: 0;
+      }
+   }
+
+   button {
+      border: 0;
+      background: #ccc;
+      padding: var(--px-4);
+      margin: var(--px-4);
+   }
 }
 </style>
