@@ -11,8 +11,24 @@ class PageUpdate extends Controller
 {
     public function __invoke(string $pageID, Request $request)
     {
-        $page = Page::with('content')->byID($pageID)->first();
+            $updateItems = collect($request->only([
+                "page.id",
+                "page.workspace_id",
+                "page.slug",
+                "page.path",
+                "page.title",
+                "page.description",
+                "page.content",
+                "page.visibility",
+                "page.published_at",
+            ]))->get('page');
 
-        return redirect()->back();
+        Page::modelFactory()->update(
+            whereCol: 'id',
+            whereValue: $pageID,
+            update: $updateItems);
+
+
+        return redirect()->back()->withSuccess('Saved');
     }
 }

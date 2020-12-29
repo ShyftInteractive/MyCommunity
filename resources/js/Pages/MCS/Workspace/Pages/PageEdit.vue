@@ -33,16 +33,36 @@ export default {
       }
    },
 
+   mounted: function () {
+      const targetNode = document.querySelector(".js-content")
+      const config = { attributes: true, childList: true, subtree: true }
+
+      const vm = this
+      const callback = function (mutationsList, observer) {
+         for (const mutation of mutationsList) {
+            if (mutation.type === "attributes" && mutation.attributeName === "style") {
+               let t = mutation.target
+               let row = t.getAttribute("data-row")
+               let col = t.getAttribute("data-col")
+
+               vm.form.page.content[row][col].height = t.style.height
+            }
+         }
+      }
+
+      // Create an observer instance linked to the callback function
+      const observer = new MutationObserver(callback)
+
+      // Start observing the target node for configured mutations
+      observer.observe(targetNode, config)
+   },
+
    methods: {
       save() {
-         this.$inertia.put(
-            route("page.update", { pageID: page.id }),
-            {},
-            {
-               onStart: () => (this.sending = true),
-               onFinish: () => (this.sending = false),
-            }
-         )
+         this.$inertia.put(route("page.update", { pageID: this.form.page.id }), this.form, {
+            onStart: () => (this.sending = true),
+            onFinish: () => (this.sending = false),
+         })
       },
       addColumn(index) {
          this.form.page.content[index].push({
@@ -59,8 +79,9 @@ export default {
          }
 
          let newSize = currentSize + update
+         let totalSpanCount = this.spanCount(this.form.page.content[row]) + update
 
-         if (newSize >= 1 && newSize <= 12) {
+         if (newSize >= 1 && newSize <= 12 && totalSpanCount <= 12) {
             this.form.page.content[row][col].span = newSize
          }
       },
@@ -82,32 +103,45 @@ export default {
 
          this.form.page.content[row][col].center = !this.form.page.content[row][col].center
       },
-      allowMoreColumns(row) {
-         row = this.form.page.content[row]
-         if (row.length == 1 && row[0].center) {
-            return false
-         }
-
+      spanCount(row) {
          let total = 0
          row.forEach(function (col) {
             total += col.span
          })
 
-         return total < 12
+         return total
+      },
+      allowMoreColumns(rowIndex) {
+         let row = this.form.page.content[rowIndex]
+         if (row.length == 1 && row[0].center) {
+            return false
+         }
+
+         return this.spanCount(row) < 12
       },
       addNewRow() {
          this.form.page.content.push([
             {
                span: 4,
-               center: true,
             },
          ])
       },
-      componentPicker() {
+
+      contentUpdate(event, rowIndex, column) {
+         let p = event.target.closest(".js-component")
+         this.form.page.content[rowIndex][column].component = p.innerHTML
+      },
+      componentPicker(row, column) {
          // this does need to trigger a save too
          this.$inertia.get(
-            route("component.show", { componentID: "mediabox" }),
-            {},
+            route("component.show", {
+               pageID: this.form.page.id,
+               id: "mediabox",
+            }),
+            {
+               row: row,
+               column: column,
+            },
             {
                onStart: () => (this.sending = true),
                onFinish: () => (this.sending = false),
@@ -128,12 +162,13 @@ export default {
                   <div class="mcs--template">
                      <div class="grid" v-for="(row, index) in form.page.content" :key="index">
                         <div
-                           v-model="form.page.content[index]"
                            class="col-12"
                            v-for="(col, key) in row"
                            :class="col.center ? `md::col-${col.span}--centered` : `md::col-${col.span}`"
                            :key="`row-${index}-col-${key}`"
                            :style="{ height: `${col.height}` }"
+                           :data-row="index"
+                           :data-col="key"
                         >
                            <div class="inner-stuff">
                               <button @click="resize(-1, index, key, col.center)"><Icon name="minus" /></button>
@@ -145,7 +180,8 @@ export default {
                               <button @click="remove(index, key)"><Icon name="close" /></button>
                            </div>
                            <div class="mcs--component">
-                              <button @click="componentPicker">Pick a Component</button>
+                              <button @click="componentPicker(index, key)">Pick a Component</button>
+                              <div class="js-component" v-html="col.component" @focusout="contentUpdate($event, index, key)"></div>
                            </div>
                         </div>
                         <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>
@@ -156,7 +192,7 @@ export default {
             </div>
             <div class="col-12 sm::col-2">
                <p>PREVIEW</p>
-               <p>Save</p>
+               <Button @click="save">Save</Button>
                <p>Publish</p>
                <p>Visible</p>
                <p>Change SLug</p>
