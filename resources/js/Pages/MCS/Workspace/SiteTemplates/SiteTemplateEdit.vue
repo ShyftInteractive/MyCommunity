@@ -5,7 +5,7 @@ import Icon from "@/Components/Rebase/Icon"
 
 export default {
    layout: Layout,
-   metaInfo: { title: "Pages" },
+   metaInfo: { title: "Edit Template" },
 
    components: {
       Workspace,
@@ -13,14 +13,14 @@ export default {
    },
 
    props: {
-      page: Array | Object,
+      template: Array | Object,
    },
 
    data() {
       return {
          sending: false,
          form: {
-            page: this.page,
+            template: this.template,
          },
       }
    },
@@ -35,9 +35,8 @@ export default {
             if (mutation.type === "attributes" && mutation.attributeName === "style") {
                let t = mutation.target
                let row = t.getAttribute("data-row")
-               console.log(row)
                let col = t.getAttribute("data-col")
-               if (row) vm.form.page.content[row][col].height = t.style.height
+               if (row) vm.form.template.content[row][col].height = t.style.height
             }
          }
       }
@@ -51,41 +50,40 @@ export default {
 
    methods: {
       save() {
-         this.$inertia.put(route("page.update", { pageID: this.form.page.id }), this.form, {
+         this.$inertia.put(route("site-template.update", { templateID: this.form.template.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
       },
       addColumn(index) {
-         this.form.page.content[index].push({
+         this.form.template.content[index].push({
             span: 1,
             component: "",
             content: "",
-            height: "400px",
          })
       },
       resize(update, row, col, centered) {
-         let currentSize = this.form.page.content[row][col].span
+         let currentSize = this.form.template.content[row][col].span
          if (centered) {
             update *= 2
          }
 
          let newSize = currentSize + update
-         let totalSpanCount = this.spanCount(this.form.page.content[row]) + update
+         let totalSpanCount = this.spanCount(this.form.template.content[row]) + update
 
          if (newSize >= 1 && newSize <= 12 && totalSpanCount <= 12) {
-            this.form.page.content[row][col].span = newSize
+            this.form.template.content[row][col].span = newSize
          }
       },
       remove(row, col) {
-         this.form.page.content[row].splice(col, 1)
-         if (this.form.page.content[row].length <= 0) {
-            this.form.page.content.splice(row, 1)
+         this.form.template.content[row].splice(col, 1)
+         if (this.form.template.content[row].length <= 0) {
+            this.form.template.content.splice(row, 1)
          }
       },
       toggleCenter(row, col, centered) {
-         let currentCol = this.form.page.content[row][col]
-         if (this.form.page.content[row].length > 1) {
+         let currentCol = this.form.template.content[row][col]
+         if (this.form.template.content[row].length > 1) {
             return false
          }
 
@@ -93,7 +91,7 @@ export default {
             currentCol.span++
          }
 
-         this.form.page.content[row][col].center = !this.form.page.content[row][col].center
+         this.form.template.content[row][col].center = !this.form.template.content[row][col].center
       },
       spanCount(row) {
          let total = 0
@@ -104,7 +102,7 @@ export default {
          return total
       },
       allowMoreColumns(rowIndex) {
-         let row = this.form.page.content[rowIndex]
+         let row = this.form.template.content[rowIndex]
          if (row.length == 1 && row[0].center) {
             return false
          }
@@ -112,7 +110,7 @@ export default {
          return this.spanCount(row) < 12
       },
       addNewRow() {
-         this.form.page.content.push([
+         this.form.template.content.push([
             {
                span: 4,
             },
@@ -121,13 +119,14 @@ export default {
 
       contentUpdate(event, rowIndex, column) {
          let p = event.target.closest(".js-component")
-         this.form.page.content[rowIndex][column].component = p.innerHTML
+         this.form.template.content[rowIndex][column].component = p.innerHTML
       },
+
       componentPicker(row, column) {
          // this does need to trigger a save too
          this.$inertia.get(
             route("component.show", {
-               pageID: this.form.page.id,
+               pageID: this.form.template.id,
                id: "mediabox",
             }),
             {
@@ -145,14 +144,14 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="pages">
-      <template #header>Pages</template>
+   <Workspace nav="site-settings" secondary="design" tertiary="templates">
+      <template #header>Edit a Template</template>
       <template #body>
          <div class="grid--top">
             <div class="col-12 sm::col-10">
                <div class="js-content">
                   <div id="editor" class="mcs--template">
-                     <div class="grid" v-for="(row, index) in form.page.content" :key="index">
+                     <div class="grid" v-for="(row, index) in form.template.content" :key="index">
                         <div
                            class="col-12"
                            v-for="(col, key) in row"

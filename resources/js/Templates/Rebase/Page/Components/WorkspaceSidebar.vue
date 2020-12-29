@@ -32,8 +32,6 @@ export default {
       <li>
          <inertia-link :href="route('setting.index')" :class="{ selected: this.nav === 'site-settings' }">Site Settings</inertia-link>
          <ul class="navigation--secondary">
-            <li><inertia-link href="#" :class="{ selected: this.secondary === 'members' }">Members</inertia-link></li>
-            <li><inertia-link :href="route('dashboard')" :class="{ selected: this.secondary === 'workspace-settings' }">Website Settings</inertia-link></li>
             <li>
                <inertia-link :href="route('design.index')" :class="{ selected: this.secondary === 'design' }">Design</inertia-link>
                <ul class="navigation--tertiary">

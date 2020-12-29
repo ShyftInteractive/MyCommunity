@@ -47,8 +47,15 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
 
         Route::get('/settings/design', MCS\Workspace\Design\DesignIndex::class)->name('design.index');
 
-        Route::get('/settings/design/templates', MCS\Workspace\SiteTemplates\SiteTemplateIndex::class)->name('site-template.index');
+        // Settings/Templates...
+        Route::get('/settings/design/templates',                    MCS\Workspace\SiteTemplates\SiteTemplateIndex::class)->name('site-template.index');
+        Route::get('/settings/design/templates/create',             MCS\Workspace\SiteTemplates\SiteTemplateCreate::class)->name('site-template.create');
+        Route::post('/settings/design/templates',                   MCS\Workspace\SiteTemplates\SiteTemplateStore::class)->name('site-template.store');
+        Route::get('/settings/design/templates/{templateID}/edit',  MCS\Workspace\SiteTemplates\SiteTemplateEdit::class)->name('site-template.edit');
+        Route::put('/settings/design/templates/{templateID}',       MCS\Workspace\SiteTemplates\SiteTemplateUpdate::class)->name('site-template.update');
+        Route::delete('/settings/design/templates/{templateID}',    MCS\Workspace\SiteTemplates\SiteTemplateDelete::class)->name('site-template.delete');
 
+        // Settings/Themes...
         Route::get('/settings/design/themes', MCS\Workspace\SiteThemes\SiteThemeIndex::class)->name('site-theme.index');
     });
 

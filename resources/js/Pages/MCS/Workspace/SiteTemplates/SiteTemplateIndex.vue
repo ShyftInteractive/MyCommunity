@@ -1,13 +1,25 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
+import ActionButton from "@/Components/Rebase/Actions/ActionButton"
+import ActionLink from "@/Components/Rebase/Actions/ActionLink"
+import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
+import DataTable from "@/Components/Rebase/DataTable"
 
 export default {
    layout: Layout,
-   metaInfo: { title: "Templates" },
+   metaInfo: { title: "Pages" },
 
    components: {
       Workspace,
+      ActionButton,
+      ActionLink,
+      ActionMenu,
+      DataTable,
+   },
+
+   props: {
+      templates: Array | Object,
    },
 
    data: () => ({
@@ -15,15 +27,65 @@ export default {
       form: {},
    }),
 
-   methods: {},
+   methods: {
+      confirmDelete(id) {
+         if (confirm("Are you sure you want to delete this template?")) {
+            this.$inertia.delete(
+               route("site-template.delete", { templateID: id }),
+               {},
+               {
+                  onStart: () => (this.sending = true),
+                  onFinish: () => (this.sending = false),
+               }
+            )
+         }
+      },
+   },
 }
 </script>
 
 <template>
    <Workspace nav="site-settings" secondary="design" tertiary="templates">
-      <template #header>Templates</template>
-      <template v-slot:body>
-         <div class="grid"></div>
+      <template #header>Website Templates</template>
+      <template #ribbon>
+         <li><inertia-link :href="route('site-template.create')" class="button:small">Make a New Page Template</inertia-link></li>
+      </template>
+      <template #body v-if="templates.data.length > 0">
+         <div class="grid">
+            <div class="col-12">
+               <DataTable :links="templates.links">
+                  <template #header>
+                     <th>&nbsp;</th>
+                     <th>Title</th>
+                     <th>URL</th>
+                     <th>&nbsp;</th>
+                  </template>
+                  <template #contents>
+                     <tr v-for="template in templates.data" :key="template.id">
+                        <td><input type="checkbox" /></td>
+                        <td title="Name">{{ template.name }}</td>
+                        <td title="Slug">{{ template.active }}</td>
+                        <td>
+                           <ActionMenu>
+                              <ActionLink :inertia="true" :link="route('site-template.edit', { templateID: template.id })">Edit</ActionLink>
+                              <ActionLink link="#">Publish</ActionLink>
+                              <ActionButton @click="confirmDelete(template.id)">Delete</ActionButton>
+                           </ActionMenu>
+                        </td>
+                     </tr>
+                  </template>
+               </DataTable>
+            </div>
+         </div>
+      </template>
+      <template #body v-else>
+         <div class="grid--center">
+            <div class="col-8--centered sm::col-6--centered md::col-4--centered">
+               <inertia-link :href="route('site-template.create')" class="button:xlarge">Make Your First Page Template</inertia-link>
+            </div>
+         </div>
       </template>
    </Workspace>
 </template>
+
+<style lang="scss"></style>

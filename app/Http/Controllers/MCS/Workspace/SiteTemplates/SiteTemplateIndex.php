@@ -5,11 +5,19 @@ namespace App\Http\Controllers\MCS\Workspace\SiteTemplates;
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Domain\Models\MCS\Workspace\Template;
 
 class SiteTemplateIndex extends Controller
 {
     public function __invoke(Request $request)
     {
-        return inertia(Action::getView($this));
+        $templates = Template::byWorkspace($request->get('workspace_id'))->searchable(
+            searchTerm: $request->get('s'),
+            searchFields: ['name']
+        )->paginate($request->get('count') ?? 10);
+
+        return inertia(Action::getView($this), [
+            'templates' => $templates->toArray(),
+        ]);
     }
 }

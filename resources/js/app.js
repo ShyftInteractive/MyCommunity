@@ -25,6 +25,7 @@ import FieldLabel from "@/Components/Rebase/Form/FieldLabel"
 import Button from "@/Components/Rebase/Form/Button"
 import RoleCheck from "@/Plugins/Rebase/RoleCheck"
 
+
 Vue.component("FormFieldInline", FormFieldInline)
 Vue.component("FormCheckbox", FormCheckbox)
 Vue.component("FormTextArea", FormTextArea)
@@ -36,8 +37,8 @@ Vue.component("FormInput", FormInput)
 Vue.component("FieldLabel", FieldLabel)
 Vue.component("Button", Button)
 
-Vue.config.productionTip = false
 
+Vue.config.productionTip = false
 Vue.use(plugin)
 Vue.use(PortalVue)
 Vue.use(VueMeta)

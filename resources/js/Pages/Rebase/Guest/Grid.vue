@@ -165,7 +165,7 @@ export default {
    .area {
       position: relative;
       min-height: 20px;
-      overflow: auto;
+      overflow: hidden;
       resize: vertical;
 
       &:hover .button-overlay {

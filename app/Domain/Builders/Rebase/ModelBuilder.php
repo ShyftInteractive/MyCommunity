@@ -20,6 +20,11 @@ class ModelBuilder extends Builder
         return $this;
     }
 
+    public function byID(string $id)
+    {
+        return $this->where('id', $id);
+    }
+
     public function byWorkspace(string $id)
     {
         return $this->where('workspace_id', $id);
