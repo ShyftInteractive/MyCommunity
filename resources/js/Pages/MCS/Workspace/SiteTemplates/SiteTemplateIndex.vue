@@ -24,10 +24,41 @@ export default {
 
    data: () => ({
       sending: false,
-      form: {},
    }),
 
    methods: {
+      confirmActivate(id) {
+         if (confirm("Activating this template means others can create pages with it. Are you sure?")) {
+            this.$inertia.put(
+               route("site-template.update", { templateID: id }),
+               {
+                  template: {
+                     active: true,
+                  },
+               },
+               {
+                  onStart: () => (this.sending = true),
+                  onFinish: () => (this.sending = false),
+               }
+            )
+         }
+      },
+      confirmDeactivate(id) {
+         if (confirm("Deactivating a template means you won't be able to create new pages, all previously created pages will be untouched")) {
+            this.$inertia.put(
+               route("site-template.update", { templateID: id }),
+               {
+                  template: {
+                     active: false,
+                  },
+               },
+               {
+                  onStart: () => (this.sending = true),
+                  onFinish: () => (this.sending = false),
+               }
+            )
+         }
+      },
       confirmDelete(id) {
          if (confirm("Are you sure you want to delete this template?")) {
             this.$inertia.delete(
@@ -56,19 +87,20 @@ export default {
                <DataTable :links="templates.links">
                   <template #header>
                      <th>&nbsp;</th>
-                     <th>Title</th>
-                     <th>URL</th>
+                     <th>Name</th>
+                     <th>Active?</th>
                      <th>&nbsp;</th>
                   </template>
                   <template #contents>
                      <tr v-for="template in templates.data" :key="template.id">
                         <td><input type="checkbox" /></td>
                         <td title="Name">{{ template.name }}</td>
-                        <td title="Slug">{{ template.active }}</td>
+                        <td title="Active">{{ template.active ? `Yes` : `No` }}</td>
                         <td>
                            <ActionMenu>
-                              <ActionLink :inertia="true" :link="route('site-template.edit', { templateID: template.id })">Edit</ActionLink>
-                              <ActionLink link="#">Publish</ActionLink>
+                              <ActionLink :inertia="true" :link="route('site-template.edit', { templateID: template.id })">Update</ActionLink>
+                              <ActionButton @click="confirmDeactivate(template.id)" v-if="template.active">Deactivate</ActionButton>
+                              <ActionButton @click="confirmActivate(template.id)" v-else>Activate</ActionButton>
                               <ActionButton @click="confirmDelete(template.id)">Delete</ActionButton>
                            </ActionMenu>
                         </td>

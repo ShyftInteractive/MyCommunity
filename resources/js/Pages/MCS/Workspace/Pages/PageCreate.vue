@@ -1,10 +1,6 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
-import ActionButton from "@/Components/Rebase/Actions/ActionButton"
-import ActionLink from "@/Components/Rebase/Actions/ActionLink"
-import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
-import DataTable from "@/Components/Rebase/DataTable"
 
 export default {
    layout: Layout,
@@ -12,14 +8,10 @@ export default {
 
    components: {
       Workspace,
-      ActionButton,
-      ActionLink,
-      ActionMenu,
-      DataTable,
    },
 
    props: {
-      pages: Array | Object,
+      templates: Array,
    },
 
    data() {
@@ -71,7 +63,7 @@ export default {
 
                <FormField validate="template" class="col-10--centered wd::col-3">
                   <FieldLabel>Pick a Template:</FieldLabel>
-                  <FormSelect v-model="form.template" defaultText="Select" :options="['big-header', 'small-header']" />
+                  <FormSelect v-model="form.template" defaultText="Select" :options="templates" />
                </FormField>
 
                <Button class="col-10--centered wd::col-1 button--link" type="submit" @click="preview">Preview</Button>

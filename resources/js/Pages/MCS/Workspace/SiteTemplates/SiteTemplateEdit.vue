@@ -2,6 +2,7 @@
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import Icon from "@/Components/Rebase/Icon"
+import Editor from "@/Components/Rebase/Form/Editor"
 
 export default {
    layout: Layout,
@@ -10,6 +11,7 @@ export default {
    components: {
       Workspace,
       Icon,
+      Editor,
    },
 
    props: {
@@ -55,13 +57,26 @@ export default {
             onFinish: () => (this.sending = false),
          })
       },
-      addColumn(index) {
-         this.form.template.content[index].push({
-            span: 1,
-            component: "",
-            content: "",
+
+      pickComponent(event, row, col) {
+         const uri = {
+            templateID: this.form.template.id,
+            id: event.target.value,
+         }
+         const data = {
+            row: row,
+            column: col,
+         }
+         this.$inertia.get(route("component.show", uri), data, {
+            onStart: () => (this.sending = true),
+            onFinish: () => (this.sending = false),
          })
       },
+
+      addColumn(index) {
+         this.form.template.content[index].push({ span: 2 })
+      },
+
       resize(update, row, col, centered) {
          let currentSize = this.form.template.content[row][col].span
          if (centered) {
@@ -75,12 +90,15 @@ export default {
             this.form.template.content[row][col].span = newSize
          }
       },
+
       remove(row, col) {
          this.form.template.content[row].splice(col, 1)
+
          if (this.form.template.content[row].length <= 0) {
             this.form.template.content.splice(row, 1)
          }
       },
+
       toggleCenter(row, col, centered) {
          let currentCol = this.form.template.content[row][col]
          if (this.form.template.content[row].length > 1) {
@@ -93,6 +111,7 @@ export default {
 
          this.form.template.content[row][col].center = !this.form.template.content[row][col].center
       },
+
       spanCount(row) {
          let total = 0
          row.forEach(function (col) {
@@ -101,6 +120,7 @@ export default {
 
          return total
       },
+
       allowMoreColumns(rowIndex) {
          let row = this.form.template.content[rowIndex]
          if (row.length == 1 && row[0].center) {
@@ -109,35 +129,9 @@ export default {
 
          return this.spanCount(row) < 12
       },
+
       addNewRow() {
-         this.form.template.content.push([
-            {
-               span: 4,
-            },
-         ])
-      },
-
-      contentUpdate(event, rowIndex, column) {
-         let p = event.target.closest(".js-component")
-         this.form.template.content[rowIndex][column].component = p.innerHTML
-      },
-
-      componentPicker(row, column) {
-         // this does need to trigger a save too
-         this.$inertia.get(
-            route("component.show", {
-               pageID: this.form.template.id,
-               id: "mediabox",
-            }),
-            {
-               row: row,
-               column: column,
-            },
-            {
-               onStart: () => (this.sending = true),
-               onFinish: () => (this.sending = false),
-            }
-         )
+         this.form.template.content.push([{ span: 4 }])
       },
    },
 }
@@ -161,28 +155,8 @@ export default {
                            :data-row="index"
                            :data-col="key"
                         >
-                           <div class="column-menu">
-                              <ul>
-                                 <li>
-                                    <button @click="resize(-1, index, key, col.center)"><Icon name="minus" size="18" /></button>
-                                 </li>
-                                 <li>
-                                    <button @click="resize(1, index, key, col.center)"><Icon name="plus" size="18" /></button>
-                                 </li>
-                                 <li>
-                                    <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
-                                       <Icon v-if="col.center" name="left" size="18" />
-                                       <Icon v-else name="center" size="18" />
-                                    </button>
-                                 </li>
-                                 <li><button @click="componentPicker(index, key)">Pick a Component</button></li>
-                                 <li>
-                                    <button @click="remove(index, key)"><Icon name="close" size="18" /></button>
-                                 </li>
-                              </ul>
-                           </div>
-                           <div class="mcs--component">
-                              <div class="js-component" v-html="col.component" @focusout="contentUpdate($event, index, key)"></div>
+                           <div class="mcs--component js-component">
+                              <Editor />
                            </div>
                         </div>
                         <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>

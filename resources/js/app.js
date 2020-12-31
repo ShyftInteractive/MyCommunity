@@ -39,6 +39,7 @@ Vue.component("Button", Button)
 
 
 Vue.config.productionTip = false
+
 Vue.use(plugin)
 Vue.use(PortalVue)
 Vue.use(VueMeta)

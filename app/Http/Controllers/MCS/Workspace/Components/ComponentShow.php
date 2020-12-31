@@ -6,19 +6,19 @@ use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Domain\Models\MCS\Workspace\Page;
+use App\Domain\Models\MCS\Workspace\Template;
 
 class ComponentShow extends Controller
 {
-    public function __invoke(string $pageID, string $componentID, Request $request)
+    public function __invoke(string $templateID, string $componentID, Request $request)
     {
-        $page = Page::byID($pageID)->first();
+        $template = Template::byID($templateID)->first();
 
-        $content = $page->content;
+        $content = $template->content;
         $content[$request->input('row')][$request->input('column')]['component'] = Storage::disk('components')->get("{$componentID}.htm");
-        $page->content = $content;
+        $template->content = $content;
 
-        $page->update();
+        $template->update();
 
         return redirect()->back();
     }

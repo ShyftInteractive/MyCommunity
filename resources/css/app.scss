@@ -15,8 +15,11 @@
 
    .grid > div {
       min-height: 300px;
+      height: 100%;
       border: 2px dotted #444;
       resize: vertical;
       overflow: auto;
    }
 }
+
+@import 'customer/components/components';

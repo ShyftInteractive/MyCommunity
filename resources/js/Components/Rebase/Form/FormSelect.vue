@@ -23,7 +23,7 @@ export default {
 <template>
    <select class="form-item--select" ref="select" v-bind="$attrs" @input="handleInput">
       <option value="" v-if="defaultText !== ''">{{ defaultText }}</option>
-      <option v-for="option in options" :key="option" :selected="value === option">{{ option }}</option>
+      <option v-for="option in options" :key="option" :value="option" :selected="option === value">{{ option }}</option>
       <slot></slot>
    </select>
 </template>

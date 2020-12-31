@@ -1,41 +1,39 @@
 <?php declare(strict_types=1);
 
-namespace App\Http\Controllers\MCS\Workspace\Pages;
+namespace App\Http\Controllers\MCS\Workspace\Posts;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Domain\Models\MCS\Workspace\Page;
-use App\Domain\Models\MCS\Workspace\Content;
-use App\Domain\Models\MCS\Workspace\Template;
+use App\Domain\Models\MCS\Workspace\Post;
 
-class PageStore extends Controller
+class PostStore extends Controller
 {
     public function __invoke(Request $request)
     {
         $request->validate($this->rules($request->get('workspace_id')));
 
-        $page = Page::modelFactory()->create([
+        $post = Post::modelFactory()->create([
             "slug" => $request->input('slug'),
             "title" => $request->input('title'),
-            "isHomepage" => $request->input('isHomepage'),
+            "content" => "<h1>Start typin'....</h1>",
             "visibility" => $request->input('visibility'),
-            "content" => Template::byWorkspace($request->get('workspace_id'))->byName($request->input('template'))->first()->content,
             "workspace_id" => $request->get('workspace_id'),
+            "member_id" => auth()->user()->id,
         ]);
 
-        return redirect()->route('page.edit', [
-            'pageID' => $page->id,
+        return redirect()->route('post.edit', [
+            'postID' => $post->id,
         ]);
     }
 
     private function rules(string $workspaceID): array
     {
-    return [
+        return [
             'title' => ['string', 'required', 'max:100'],
-            'slug' => ['string', 'required', 'max:100', Rule::unique('workspace.pages')->where('workspace_id', $workspaceID)],
+            'slug' => ['string', 'required', 'max:100', Rule::unique('workspace.posts')->where('workspace_id', $workspaceID)],
             'visibility' => ['required'],
         ];
     }

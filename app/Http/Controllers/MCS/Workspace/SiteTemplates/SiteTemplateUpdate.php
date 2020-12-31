@@ -9,7 +9,7 @@ use App\Domain\Models\MCS\Workspace\Template;
 
 class SiteTemplateUpdate extends Controller
 {
-    public function __invoke(string $pageID, Request $request)
+    public function __invoke(string $templateID, Request $request)
     {
         $updateItems = collect($request->only([
             "template.id",
@@ -21,7 +21,7 @@ class SiteTemplateUpdate extends Controller
 
         Template::modelFactory()->update(
             whereCol: 'id',
-            whereValue: $pageID,
+            whereValue: $templateID,
             update: $updateItems
         );
 

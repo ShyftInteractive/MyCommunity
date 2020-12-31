@@ -22,12 +22,16 @@ class ModelBuilder extends Builder
 
     public function byID(string $id)
     {
-        return $this->where('id', $id);
+        $this->where('id', $id);
+
+        return $this;
     }
 
     public function byWorkspace(string $id)
     {
-        return $this->where('workspace_id', $id);
+        $this->where('workspace_id', $id);
+
+        return $this;
     }
 
     public function searchable(string $searchTerm = null, array $searchFields = []): ModelBuilder

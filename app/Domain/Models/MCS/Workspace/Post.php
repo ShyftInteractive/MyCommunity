@@ -2,6 +2,7 @@
 
 namespace App\Domain\Models\MCS\Workspace;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Builders\MCS\PageBuilder;
 use App\Domain\Builders\MCS\PostBuilder;
@@ -20,6 +21,8 @@ class Post extends Model
 
     // Connection...
     protected $connection = 'workspace';
+
+     public $incrementing = false;
 
     // Fillable Attributes...
     protected $fillable = [
@@ -51,6 +54,17 @@ class Post extends Model
     ];
 
     // Global Eager Loads...
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($post): void {
+            $post->id = (string)Str::uuid();
+        });
+    }
+
+
 
     // Relationships....
     public function workspace(): HasOne

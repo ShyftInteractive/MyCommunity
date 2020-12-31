@@ -9,6 +9,22 @@ class TemplateBuilder extends ModelBuilder
 {
     public function byName(string $name)
     {
-        return $this->where('name', $name);
+        $this->where('name', $name);
+
+        return $this;
+    }
+
+    public function activated()
+    {
+        $this->where('active', true);
+
+        return $this;
+    }
+
+    public function deactivated()
+    {
+        $this->where('active', false);
+
+        return $this;
     }
 }

@@ -36,11 +36,13 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::put('/pages/{pageID}',       MCS\Workspace\Pages\PageUpdate::class)->name('page.update');
         Route::delete('/pages/{pageID}',    MCS\Workspace\Pages\PageDelete::class)->name('page.delete');
 
-        // Component...
-        Route::get('/pages/{pageID}/components/{id}', MCS\Workspace\Components\ComponentShow::class)->name('component.show');
-
         // Posts...
-        Route::get('/posts', MCS\Workspace\Posts\PostIndex::class)->name('post.index');
+        Route::get('/posts',                MCS\Workspace\Posts\PostIndex::class)->name('post.index');
+        Route::get('/posts/create',         MCS\Workspace\Posts\PostCreate::class)->name('post.create');
+        Route::post('/posts',               MCS\Workspace\Posts\PostStore::class)->name('post.store');
+        Route::get('/posts/{postID}/edit',  MCS\Workspace\Posts\PostEdit::class)->name('post.edit');
+        Route::put('/posts/{postID}',       MCS\Workspace\Posts\PostUpdate::class)->name('post.update');
+        Route::delete('/posts/{postID}',    MCS\Workspace\Posts\PostDelete::class)->name('post.delete');
 
         // Settings...
         Route::get('/settings', MCS\Workspace\Settings\SettingIndex::class)->name('setting.index');
@@ -54,6 +56,9 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::get('/settings/design/templates/{templateID}/edit',  MCS\Workspace\SiteTemplates\SiteTemplateEdit::class)->name('site-template.edit');
         Route::put('/settings/design/templates/{templateID}',       MCS\Workspace\SiteTemplates\SiteTemplateUpdate::class)->name('site-template.update');
         Route::delete('/settings/design/templates/{templateID}',    MCS\Workspace\SiteTemplates\SiteTemplateDelete::class)->name('site-template.delete');
+
+        // Component...
+        Route::get('/templates/{templateID}/components/{id}', MCS\Workspace\Components\ComponentShow::class)->name('component.show');
 
         // Settings/Themes...
         Route::get('/settings/design/themes', MCS\Workspace\SiteThemes\SiteThemeIndex::class)->name('site-theme.index');

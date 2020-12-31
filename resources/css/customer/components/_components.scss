@@ -27,5 +27,14 @@
 }
 
 //-----------------------------------------------------------------------------
-.card {
+.mcs--component {
+   height: 100%;
+}
+.hero-large {
+   background-position: 50% 50%;
+   background-repeat: none;
+   background-size: cover;
+   height: 100%;
+   display: flex;
+   align-items: center;
 }
