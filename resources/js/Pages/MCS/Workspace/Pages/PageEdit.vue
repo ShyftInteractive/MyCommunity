@@ -2,6 +2,7 @@
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import Icon from "@/Components/Rebase/Icon"
+import Editor from "@/Components/Rebase/Form/Editor"
 
 export default {
    layout: Layout,
@@ -10,6 +11,7 @@ export default {
    components: {
       Workspace,
       Icon,
+      Editor,
    },
 
    props: {
@@ -19,6 +21,7 @@ export default {
    data() {
       return {
          sending: false,
+         tools: [],
          form: {
             page: this.page,
          },
@@ -26,10 +29,20 @@ export default {
    },
 
    mounted: function () {
+      const targets = document.querySelectorAll(".js-target")
+      const vm = this
+
+      targets.forEach(function (target) {
+         vm.tools.push({
+            label: target.getAttribute("data-label"),
+            t: target,
+            block: target.closest(".js-block"),
+         })
+      })
+
       const targetNode = document.querySelector(".js-content")
       const config = { attributes: true, childList: true, subtree: true }
 
-      const vm = this
       const callback = function (mutationsList, observer) {
          for (const mutation of mutationsList) {
             if (mutation.type === "attributes" && mutation.attributeName === "style") {
@@ -50,20 +63,33 @@ export default {
    },
 
    methods: {
+      check(target, event, info) {
+         if (target.classList.contains("js-bg-image")) {
+            target.style.backgroundImage = `url(${event.target.value})`
+         } else if (info === "url") {
+            target.href = event.target.value
+         } else {
+            target.innerHTML = event.target.value
+         }
+
+         target.closest(".js-block").classList.add("block-is-dirty")
+      },
       save() {
+         let dirtyblocks = document.querySelectorAll(".block-is-dirty")
+         let vm = this
+         dirtyblocks.forEach(function (block) {
+            let row = block.dataset.row
+            let col = block.dataset.col
+
+            vm.form.page.content[row][col].component = block.querySelector(".mcs--component").innerHTML
+         })
+
          this.$inertia.put(route("page.update", { pageID: this.form.page.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
       },
-      addColumn(index) {
-         this.form.page.content[index].push({
-            span: 1,
-            component: "",
-            content: "",
-            height: "400px",
-         })
-      },
+
       resize(update, row, col, centered) {
          let currentSize = this.form.page.content[row][col].span
          if (centered) {
@@ -76,69 +102,6 @@ export default {
          if (newSize >= 1 && newSize <= 12 && totalSpanCount <= 12) {
             this.form.page.content[row][col].span = newSize
          }
-      },
-      remove(row, col) {
-         this.form.page.content[row].splice(col, 1)
-         if (this.form.page.content[row].length <= 0) {
-            this.form.page.content.splice(row, 1)
-         }
-      },
-      toggleCenter(row, col, centered) {
-         let currentCol = this.form.page.content[row][col]
-         if (this.form.page.content[row].length > 1) {
-            return false
-         }
-
-         if (!currentCol.center && currentCol.span % 2 !== 0) {
-            currentCol.span++
-         }
-
-         this.form.page.content[row][col].center = !this.form.page.content[row][col].center
-      },
-      spanCount(row) {
-         let total = 0
-         row.forEach(function (col) {
-            total += col.span
-         })
-
-         return total
-      },
-      allowMoreColumns(rowIndex) {
-         let row = this.form.page.content[rowIndex]
-         if (row.length == 1 && row[0].center) {
-            return false
-         }
-
-         return this.spanCount(row) < 12
-      },
-      addNewRow() {
-         this.form.page.content.push([
-            {
-               span: 4,
-            },
-         ])
-      },
-
-      contentUpdate(event, rowIndex, column) {
-         let p = event.target.closest(".js-component")
-         this.form.page.content[rowIndex][column].component = p.innerHTML
-      },
-      componentPicker(row, column) {
-         // this does need to trigger a save too
-         this.$inertia.get(
-            route("component.show", {
-               pageID: this.form.page.id,
-               id: "mediabox",
-            }),
-            {
-               row: row,
-               column: column,
-            },
-            {
-               onStart: () => (this.sending = true),
-               onFinish: () => (this.sending = false),
-            }
-         )
       },
    },
 }
@@ -154,7 +117,7 @@ export default {
                   <div id="editor" class="mcs--template">
                      <div class="grid" v-for="(row, index) in form.page.content" :key="index">
                         <div
-                           class="col-12"
+                           class="js-block col-12"
                            v-for="(col, key) in row"
                            :class="col.center ? `md::col-${col.span}--centered` : `md::col-${col.span}`"
                            :key="`row-${index}-col-${key}`"
@@ -162,34 +125,26 @@ export default {
                            :data-row="index"
                            :data-col="key"
                         >
-                           <div class="column-menu">
-                              <ul>
-                                 <li>
-                                    <button @click="resize(-1, index, key, col.center)"><Icon name="minus" size="18" /></button>
-                                 </li>
-                                 <li>
-                                    <button @click="resize(1, index, key, col.center)"><Icon name="plus" size="18" /></button>
-                                 </li>
-                                 <li>
-                                    <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
-                                       <Icon v-if="col.center" name="left" size="18" />
-                                       <Icon v-else name="center" size="18" />
-                                    </button>
-                                 </li>
-                                 <li><button @click="componentPicker(index, key)">Pick a Component</button></li>
-                                 <li>
-                                    <button @click="remove(index, key)"><Icon name="close" size="18" /></button>
-                                 </li>
-                              </ul>
-                           </div>
-                           <div class="mcs--component">
-                              <div class="js-component" v-html="col.component" @focusout="contentUpdate($event, index, key)"></div>
-                           </div>
+                           <div class="mcs--component" v-html="col.component"></div>
                         </div>
-                        <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>
                      </div>
                   </div>
-                  <button @click="addNewRow">Add New Row</button>
+               </div>
+               <div class="page--editor">
+                  Tools:
+                  <div v-for="(tool, i) in tools" :key="i">
+                     {{ tool.label }}:<br />
+                     <div v-if="tool.t.classList.contains('js-link')">
+                        <input type="text" @input="check(tool.t, $event)" />
+                        <input type="text" @input="check(tool.t, $event, 'url')" />
+                     </div>
+                     <input v-else type="text" @input="check(tool.t, $event)" />
+                     <div v-if="tool.t.classList.contains('js-flex-alignment')">
+                        <input type="radio" name="flex" value="top" @input="check(tool.t, $event)" />
+                        <input type="radio" name="flex" value="middle" @input="check(tool.t, $event)" />
+                        <input type="radio" name="flex" value="bottom" @input="check(tool.t, $event)" />
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="col-12 sm::col-2">
@@ -208,6 +163,8 @@ export default {
 </template>
 
 <style lang="scss">
+@import "@@/abstract";
+
 .grid > .col-12 {
    position: relative;
 }
@@ -232,6 +189,24 @@ export default {
       background: #ccc;
       padding: var(--px-4);
       margin: var(--px-4);
+   }
+}
+
+.page--editor {
+   position: absolute;
+   background-color: var(--color-coolGray-600);
+   color: var(--color-coolGray-100);
+   top: 40px;
+   right: 0;
+   bottom: 0;
+   width: 100vw;
+
+   @media ($sm-and-up) {
+      width: 50%;
+   }
+
+   @media ($md-and-up) {
+      width: 40%;
    }
 }
 </style>

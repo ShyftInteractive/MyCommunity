@@ -22,4 +22,14 @@
    }
 }
 
+.hero {
+   display: flex;
+   align-content: center;
+   align-items: center;
+   height: 100%;
+   background-position: 50% 50%;
+   background-size: cover;
+   padding: 16px;
+}
+
 @import 'customer/components/components';

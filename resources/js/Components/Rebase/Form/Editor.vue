@@ -52,7 +52,6 @@ export default {
       Icon,
    },
    props: {
-      content: String,
       value: [String],
    },
    data() {
@@ -60,6 +59,7 @@ export default {
          linkUrl: null,
          linkMenuIsActive: false,
          keepInBounds: true,
+         content: this.value,
          editor: new Editor({
             extensions: [new Blockquote(), new BulletList(), new Heading({ levels: [1, 2, 3] }), new ListItem(), new OrderedList(), new Link(), new Bold(), new Italic(), new Strike(), new Underline(), new Image(), new IFrame()],
             content: this.value,

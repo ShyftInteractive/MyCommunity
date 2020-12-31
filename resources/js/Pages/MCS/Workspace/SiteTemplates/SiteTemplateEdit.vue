@@ -120,7 +120,6 @@ export default {
 
          return total
       },
-
       allowMoreColumns(rowIndex) {
          let row = this.form.template.content[rowIndex]
          if (row.length == 1 && row[0].center) {
@@ -156,7 +155,34 @@ export default {
                            :data-col="key"
                         >
                            <div class="mcs--component js-component">
-                              <Editor />
+                              <div class="column-menu">
+                                 <ul>
+                                    <li>
+                                       <button @click="resize(-1, index, key, col.center)"><Icon name="minus" size="18" /></button>
+                                    </li>
+                                    <li>
+                                       <button @click="resize(1, index, key, col.center)"><Icon name="plus" size="18" /></button>
+                                    </li>
+                                    <li>
+                                       <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
+                                          <Icon v-if="col.center" name="left" size="18" />
+                                          <Icon v-else name="center" size="18" />
+                                       </button>
+                                    </li>
+                                    <li>
+                                       <select @change="pickComponent($event, index, key)">
+                                          <option value="">Pick a Component</option>
+                                          <option value="hero">Hero</option>
+                                          <option value="mediabox">Mediabox</option>
+                                          <option value="card">Card</option>
+                                       </select>
+                                    </li>
+                                    <li>
+                                       <button @click="remove(index, key)"><Icon name="close" size="18" /></button>
+                                    </li>
+                                 </ul>
+                              </div>
+                              <div v-html="col.component"></div>
                            </div>
                         </div>
                         <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>
