@@ -1,43 +1,3 @@
-<template>
-   <div class="editor">
-      <editor-menu-bubble :editor="editor" :keep-in-bounds="keepInBounds" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
-         <div class="menububble" :class="{ 'is-active': menu.isActive }" :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`">
-            <button class="menububble__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-               <Icon name="bold" size="20" />
-            </button>
-            <button class="menububble__button" :class="{ 'is-active': isActive.heading({ level: 1 }) }" @click="commands.heading({ level: 1 })">H1</button>
-            <button class="menububble__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">H2</button>
-            <button class="menububble__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">H3</button>
-            <button class="menububble__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
-               <Icon name="italic" size="20" />
-            </button>
-            <button class="menububble__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
-               <Icon name="underline" size="20" />
-            </button>
-            <button class="menububble__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
-               <Icon name="strike" size="20" />
-            </button>
-            <button class="menububble__button" @click="showImagePrompt(commands.image)">
-               <Icon name="image" size="20" />
-            </button>
-            <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
-               <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu" />
-               <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
-                  <Icon name="remove" size="20" />
-               </button>
-            </form>
-            <template v-else>
-               <button class="menububble__button" @click="showLinkMenu(getMarkAttrs('link'))" :class="{ 'is-active': isActive.link() }">
-                  <Icon name="link" size="20" />
-               </button>
-            </template>
-         </div>
-      </editor-menu-bubble>
-
-      <editor-content class="editor__content" :editor="editor" @change="handleChange" />
-   </div>
-</template>
-
 <script>
 import Icon from "@/Components/Rebase/Icon"
 import { Editor, EditorContent, EditorMenuBubble } from "tiptap"
@@ -100,6 +60,46 @@ export default {
    },
 }
 </script>
+
+<template>
+   <div class="editor">
+      <editor-menu-bubble :editor="editor" :keep-in-bounds="keepInBounds" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
+         <div class="menububble" :class="{ 'is-active': menu.isActive }" :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`">
+            <button class="menububble__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
+               <Icon name="bold" size="20" />
+            </button>
+            <button class="menububble__button" :class="{ 'is-active': isActive.heading({ level: 1 }) }" @click="commands.heading({ level: 1 })">H1</button>
+            <button class="menububble__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">H2</button>
+            <button class="menububble__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">H3</button>
+            <button class="menububble__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
+               <Icon name="italic" size="20" />
+            </button>
+            <button class="menububble__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
+               <Icon name="underline" size="20" />
+            </button>
+            <button class="menububble__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
+               <Icon name="strike" size="20" />
+            </button>
+            <button class="menububble__button" @click="showImagePrompt(commands.image)">
+               <Icon name="image" size="20" />
+            </button>
+            <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
+               <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu" />
+               <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
+                  <Icon name="remove" size="20" />
+               </button>
+            </form>
+            <template v-else>
+               <button class="menububble__button" @click="showLinkMenu(getMarkAttrs('link'))" :class="{ 'is-active': isActive.link() }">
+                  <Icon name="link" size="20" />
+               </button>
+            </template>
+         </div>
+      </editor-menu-bubble>
+      <editor-content class="editor__content" :editor="editor" @change="handleChange" />
+   </div>
+</template>
+
 <style lang="scss">
 .menububble {
    position: absolute;

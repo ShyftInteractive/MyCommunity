@@ -2,16 +2,18 @@
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import Icon from "@/Components/Rebase/Icon"
-import Editor from "@/Components/Rebase/Form/Editor"
+import PageEditorTools from "@/Components/MCS/EditorTools/PageEditorTools"
+import GridBuilder from "@/Components/MCS/EditorTools/GridBuilder"
 
 export default {
    layout: Layout,
    metaInfo: { title: "Pages" },
 
    components: {
-      Workspace,
       Icon,
-      Editor,
+      Workspace,
+      GridBuilder,
+      PageEditorTools,
    },
 
    props: {
@@ -21,7 +23,6 @@ export default {
    data() {
       return {
          sending: false,
-         tools: [],
          form: {
             page: this.page,
          },
@@ -31,17 +32,6 @@ export default {
    mounted: function () {},
 
    methods: {
-      check(target, event, info) {
-         if (target.classList.contains("js-bg-image")) {
-            target.style.backgroundImage = `url(${event.target.value})`
-         } else if (info === "url") {
-            target.href = event.target.value
-         } else {
-            target.innerHTML = event.target.value
-         }
-
-         target.closest(".js-block").classList.add("block-is-dirty")
-      },
       save() {
          let dirtyblocks = document.querySelectorAll(".block-is-dirty")
          let vm = this
@@ -57,20 +47,6 @@ export default {
             onFinish: () => (this.sending = false),
          })
       },
-
-      resize(update, row, col, centered) {
-         let currentSize = this.form.page.content[row][col].span
-         if (centered) {
-            update *= 2
-         }
-
-         let newSize = currentSize + update
-         let totalSpanCount = this.spanCount(this.form.page.content[row]) + update
-
-         if (newSize >= 1 && newSize <= 12 && totalSpanCount <= 12) {
-            this.form.page.content[row][col].span = newSize
-         }
-      },
    },
 }
 </script>
@@ -80,31 +56,25 @@ export default {
       <template #header>Pages</template>
       <template #body>
          <div class="grid--top">
-            <div class="col-12 sm::col-10">one</div>
+            <div class="col-12 sm::col-10">
+               <GridBuilder :page="form.page"></GridBuilder>
+            </div>
          </div>
       </template>
-      <template #drawer> </template>
+      <template #drawer>
+         <PageEditorTools targetClass=".js-target" />
+         <p>PREVIEW</p>
+         <Button @click="save">Save</Button>
+         <p>Publish</p>
+         <p>Visible</p>
+         <p>Change SLug</p>
+         <p>Change Title</p>
+         <p>Move</p>
+         <p>Update Template</p>
+      </template>
    </Workspace>
 </template>
 
 <style lang="scss">
 @import "@@/abstract";
-
-.page--editor {
-   position: absolute;
-   background-color: var(--color-coolGray-600);
-   color: var(--color-coolGray-100);
-   top: 40px;
-   right: 0;
-   bottom: 0;
-   width: 100vw;
-
-   @media ($sm-and-up) {
-      width: 50%;
-   }
-
-   @media ($md-and-up) {
-      width: 40%;
-   }
-}
 </style>

@@ -1,7 +1,7 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
-import Editor from "@/Components/Rebase/Form/Editor"
+import Editor from "@/Components/MCS/EditorTools/Editor"
 
 export default {
    layout: Layout,
