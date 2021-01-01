@@ -20,6 +20,12 @@ export default {
    <svg v-else-if="name === 'chevron-down'" xmlns="http://www.w3.org/2000/svg" :width="size" :height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M6 9l6 6 6-6" />
    </svg>
+   <svg v-else-if="name === 'chevrons-left'" xmlns="http://www.w3.org/2000/svg" :width="size" :height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5" />
+   </svg>
+   <svg v-else-if="name === 'chevrons-right'" mlns="http://www.w3.org/2000/svg" :width="size" :height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 17l5-5-5-5M6 17l5-5-5-5" />
+   </svg>
    <svg v-else-if="name === 'person'" xmlns="http://www.w3.org/2000/svg" :width="size" :height="size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
       <circle cx="12" cy="10" r="3" />

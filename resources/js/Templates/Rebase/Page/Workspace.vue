@@ -2,6 +2,7 @@
 import Logo from "./Components/Logo"
 import WorkspaceSidebar from "./Components/WorkspaceSidebar"
 import IdentityNavigation from "./Components/IdentityNavigation"
+import Icon from "@/Components/Rebase/Icon"
 
 export default {
    props: {
@@ -14,6 +15,37 @@ export default {
       WorkspaceSidebar,
       Logo,
       IdentityNavigation,
+      Icon,
+   },
+
+   props: {
+      useDrawer: {
+         default: false,
+         type: Boolean,
+      },
+      nav: {
+         default: "",
+         type: String,
+      },
+      secondary: {
+         default: "",
+         type: String,
+      },
+      tertiary: {
+         default: "",
+         type: String,
+      },
+   },
+   data() {
+      return {
+         drawer: this.useDrawer ? false : null,
+      }
+   },
+
+   methods: {
+      toggleDrawer() {
+         this.drawer = !this.drawer
+      },
    },
 }
 </script>
@@ -38,6 +70,20 @@ export default {
             </div>
             <div class="content-container">
                <slot name="body"></slot>
+
+               <div class="drawer" :class="{ closed: !this.drawer }" v-if="drawer !== null">
+                  <div class="grid">
+                     <div class="col-1">
+                        <button class="button--link" @click="toggleDrawer">
+                           <Icon v-if="drawer" name="chevrons-right" size="20" />
+                           <Icon v-else name="chevrons-left" size="20" />
+                        </button>
+                     </div>
+                     <div class="col-11 drawer--content">
+                        <slot name="drawer"></slot>
+                     </div>
+                  </div>
+               </div>
             </div>
          </main>
          <aside class="js-sidebar">
@@ -140,17 +186,43 @@ $headerbar-height: 40px;
             padding: 0;
          }
       }
+
+      .drawer {
+         background: var(--color-coolGray-200);
+         bottom: 0;
+         box-shadow: 2px 1px 5px 0px var(--color-coolGray-800);
+         color: var(--color-coolGray-800);
+         padding: var(--px-16);
+         position: absolute;
+         right: 0;
+         top: $headerbar-height * 2;
+         transition: width 350ms ease-in-out;
+         width: 100vw;
+
+         &.closed {
+            width: 50px;
+         }
+
+         @media ($md-and-up) {
+            top: $headerbar-height;
+            width: 50vw;
+         }
+      }
    }
 
    aside {
-      padding: 0 var(--px-16);
       background: var(--color-blueGray-800);
       grid-area: sidebar;
+      padding: 0 var(--px-16);
 
       @media ($md-and-up) {
          padding-top: var(--px-60);
       }
    }
+}
+
+.drawer.closed .drawer--content {
+   display: none;
 }
 
 .ribbon--menu {

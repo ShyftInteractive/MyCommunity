@@ -26,13 +26,14 @@ export default {
       }
    },
 
-   mounted: function () {},
-
    methods: {
-      contentUpdate(event) {
-         console.log(event)
-      },
       save() {
+         this.$inertia.put(route("post.update", { postID: this.form.post.id }), this.form, {
+            onStart: () => (this.sending = true),
+            onFinish: () => (this.sending = false),
+         })
+      },
+      publish() {
          this.$inertia.put(route("post.update", { postID: this.form.post.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
@@ -43,7 +44,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="posts">
+   <Workspace nav="posts" :useDrawer="true">
       <template #header>Edit Post</template>
       <template #body>
          <div class="grid--top">
@@ -54,46 +55,34 @@ export default {
                   </div>
                </div>
             </div>
-            <div class="col-12 sm::col-2">
-               <p>PREVIEW</p>
-               <Button @click="save">Save</Button>
-               <p>Publish</p>
-               <p>Visible</p>
-               <p>Change SLug</p>
-               <p>Change Title</p>
-               <p>Move</p>
-               <p>Update Template</p>
-            </div>
+         </div>
+      </template>
+      <template #drawer>
+         <div class="grid">
+            <Button class="button--secondary col-12 sm::col-6" @click="save">Save</Button>
+            <Button class="button--secondary col-12 sm::col-6" @click="publish">Publish</Button>
+            <FormField validate="visibility" class="col-12">
+               <FieldLabel>Who can see this post?</FieldLabel>
+               <FormSelect v-model="form.post.visibility" :options="$page.props.app.roles" />
+               <small>
+                  <em v-if="form.post.visibility !== $page.props.app.roles.PUBLIC_ACCESS">
+                     You must be <strong>{{ form.post.visibility }}</strong> or above to see this post</em
+                  >
+                  <em v-else> Anyone can see this post </em>
+               </small>
+            </FormField>
+            <FormField validate="form.post.title" class="col-12">
+               <FieldLabel>Post Title</FieldLabel>
+               <FormInput v-model="form.post.title" />
+            </FormField>
+            <FormField validate="form.post.slug" class="col-12">
+               <FieldLabel>Post URL</FieldLabel>
+               <FormInput v-model="form.post.slug" slugify />
+               <small
+                  ><em>https://joecianflone.mycommunity.test/{{ form.post.slug }}</em></small
+               >
+            </FormField>
          </div>
       </template>
    </Workspace>
 </template>
-
-<style lang="scss">
-.grid > .col-12 {
-   position: relative;
-}
-
-.column-menu {
-   position: absolute;
-   width: 100%;
-
-   ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      li {
-         display: inline-block;
-         margin: 0;
-         padding: 0;
-      }
-   }
-
-   button {
-      border: 0;
-      background: #ccc;
-      padding: var(--px-4);
-      margin: var(--px-4);
-   }
-}
-</style>
