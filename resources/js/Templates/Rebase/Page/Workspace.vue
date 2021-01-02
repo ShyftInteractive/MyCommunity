@@ -18,6 +18,19 @@ export default {
       Icon,
    },
 
+   mounted() {
+      document.addEventListener("keydown", (e) => {
+         if (e.ctrlKey && e.which === 49) {
+            this.drawer = !this.drawer
+         }
+         if (e.keyCode === 27) {
+            if (this.drawer) {
+               this.drawer = false
+            }
+         }
+      })
+   },
+
    props: {
       useDrawer: {
          default: false,

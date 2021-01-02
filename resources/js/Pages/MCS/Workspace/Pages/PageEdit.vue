@@ -29,22 +29,32 @@ export default {
       }
    },
 
-   mounted: function () {},
+   mounted() {
+      document.addEventListener("keydown", (e) => {
+         if (e.ctrlKey && e.which === 83) {
+            this.save()
+         }
+      })
+   },
 
    methods: {
       save() {
-         let dirtyblocks = document.querySelectorAll(".block-is-dirty")
-         let vm = this
-         dirtyblocks.forEach(function (block) {
-            let row = block.dataset.row
-            let col = block.dataset.col
-
-            vm.form.page.content[row][col].component = block.querySelector(".mcs--component").innerHTML
-         })
+         this.dirtyCheck()
 
          this.$inertia.put(route("page.update", { pageID: this.form.page.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
+         })
+      },
+      dirtyCheck() {
+         let vm = this
+         const dirtyblocks = document.querySelectorAll(".block-is-dirty")
+
+         dirtyblocks.forEach(function (block) {
+            let row = block.dataset.row
+            let col = block.dataset.col
+
+            vm.form.page.content[row][col].component = block.querySelector(".js-component").innerHTML
          })
       },
    },

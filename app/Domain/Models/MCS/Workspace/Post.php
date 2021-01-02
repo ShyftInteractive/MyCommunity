@@ -3,6 +3,7 @@
 namespace App\Domain\Models\MCS\Workspace;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Builders\MCS\PageBuilder;
 use App\Domain\Builders\MCS\PostBuilder;

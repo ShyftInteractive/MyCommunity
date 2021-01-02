@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MCS\Workspace\Posts;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Domain\Models\MCS\Workspace\Post;
 
@@ -22,6 +23,8 @@ class PostUpdate extends Controller
                 "post.visibility",
                 "post.published_at",
             ]))->get('post');
+
+        $updateItems['published_at'] = $updateItems['published_at'] == null ? null : Carbon::parse($updateItems['published_at']);
 
         Post::modelFactory()->update(
             whereCol: 'id',
