@@ -26,7 +26,7 @@ class CreatePostsTable extends Migration
             $table->longText('content')->nullable();
             $table->enum('visibility', Arr::flatten(MemberRoles::toArray()))->default(MemberRoles::PUBLIC_ACCESS());
             $table->timestamp('featured_at')->nullable();
-            table->boolean('published')->default(false);
+            $table->boolean('published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
 

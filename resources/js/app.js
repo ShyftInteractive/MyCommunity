@@ -1,9 +1,12 @@
-
 import { App, plugin } from '@inertiajs/inertia-vue'
 import PortalVue from "portal-vue"
 import VueMeta from "vue-meta"
 import Vue from "vue"
 import { InertiaProgress } from '@inertiajs/progress/src'
+import VueFileAgent from 'vue-file-agent';
+import VueFileAgentStyles from 'vue-file-agent/dist/vue-file-agent.css';
+
+Vue.use(VueFileAgent);
 
 InertiaProgress.init({
    delay: 250,
@@ -43,6 +46,7 @@ Vue.config.productionTip = false
 Vue.use(plugin)
 Vue.use(PortalVue)
 Vue.use(VueMeta)
+Vue.use(VueFileAgent)
 Vue.use(RoleCheck)
 
 let el = document.getElementById("app")

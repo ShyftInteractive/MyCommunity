@@ -24,6 +24,7 @@ class CreatePagesTable extends Migration
             $table->text('description')->nullable();
             $table->json('content')->nullable();
             $table->enum('visibility', Arr::flatten(MemberRoles::toArray()))->default(MemberRoles::PUBLIC_ACCESS());
+            $table->boolean('published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
 

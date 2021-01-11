@@ -17,8 +17,8 @@ export default {
          <slot name="sidebar">
             <ol class="step-counter">
                <li class="step-counter--item" :class="{ selected: this.step === 1 }">
-                  Register Your Workspace
-                  <div class="helper-text">Your website needs a URL, what do you want to call your workspace? Don't worry you can change this later!</div>
+                  Register Your Website
+                  <div class="helper-text">Your website needs a URL, what do you want to call your website? Don't worry you can change this later!</div>
                </li>
                <li class="step-counter--item" :class="{ selected: this.step === 2 }">
                   Create Your Email Address

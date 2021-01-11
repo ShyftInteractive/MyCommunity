@@ -1,4 +1,6 @@
 <script>
+import { slugify } from "@/Data/MCS/Globals"
+
 export default {
    name: "FormInput",
    inheritAttrs: false,
@@ -14,23 +16,10 @@ export default {
    methods: {
       handleInput(e) {
          if (this.slugify) {
-            this.$emit("input", this.makeSlug(e.target.value))
+            this.$emit("input", slugify(e.target.value))
          } else {
             this.$emit("input", e.target.value)
          }
-      },
-      makeSlug(v) {
-         return v
-            .trim()
-            .toLowerCase()
-            .replace(/ /g, "-")
-            .replace(/[-]+/g, "-")
-            .replace(/![a-z0-9]+/g, "")
-            .replace(/[\-]$/g, "")
-            .replace(/[\-]+$/g, "")
-            .replace(/^[\-]/g, "")
-            .replace(/^[\-]+/g, "")
-            .replace(/[^\w-]+/g, "")
       },
    },
 }

@@ -38,6 +38,6 @@ class NewCustomer extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Welcome to Rebase')->markdown('email.welcome.new_customer');
+        return $this->subject('Welcome to My Community')->markdown('email.welcome.new_customer');
     }
 }

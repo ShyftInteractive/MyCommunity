@@ -8,28 +8,40 @@
 @import 'rebase/grid';
 @import 'rebase/baseline';
 
+@import 'customer/components/components';
+
 .mcs--template {
    align-content: stretch;
    align-items: flex-start;
    height: 100%;
 
    .grid > div {
-      min-height: 300px;
-      height: 100%;
-      border: 2px dotted #444;
-      resize: vertical;
-      overflow: auto;
+      border: 3px dotted #444;
    }
 }
 
-.hero {
-   display: flex;
-   align-content: center;
-   align-items: center;
-   height: 100%;
-   background-position: 50% 50%;
-   background-size: cover;
-   padding: 16px;
+.modal--screen {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   z-index: 99998;
+   background: var(--color-coolGray-700);
+   opacity: 0.5;
 }
 
-@import 'customer/components/components';
+.component {
+   height: 100%;
+   width: 100%;
+}
+
+.grid\:middle {
+   align-content: center;
+}
+.grid\:top {
+   align-content: start;
+}
+.grid\:bottom {
+   align-content: end;
+}

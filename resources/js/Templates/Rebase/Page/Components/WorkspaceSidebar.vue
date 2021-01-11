@@ -19,11 +19,9 @@ export default {
 <template>
    <MainNavigation>
       <li><inertia-link :href="route('dashboard')" :class="{ selected: this.nav === 'dashboard' }">Dashboard</inertia-link></li>
+      <li><inertia-link :href="route('media.index')" :class="{ selected: this.nav === 'documents' }">Documents &amp; Media</inertia-link></li>
       <li>
-         <inertia-link :href="route('media.index')" :class="{ selected: this.nav === 'documents' }">Documents &amp; Media</inertia-link>
-         <ul class="navigation--secondary">
-            <li><inertia-link :href="route('checklist.index', 'florida')" :class="{ selected: this.secondary === 'checklist' }">Florida HOA Checklist</inertia-link></li>
-         </ul>
+         <li><inertia-link :href="route('checklist.index')" :class="{ selected: this.nav === 'checklists' }">Checklists</inertia-link></li>
       </li>
       <li><inertia-link :href="route('event.index')" :class="{ selected: this.nav === 'events' }">Events</inertia-link></li>
       <li><inertia-link :href="route('notification.index')" :class="{ selected: this.nav === 'notification' }">Notification Center</inertia-link></li>

@@ -14,9 +14,9 @@ export default {
 
 <template>
    <li v-if="inertia">
-      <inertia-link :href="link"><slot></slot></inertia-link>
+      <inertia-link :v-bind="$attrs" :href="link"><slot></slot></inertia-link>
    </li>
    <li v-else>
-      <a :href="link" title="link"><slot></slot></a>
+      <a :href="link" v-bind="$attrs" :title="link"><slot></slot></a>
    </li>
 </template>

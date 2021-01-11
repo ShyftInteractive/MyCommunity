@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Arr;
+use App\Enums\MCS\MediaTypes;
 use App\Enums\Rebase\MemberRoles;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDocumentsTable extends Migration
+class CreateMediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,14 +16,23 @@ class CreateDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('workspace_id');
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->string('path');
+            $table->string('url');
+            $table->enum('type', Arr::flatten(MediaTypes::toArray()));
             $table->enum('visibility', Arr::flatten(MemberRoles::toArray()))->default(MemberRoles::MEMBER());
-            $table->boolean('archive', false);
+            $table->boolean('archive')->default(false);
             $table->timestamps();
+
+            $table->unique(['workspace_id', 'name']);
+
+            $table->foreign('workspace_id')
+                ->references('id')
+                ->on('workspaces')
+                ->onDelete('cascade');
         });
     }
 
@@ -33,6 +43,6 @@ class CreateDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('media');
     }
 }

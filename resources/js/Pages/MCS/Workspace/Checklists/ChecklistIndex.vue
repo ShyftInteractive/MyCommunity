@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="documents" secondary="checklist">
+   <Workspace nav="checklists">
       <template #header>Checklist</template>
       <template v-slot:body>
          <div class="grid"></div>

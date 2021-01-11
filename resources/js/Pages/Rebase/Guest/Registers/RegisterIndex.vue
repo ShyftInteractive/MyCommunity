@@ -4,7 +4,7 @@ import Register from "@/Templates/Rebase/Page/Register"
 
 export default {
    layout: Layout,
-   metaInfo: { title: "Register your Workspace" },
+   metaInfo: { title: "Register your Website" },
 
    components: {
       Register,
@@ -44,7 +44,7 @@ export default {
       <form class="layout__main" action="post" @submit.prevent="check">
          <section class="grid">
             <FormField class="col-10--centered md::col-8--centered xw::col-6--centered" validate="sub">
-               <FieldLabel>What's your workspace name:</FieldLabel>
+               <FieldLabel>What's your website's name:</FieldLabel>
                <FormGroup>
                   <FormInput v-model="form.sub" :slugify="true" />
                   <template #post> .{{ $page.props.app.domain }} </template>
@@ -55,3 +55,12 @@ export default {
       </form>
    </Register>
 </template>
+
+<style lang="scss">
+.layout__main {
+   display: grid;
+   align-content: center;
+   align-items: center;
+   height: 100vh;
+}
+</style>

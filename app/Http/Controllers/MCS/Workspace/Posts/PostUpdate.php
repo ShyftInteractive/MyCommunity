@@ -21,6 +21,7 @@ class PostUpdate extends Controller
                 "post.description",
                 "post.content",
                 "post.visibility",
+                "post.published",
                 "post.published_at",
             ]))->get('post');
 

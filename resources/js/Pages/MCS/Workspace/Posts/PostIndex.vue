@@ -5,6 +5,7 @@ import ActionButton from "@/Components/Rebase/Actions/ActionButton"
 import ActionLink from "@/Components/Rebase/Actions/ActionLink"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
 import DataTable from "@/Components/Rebase/DataTable"
+import { DTFormatter } from "@/Data/MCS/Globals"
 
 export default {
    layout: Layout,
@@ -24,10 +25,31 @@ export default {
 
    data: () => ({
       sending: false,
-      form: {},
+      form: {
+         post: null,
+      },
    }),
 
    methods: {
+      cleanDate(dt) {
+         return DTFormatter(dt)
+      },
+      togglePublish(post) {
+         this.form.post = post
+
+         if (this.form.post.published) {
+            this.form.post.published_at = null
+            this.form.post.published = false
+         } else {
+            this.form.post.published_at = new Date()
+            this.form.post.published = true
+         }
+
+         this.$inertia.put(route("post.update", { postID: this.form.post.id }), this.form, {
+            onStart: () => (this.sending = true),
+            onFinish: () => (this.sending = false),
+         })
+      },
       confirmDelete(id) {
          if (confirm("Are you sure you want to delete this page?")) {
             this.$inertia.delete(
@@ -57,18 +79,23 @@ export default {
                   <template #header>
                      <th>&nbsp;</th>
                      <th>Title</th>
-                     <th>URL</th>
+                     <th>Status</th>
+                     <th>Publish Date</th>
                      <th>&nbsp;</th>
                   </template>
                   <template #contents>
                      <tr v-for="post in posts.data" :key="post.id">
                         <td><input type="checkbox" /></td>
                         <td title="Name">{{ post.title }}</td>
-                        <td title="Slug">{{ post.slug }}</td>
+                        <td title="Status">{{ post.published ? "Published" : "Draft" }}</td>
+                        <td title="Publish Date">{{ post.published_at ? cleanDate(new Date(post.published_at)) : "Not Scheduled" }}</td>
                         <td>
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('post.edit', { postID: post.id })">Edit</ActionLink>
-                              <ActionLink link="#">Publish</ActionLink>
+                              <ActionButton @click="togglePublish(post)">
+                                 <span v-if="post.published">Unpublish Now</span>
+                                 <span v-else>Publish Now</span>
+                              </ActionButton>
                               <ActionButton @click="confirmDelete(post.id)">Delete</ActionButton>
                            </ActionMenu>
                         </td>
@@ -87,5 +114,3 @@ export default {
       </template>
    </Workspace>
 </template>
-
-<style lang="scss"></style>

@@ -1,8 +1,10 @@
 <script>
-import Layout from "@/Templates/Rebase/Layout"
-import Workspace from "@/Templates/Rebase/Page/Workspace"
 import Icon from "@/Components/Rebase/Icon"
+import Layout from "@/Templates/Rebase/Layout"
 import Editor from "@/Components/MCS/EditorTools/Editor"
+import Workspace from "@/Templates/Rebase/Page/Workspace"
+import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
+import ActionButton from "@/Components/Rebase/Actions/ActionButton"
 
 export default {
    layout: Layout,
@@ -12,6 +14,8 @@ export default {
       Workspace,
       Icon,
       Editor,
+      ActionMenu,
+      ActionButton,
    },
 
    props: {
@@ -23,190 +27,183 @@ export default {
          sending: false,
          form: {
             template: this.template,
+            component: {
+               name: null,
+               row: null,
+               col: null,
+            },
          },
       }
    },
 
-   mounted: function () {
-      const targetNode = document.querySelector(".js-content")
-      const config = { attributes: true, childList: true, subtree: true }
-
-      const vm = this
-      const callback = function (mutationsList, observer) {
-         for (const mutation of mutationsList) {
-            if (mutation.type === "attributes" && mutation.attributeName === "style") {
-               let t = mutation.target
-               let row = t.getAttribute("data-row")
-               let col = t.getAttribute("data-col")
-               if (row) vm.form.template.content[row][col].height = t.style.height
-            }
+   mounted() {
+      document.addEventListener("keydown", (e) => {
+         if (e.ctrlKey && e.which === 83) {
+            this.save()
          }
-      }
-
-      // Create an observer instance linked to the callback function
-      const observer = new MutationObserver(callback)
-
-      // Start observing the target node for configured mutations
-      observer.observe(targetNode, config)
+      })
    },
 
    methods: {
       save() {
-         this.$inertia.put(route("site-template.update", { templateID: this.form.template.id }), this.form, {
+         this.$inertia.post(route("site-template.update", { templateID: this.form.template.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
       },
 
-      pickComponent(event, row, col) {
-         const uri = {
-            templateID: this.form.template.id,
-            id: event.target.value,
-         }
-         const data = {
+      pickComponent(name, row, col) {
+         this.form.component = {
+            name: name,
             row: row,
-            column: col,
-         }
-         this.$inertia.get(route("component.show", uri), data, {
-            onStart: () => (this.sending = true),
-            onFinish: () => (this.sending = false),
-         })
-      },
-
-      addColumn(index) {
-         this.form.template.content[index].push({ span: 2 })
-      },
-
-      resize(update, row, col, centered) {
-         let currentSize = this.form.template.content[row][col].span
-         if (centered) {
-            update *= 2
+            col: col,
          }
 
-         let newSize = currentSize + update
-         let totalSpanCount = this.spanCount(this.form.template.content[row]) + update
-
-         if (newSize >= 1 && newSize <= 12 && totalSpanCount <= 12) {
-            this.form.template.content[row][col].span = newSize
-         }
+         this.save()
       },
 
-      remove(row, col) {
-         this.form.template.content[row].splice(col, 1)
-
-         if (this.form.template.content[row].length <= 0) {
-            this.form.template.content.splice(row, 1)
-         }
+      remove(row) {
+         this.form.template.content.splice(row, 1)
       },
 
-      toggleCenter(row, col, centered) {
-         let currentCol = this.form.template.content[row][col]
-         if (this.form.template.content[row].length > 1) {
-            return false
+      addNewRow(colCount, splits) {
+         let colSpan = 12 / colCount
+         let row = {
+            height: "150px",
+            cols: [],
          }
 
-         if (!currentCol.center && currentCol.span % 2 !== 0) {
-            currentCol.span++
+         let cols = []
+
+         for (var i = 0; i < colCount; i++) {
+            if (splits) {
+               cols.push({
+                  span: splits[i],
+               })
+            } else {
+               cols.push({
+                  span: colSpan,
+               })
+            }
+         }
+         row.cols = cols
+
+         this.form.template.content.push(row)
+      },
+
+      adjustHeight(adjustment, index, e) {
+         let currentHeight = this.form.template.content[index].height
+         if (!currentHeight) {
+            currentHeight = 150
+         } else {
+            currentHeight = parseInt(currentHeight)
          }
 
-         this.form.template.content[row][col].center = !this.form.template.content[row][col].center
-      },
-
-      spanCount(row) {
-         let total = 0
-         row.forEach(function (col) {
-            total += col.span
-         })
-
-         return total
-      },
-      allowMoreColumns(rowIndex) {
-         let row = this.form.template.content[rowIndex]
-         if (row.length == 1 && row[0].center) {
-            return false
-         }
-
-         return this.spanCount(row) < 12
-      },
-
-      addNewRow() {
-         this.form.template.content.push([{ span: 4 }])
+         currentHeight += adjustment
+         this.form.template.content[index].height = `${currentHeight}px`
       },
    },
 }
 </script>
 
 <template>
-   <Workspace nav="site-settings" secondary="design" tertiary="templates">
-      <template #header>Edit a Template</template>
+   <Workspace nav="site-settings" secondary="design" tertiary="templates" :useDrawer="true">
+      <template #header>Editing Template: {{ form.template.name }}</template>
       <template #body>
          <div class="grid--top">
             <div class="col-12 sm::col-10">
                <div class="js-content">
-                  <div id="editor" class="mcs--template">
-                     <div class="grid" v-for="(row, index) in form.template.content" :key="index">
-                        <div
-                           class="col-12"
-                           v-for="(col, key) in row"
-                           :class="col.center ? `md::col-${col.span}--centered` : `md::col-${col.span}`"
-                           :key="`row-${index}-col-${key}`"
-                           :style="{ height: `${col.height}` }"
-                           :data-row="index"
-                           :data-col="key"
-                        >
-                           <div class="mcs--component js-component">
-                              <div class="column-menu">
-                                 <ul>
-                                    <li>
-                                       <button @click="resize(-1, index, key, col.center)"><Icon name="minus" size="18" /></button>
-                                    </li>
-                                    <li>
-                                       <button @click="resize(1, index, key, col.center)"><Icon name="plus" size="18" /></button>
-                                    </li>
-                                    <li>
-                                       <button @click="toggleCenter(index, key, col.center)" :disabled="row.length > 1">
-                                          <Icon v-if="col.center" name="left" size="18" />
-                                          <Icon v-else name="center" size="18" />
-                                       </button>
-                                    </li>
-                                    <li>
-                                       <select @change="pickComponent($event, index, key)">
-                                          <option value="">Pick a Component</option>
-                                          <option value="hero">Hero</option>
-                                          <option value="mediabox">Mediabox</option>
-                                          <option value="card">Card</option>
-                                       </select>
-                                    </li>
-                                    <li>
-                                       <button @click="remove(index, key)"><Icon name="close" size="18" /></button>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <div v-html="col.component"></div>
-                           </div>
+                  <div class="mcs--template">
+                     <ActionMenu>
+                        <template v-slot:buttonText> <Icon name="plus" />Add Row </template>
+                        <ActionButton @click="addNewRow(1)">1 Column</ActionButton>
+                        <ActionButton @click="addNewRow(2)">2 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(2, [8, 4])">2 80/20 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(2, [4, 8])">2 20/80 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(3)">3 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(4)">4 Columns</ActionButton>
+                     </ActionMenu>
+                     <div class="grid--page js-grid" v-for="(row, index) in form.template.content" :key="index" :style="`min-height: ${row.height}`">
+                        <ul class="row-options">
+                           <li>
+                              <button class="button--icon remove-row" @click="remove(index)"><Icon name="close" size="20" /></button>
+                           </li>
+                           <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                           <li>
+                              <button class="button--icon remove-row" @click="adjustHeight(-10, index, $event)"><Icon name="minus" size="20" /></button>
+                           </li>
+                           <li>
+                              <button class="button--icon remove-row" @click="adjustHeight(10, index, $event)"><Icon name="plus" size="20" /></button>
+                           </li>
+                        </ul>
+
+                        <div :class="`col-12 md::col-${col.span}`" v-for="(col, key) in row.cols" :key="`row-${index}-col-${key}`" :data-row="index" :data-col="key">
+                           <section class="component-picker">
+                              <ActionMenu>
+                                 <ActionButton @click="pickComponent('hero', index, key)">Hero</ActionButton>
+                                 <ActionButton @click="pickComponent('mediabox', index, key)">Mediabox</ActionButton>
+                                 <ActionButton @click="pickComponent('card', index, key)">Card</ActionButton>
+                              </ActionMenu>
+                           </section>
+
+                           <div v-html="col.component" style="height: 100%"></div>
                         </div>
-                        <button v-if="allowMoreColumns(index)" @click="addColumn(index)"><Icon name="plus" /></button>
                      </div>
+                     <ActionMenu>
+                        <template v-slot:buttonText> <Icon name="plus" />Add Row </template>
+                        <ActionButton @click="addNewRow(1)">1 Column</ActionButton>
+                        <ActionButton @click="addNewRow(2)">2 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(2, [8, 4])">2 80/20 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(2, [4, 8])">2 20/80 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(3)">3 Columns</ActionButton>
+                        <ActionButton @click="addNewRow(4)">4 Columns</ActionButton>
+                     </ActionMenu>
                   </div>
-                  <button @click="addNewRow">Add New Row</button>
                </div>
             </div>
-            <div class="col-12 sm::col-2">
-               <p>PREVIEW</p>
-               <Button @click="save">Save</Button>
-               <p>Publish</p>
-               <p>Visible</p>
-               <p>Change SLug</p>
-               <p>Change Title</p>
-               <p>Move</p>
-               <p>Update Template</p>
-            </div>
+         </div>
+      </template>
+      <template #drawer>
+         <div class="grid">
+            <Button class="button col-12 sm::col-6" @click="save">Save</Button>
+            <Button class="button--secondary col-12 sm::col-6" @click="save">Preview</Button>
          </div>
       </template>
    </Workspace>
 </template>
 
 <style lang="scss">
+.grid--page {
+   transition: all 250ms ease-in-and-out;
+   &:hover {
+      .row-options {
+         opacity: 1;
+         height: auto;
+      }
+   }
+}
+.component-picker {
+   position: absolute;
+   right: 20px;
+   bottom: 0;
+}
+.row-options {
+   position: absolute;
+   width: 100%;
+   height: 0;
+   background: var(--color-coolGray-200);
+   margin: 0;
+   z-index: 1;
+   list-style-type: none;
+   border-bottom: 1px solid var(--color-coolGray-400);
+   transition: opacity 500ms;
+   opacity: 0;
+
+   li {
+      display: inline-block;
+   }
+}
+
 .grid > .col-12 {
    position: relative;
 }

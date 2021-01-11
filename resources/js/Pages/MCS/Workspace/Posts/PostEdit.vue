@@ -2,15 +2,14 @@
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import Editor from "@/Components/MCS/EditorTools/Editor"
-import DatePicker from "vue2-datepicker"
-import "vue2-datepicker/index.css"
+import FormDatePicker from "@/Components/MCS/Form/FormDatePicker"
 
 export default {
    layout: Layout,
    metaInfo: { title: "Edit the Post" },
 
    components: {
-      DatePicker,
+      FormDatePicker,
       Workspace,
       Editor,
    },
@@ -38,17 +37,22 @@ export default {
    },
 
    methods: {
-      notBeforeToday(date) {
-         return date < new Date(new Date().setHours(0, 0, 0, 0))
-      },
       save() {
          this.$inertia.put(route("post.update", { postID: this.form.post.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
       },
+
       togglePublish() {
-         this.form.published = !!this.form.published
+         if (this.form.post.published) {
+            this.form.post.published_at = null
+            this.form.post.published = false
+         } else {
+            this.form.post.published_at = new Date()
+            this.form.post.published = true
+         }
+
          this.$inertia.put(route("post.update", { postID: this.form.post.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
@@ -75,34 +79,14 @@ export default {
       <template #drawer>
          <div class="grid">
             <Button class="button--secondary col-12 sm::col-6" @click="save">Save</Button>
-            <FormField validate="visibility" class="col-12 sm::col-6">
+            <FormField v-if="!form.post.published" class="col-12 sm::col-3">
                <FieldLabel>Schedule</FieldLabel>
-               <date-picker
-                  v-model="form.post.published_at"
-                  :shortcuts="[
-                     {
-                        text: 'Publish Now',
-                        onClick() {
-                           const date = new Date()
-                           return date
-                        },
-                     },
-                  ]"
-                  type="datetime"
-                  :disabled="form.post.published"
-                  :disabled-date="notBeforeToday"
-                  :editable="false"
-                  value-type="YYYY-MM-DDTHH:mm:ss"
-                  format="MM-DD-YYYY hh:mm:ss A"
-                  :time-picker-options="{
-                     start: '00:00',
-                     step: '00:15',
-                     end: '23:45',
-                  }"
-               >
-               </date-picker>
+               <FormDatePicker v-model="form.post.published_at" />
             </FormField>
-
+            <Button class="button col-12 sm::col-3" @click="togglePublish">
+               <span v-if="!form.post.published">Publish Now</span>
+               <span v-else>Unpublish</span>
+            </Button>
             <FormField validate="visibility" class="col-12">
                <FieldLabel>Who can see this post?</FieldLabel>
                <FormSelect v-model="form.post.visibility" :options="$page.props.app.roles" />
@@ -128,14 +112,3 @@ export default {
       </template>
    </Workspace>
 </template>
-
-<style lang="scss">
-@import "@@/abstract";
-
-.mx-datepicker {
-   width: 100%;
-}
-.mx-input {
-   @include form-element;
-}
-</style>

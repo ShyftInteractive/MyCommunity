@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Domain\Factories\Rebase;
 
@@ -14,10 +16,11 @@ class MemberModelFactory extends ModelFactory
     {
         $member->workspaces()->attach($workspaceID);
     }
-
+ 
     public function addResetToken(string $email): string
     {
         $token = (string)Str::uuid();
+        dd(config('paths.db.workspace.name'));
         DB::table(config('paths.db.workspace.name') . '.password_resets')->upsert([
             [
                 'email' => $email,

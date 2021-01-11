@@ -2,6 +2,7 @@
 import Popper from "popper.js"
 
 export default {
+   components: {},
    props: {
       placement: {
          type: String,
@@ -52,7 +53,7 @@ export default {
       <slot />
       <portal v-if="show" to="dropdown">
          <div>
-            <div style="position: fixed; top: 0; right: 0; left: 0; bottom: 0; z-index: 99998; background: white; opacity: 0.5" @click="show = false" />
+            <div class="modal--screen" @click="show = false"></div>
             <div ref="dropdown" style="position: absolute; z-index: 99999" @click.stop="show = autoClose ? false : true">
                <div class="grid">
                   <div class="col-12">

@@ -16,6 +16,7 @@ use Faker\Provider\en_US\Address;
 use Faker\Provider\en_US\Company;
 use Illuminate\Support\Facades\Hash;
 use Faker\Provider\en_US\PhoneNumber;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
 use App\Domain\Models\Rebase\Admin\Customer;
 use App\Domain\Models\Rebase\Workspace\Role;
@@ -73,11 +74,11 @@ class PersonalWorkspace extends Seeder
             Role::modelFactory()->addAccountOwner($member->id);
 
             for ($i = 1; $i <= self::WORKSPACES; $i++) {
-                $sub = $i === 1 ? self::PERSONAL_SUB : self::PERSONAL_SUB.'-'.$i;
+                $sub = $i === 1 ? self::PERSONAL_SUB : self::PERSONAL_SUB . '-' . $i;
 
                 $workspace = Workspace::modelFactory()->create([
                     'customer_id' => $customer->id,
-                    'name' => 'Personal Test Workspace '.$i,
+                    'name' => 'Personal Test Workspace ' . $i,
                     'sub' => $sub,
                 ]);
 
@@ -95,6 +96,8 @@ class PersonalWorkspace extends Seeder
                     Role::modelFactory()->addWorkspaceRole($this->generateRandomRole(), $workspace->id,  $otherMembers->id);
                     Member::modelFactory()->attachToWorkspace($otherMembers, $workspace->id);
                 }
+
+                $this->generateFolderStructure($customer->id, $workspace->id);
             }
         }
     }
@@ -109,5 +112,10 @@ class PersonalWorkspace extends Seeder
         }
 
         return MemberRoles::$key();
+    }
+
+    private function generateFolderStructure($customerID, $workspaceID)
+    {
+        Storage::disk('spaces')->makeDirectory("{$customerID}/{$workspaceID}");
     }
 }

@@ -20,7 +20,15 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
 
         // Media...
         Route::get('/media', MCS\Workspace\Media\MediaIndex::class)->name('media.index');
-        Route::get('/media/checklists/{state}', MCS\Workspace\Checklists\ChecklistIndex::class)->name('checklist.index');
+        Route::post('/media/upload', MCS\Workspace\Media\MediaUpload::class)->name('media.upload');
+        Route::delete('/media/{mediaID}',    MCS\Workspace\Media\MediaDelete::class)->name('media.delete');
+
+        Route::get('/checklists', MCS\Workspace\Checklists\ChecklistIndex::class)->name('checklist.index');
+        Route::get('/checklists/create', MCS\Workspace\Checklists\ChecklistCreate::class)->name('checklist.create');
+        Route::post('/checklists', MCS\Workspace\Checklists\ChecklistStore::class)->name('checklist.store');
+        Route::get('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistEdit::class)->name('checklist.edit');
+        Route::get('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistUpdate::class)->name('checklist.update');
+        Route::delete('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistDelete::class)->name('checklist.delete');
 
         // Events...
         Route::get('/events', MCS\Workspace\Events\EventIndex::class)->name('event.index');
@@ -54,11 +62,12 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::get('/settings/design/templates/create',             MCS\Workspace\SiteTemplates\SiteTemplateCreate::class)->name('site-template.create');
         Route::post('/settings/design/templates',                   MCS\Workspace\SiteTemplates\SiteTemplateStore::class)->name('site-template.store');
         Route::get('/settings/design/templates/{templateID}/edit',  MCS\Workspace\SiteTemplates\SiteTemplateEdit::class)->name('site-template.edit');
-        Route::put('/settings/design/templates/{templateID}',       MCS\Workspace\SiteTemplates\SiteTemplateUpdate::class)->name('site-template.update');
+        Route::post('/settings/design/templates/{templateID}',      MCS\Workspace\SiteTemplates\SiteTemplateUpdate::class)->name('site-template.update');
         Route::delete('/settings/design/templates/{templateID}',    MCS\Workspace\SiteTemplates\SiteTemplateDelete::class)->name('site-template.delete');
 
         // Component...
-        Route::get('/templates/{templateID}/components/{id}', MCS\Workspace\Components\ComponentShow::class)->name('component.show');
+        // Route::get('/templates/{templateID}/components/{id}', MCS\Workspace\Components\ComponentShow::class)->name('component.show');
+        Route::post('/templates/{templateID}/insert/component/{id}', MCS\Workspace\Components\ComponentInsert::class)->name('component.insert');
 
         // Settings/Themes...
         Route::get('/settings/design/themes', MCS\Workspace\SiteThemes\SiteThemeIndex::class)->name('site-theme.index');

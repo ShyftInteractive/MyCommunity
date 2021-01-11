@@ -1,11 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Domain\Models\Rebase\Workspace;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Domain\Builders\Rebase\RoleBuilder;
-use App\Domain\Models\Rebase\Workspace\Role;
 use App\Domain\Models\Rebase\Workspace\Member;
 use App\Domain\Collections\Rebase\RoleCollection;
 use App\Domain\Factories\Rebase\RoleModelFactory;
@@ -70,6 +71,4 @@ class Role extends Model
     {
         return new RoleModelFactory($builder);
     }
-
 }
-

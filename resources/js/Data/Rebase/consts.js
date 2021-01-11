@@ -54,13 +54,13 @@ export const states = [
 
 export const MemberRoles = {
    SUPER: 'super',
-   ACCOUNT_OWNER: 'account_owner',
-   ACCOUNT_ADMIN: 'account_admin',
-   WORKSPACE_OWNER: 'workspace_owner',
-   WORKSPACE_ADMIN: 'workspace_admin',
-   EDITOR: 'editor',
-   ELEVATED: 'elevated',
-   MEMBER: 'member',
-   LIMITED: 'limited',
-   ACCESS: 'access'
+   ACCOUNT_OWNER: 'Account Owner',
+   ACCOUNT_ADMIN: 'Account Admin',
+   WORKSPACE_OWNER: 'Workspace Owner',
+   WORKSPACE_ADMIN: 'Workspace Admin',
+   EDITOR: 'Editor',
+   ELEVATED: 'Elevated',
+   MEMBER: 'Member',
+   LIMITED: 'Limited',
+   ACCESS: 'Public'
 }

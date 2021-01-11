@@ -1,38 +1,41 @@
 <script>
 import Logo from "./Components/Logo"
+import Icon from "@/Components/Rebase/Icon"
+import EventBus from "@/Data/MCS/event-bus"
 import WorkspaceSidebar from "./Components/WorkspaceSidebar"
 import IdentityNavigation from "./Components/IdentityNavigation"
-import Icon from "@/Components/Rebase/Icon"
 
 export default {
-   props: {
-      nav: String,
-      secondary: String,
-      tertiary: String,
-   },
-
    components: {
-      WorkspaceSidebar,
-      Logo,
-      IdentityNavigation,
       Icon,
+      Logo,
+      EventBus,
+      WorkspaceSidebar,
+      IdentityNavigation,
    },
 
    mounted() {
+      let vm = this
+      EventBus.$on("OPEN_DRAWER", (state) => {
+         vm.drawerState = state
+      })
+
       document.addEventListener("keydown", (e) => {
          if (e.ctrlKey && e.which === 49) {
-            this.drawer = !this.drawer
+            if (vm.drawerState === true) {
+               EventBus.$emit("OPEN_DRAWER", false)
+            } else {
+               EventBus.$emit("OPEN_DRAWER", true)
+            }
          }
          if (e.keyCode === 27) {
-            if (this.drawer) {
-               this.drawer = false
-            }
+            EventBus.$emit("OPEN_DRAWER", false)
          }
       })
    },
 
    props: {
-      useDrawer: {
+      drawer: {
          default: false,
          type: Boolean,
       },
@@ -51,15 +54,12 @@ export default {
    },
    data() {
       return {
-         drawer: this.useDrawer ? false : null,
+         useDrawer: this.drawer,
+         drawerState: false,
       }
    },
 
-   methods: {
-      toggleDrawer() {
-         this.drawer = !this.drawer
-      },
-   },
+   watch: {},
 }
 </script>
 
@@ -83,12 +83,11 @@ export default {
             </div>
             <div class="content-container">
                <slot name="body"></slot>
-
-               <div class="drawer" :class="{ closed: !this.drawer }" v-if="drawer !== null">
+               <div class="drawer" :class="{ closed: !drawerState }" v-if="useDrawer">
                   <div class="grid">
                      <div class="col-1">
-                        <button class="button--link" @click="toggleDrawer">
-                           <Icon v-if="drawer" name="chevrons-right" size="20" />
+                        <button class="button--link" @click="drawerState = !drawerState">
+                           <Icon v-if="drawerState" name="chevrons-right" size="20" />
                            <Icon v-else name="chevrons-left" size="20" />
                         </button>
                      </div>
@@ -211,6 +210,8 @@ $headerbar-height: 40px;
          top: $headerbar-height * 2;
          transition: width 350ms ease-in-out;
          width: 100vw;
+         z-index: 2;
+         overflow: scroll;
 
          &.closed {
             width: 50px;

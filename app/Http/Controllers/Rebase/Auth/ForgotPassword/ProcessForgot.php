@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Rebase\Auth\ForgotPassword;
 
@@ -18,7 +20,8 @@ class ProcessForgot extends Controller
 
 
         if (!is_null($member)) {
-           $token = Member::modelFactory()->addResetToken($member->email);
+            $token = Member::modelFactory()->addResetToken($member->email);
+            dd($token);
             Mail::to($member->email)->send(new PasswordReset($token, $request->get('customer_id')));
         }
 

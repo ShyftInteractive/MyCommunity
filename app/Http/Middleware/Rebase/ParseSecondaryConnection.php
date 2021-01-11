@@ -33,6 +33,7 @@ class ParseSecondaryConnection extends BaseMiddleware
         );
 
         if ($this->shouldIgnore($request->path())) {
+
             return $next($request);
         }
 
@@ -40,9 +41,9 @@ class ParseSecondaryConnection extends BaseMiddleware
             DatabaseHelper::disconnect();
 
             $lookup = match ($host->getSub()) {
-                config('paths.subdomains.auth') => $this->connectFromAuthSubdomain($request),
-                config('paths.subdomains.admin') => Lookup::byCustomerID($host->getPath()[0])->first(),
-                default => $this->connectFromWorkspace($host)
+                    config('paths.subdomains.auth') => $this->connectFromAuthSubdomain($request),
+                    config('paths.subdomains.admin') => Lookup::byCustomerID($host->getPath()[0])->first(),
+                    default => $this->connectFromWorkspace($host)
             };
 
             if (is_null($lookup)) {
@@ -72,7 +73,7 @@ class ParseSecondaryConnection extends BaseMiddleware
         }
 
         if ($request->query('to') !== 'null' && !is_null($request->query('to'))) {
-            $lookup = Cache::remember('lookup-sub', 300, fn() => Lookup::bySub($request->query('to'))->first());
+            $lookup = Cache::remember('lookup-sub', 300, fn () => Lookup::bySub($request->query('to'))->first());
         }
 
         return $lookup;
@@ -80,11 +81,9 @@ class ParseSecondaryConnection extends BaseMiddleware
 
     private function connectFromWorkspace($host)
     {
-        return match($host->isCustomDomain()) {
-            true => Lookup::byDomain($host->getDomain())->first(),
-            false => Lookup::bySub($host->getSub())->first()
+        return match ($host->isCustomDomain()) {
+                true => Lookup::byDomain($host->getDomain())->first(),
+                false => Lookup::bySub($host->getSub())->first()
         };
     }
-
 }
-

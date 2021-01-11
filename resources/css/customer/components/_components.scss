@@ -30,6 +30,8 @@
 .mcs--component {
    height: 100%;
 }
+
+
 .hero-large {
    background-position: 50% 50%;
    background-repeat: none;
@@ -37,4 +39,13 @@
    height: 100%;
    display: flex;
    align-items: center;
+}
+
+
+.hero {
+   display: grid;
+   height: 100%;
+   background-position: 50% 50%;
+   background-size: cover;
+   background-repeat: none;
 }

@@ -1,6 +1,7 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
+import { slugify } from "@/Data/MCS/Globals"
 
 export default {
    layout: Layout,
@@ -14,6 +15,12 @@ export default {
       templates: Array,
    },
 
+   watch: {
+      "form.title": function (newTitle, oldTitle) {
+         this.form.slug = slugify(newTitle)
+      },
+   },
+
    data() {
       return {
          sending: false,
@@ -21,7 +28,7 @@ export default {
             slug: null,
             title: null,
             isHomepage: false,
-            visibility: null,
+            visibility: this.$page.props.app.roles.PUBLIC_ACCESS,
             template: null,
             content: null,
          },

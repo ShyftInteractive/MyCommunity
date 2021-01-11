@@ -48,14 +48,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'customer' => [
-            'driver' => 'local',
-            'root' => base_path('resources/views/customers'),
+            'root' => storage_path('app/public/media'),
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
@@ -84,6 +78,15 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
+        ],
+
+        'spaces' => [
+            'driver' => 's3',
+            'key' => env('DO_SPACES_KEY'),
+            'secret' => env('DO_SPACES_SECRET'),
+            'endpoint' => env('DO_SPACES_ENDPOINT'),
+            'region' => env('DO_SPACES_REGION'),
+            'bucket' => env('DO_SPACES_BUCKET'),
         ],
     ],
 

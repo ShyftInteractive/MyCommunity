@@ -46,18 +46,23 @@ export default {
 <template>
    <form class="grid" action="post" @submit.prevent="submit">
       <h1 class="col-10--centered md::col-8--centered">Please Log In</h1>
+
       <FormField validate="email" class="col-10--centered md::col-8--centered">
          <FieldLabel>What's your email address:</FieldLabel>
          <FormInput v-model="form.email" type="email" />
       </FormField>
+
       <FormField validate="password" class="col-10--centered md::col-8--centered">
          <FieldLabel>What's your password:</FieldLabel>
          <FormInput v-model="form.password" type="password" />
       </FormField>
+
       <FormField class="col-10--centered md::col-8--centered text--column:end">
          <FormCheckbox v-model="form.remember">Remember Me</FormCheckbox>
       </FormField>
+
       <Button type="submit" :disable="sending" class="button col-10--centered md::col-2--centered">Log In</Button>
+
       <div class="col-10--centered md::col-8--centered text--column:center">
          <inertia-link :href="route('password.request', { to: this.to, customer_id: this.customer_id })">Forgot Password?</inertia-link>
       </div>

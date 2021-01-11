@@ -41,6 +41,6 @@ class PasswordReset extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Reset Password Notification')->markdown('email.validation.password_reset');
+        return $this->subject('My Community: Reset Password Notification')->markdown('email.validation.password_reset');
     }
 }

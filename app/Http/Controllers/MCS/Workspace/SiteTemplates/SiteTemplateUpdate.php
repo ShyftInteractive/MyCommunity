@@ -1,10 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\SiteTemplates;
 
+use Inertia\Inertia;
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Domain\Models\MCS\Workspace\Template;
 
 class SiteTemplateUpdate extends Controller
@@ -19,12 +23,33 @@ class SiteTemplateUpdate extends Controller
             "template.active",
         ]))->get('template');
 
+        $updateItems = $this->appendComponent($updateItems, $request->input('component'));
+
         Template::modelFactory()->update(
             whereCol: 'id',
             whereValue: $templateID,
             update: $updateItems
         );
 
-        return redirect()->back()->withSuccess('Saved');
+        if (!is_null($request->input('component')['name'])) {
+            return Inertia::location(route('site-template.edit', ['templateID' => $templateID]));
+        }
+
+        return redirect()->back()->with('success', "Template Saved");
+    }
+
+    private function appendComponent($items, $component)
+    {
+        if (is_null($component['name'])) {
+            return $items;
+        }
+        $row = (int)$component['row'];
+        $col = (int)$component['col'];
+        $content = $items['content'];
+
+        $content[$row]['cols'][$col]['component'] = Storage::disk('components')->get("{$component['name']}.htm");
+        $items['content'] = $content;
+
+        return $items;
     }
 }

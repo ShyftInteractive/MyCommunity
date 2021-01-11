@@ -23,7 +23,16 @@ export default {
    <Workspace nav="dashboard">
       <template #header>Dashboard</template>
       <template v-slot:body>
-         <div class="grid"></div>
+         <div class="grid">
+            <div class="col-12 wd::col-8">
+               <h3>Your Notices</h3>
+               <p>No notices at this time</p>
+            </div>
+            <div class="col-12 wd::col-4">
+               <h3>Upcoming Events</h3>
+               <p>No upcoming events</p>
+            </div>
+         </div>
       </template>
    </Workspace>
 </template>

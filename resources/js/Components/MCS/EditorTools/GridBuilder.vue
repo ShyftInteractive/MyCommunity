@@ -1,6 +1,9 @@
 <script>
+import Icon from "@/Components/Rebase/Icon"
 export default {
-   components: {},
+   components: {
+      Icon,
+   },
 
    props: {
       page: Array | Object,
@@ -12,62 +15,32 @@ export default {
       }
    },
 
-   mounted: function () {
-      const vm = this
-      const targetNode = document.querySelector(".js-content")
-      const config = { attributes: true, childList: true, subtree: true }
+   mounted: function () {},
 
-      const callback = function (mutationsList, observer) {
-         for (const mutation of mutationsList) {
-            if (mutation.type === "attributes" && mutation.attributeName === "style") {
-               let t = mutation.target
-               if (t.dataset.row) vm.structure.content[t.dataset.row][t.dataset.col].height = t.style.height
-            }
-         }
-      }
-
-      // Create an observer instance linked to the callback function
-      const observer = new MutationObserver(callback)
-
-      // Start observing the target node for configured mutations
-      observer.observe(targetNode, config)
-   },
-
-   methods: {
-      resize(update, row, col, centered) {
-         let currentSize = this.structure.content[row][col].span
-         if (centered) {
-            update *= 2
-         }
-
-         let newSize = currentSize + update
-         let totalSpanCount = this.spanCount(this.structure.content[row]) + update
-
-         if (newSize >= 1 && newSize <= 12 && totalSpanCount <= 12) {
-            this.structure.content[row][col].span = newSize
-         }
-      },
-   },
+   methods: {},
 }
 </script>
 
 <template>
    <div class="grid--top">
-      <div class="col-12 sm::col-10">
+      <div class="col-12">
          <div class="js-content">
             <div class="mcs--template">
-               <div class="grid" v-for="(row, rowIndex) in structure.content" :key="rowIndex">
-                  <div
-                     class="js-block col-12"
-                     v-for="(col, colIndex) in row"
-                     :class="col.center ? `md::col-${col.span}--centered` : `md::col-${col.span}`"
-                     :key="`row-${rowIndex}-col-${colIndex}`"
-                     :style="{ height: `${col.height}` }"
-                     :data-row="rowIndex"
-                     :data-col="colIndex"
-                  >
-                     <div class="js-component mcs--component" v-html="col.component"></div>
+               <div class="mcs--template">
+                  <!-- SLOT : ACTION MENU -->
+                  <div class="grid--page js-grid" v-for="(row, rowIndex) in structure.content" :key="rowIndex" :style="`min-height: ${row.height}`">
+                     <!-- SLOT : ROW OPTIONS -->
+                     <div :class="`col-12 md::col-${col.span}`" v-for="(col, colIndex) in row.cols" :key="`row-${rowIndex}-col-${colIndex}`" :data-row="rowIndex" :data-col="colIndex">
+                        <section class="component-picker">
+                           <ActionMenu>
+                              <ActionButton @click="edit(rowIndex, colIndex)">Edit Content</ActionButton>
+                           </ActionMenu>
+                        </section>
+
+                        <div v-html="col.component" style="height: 100%"></div>
+                     </div>
                   </div>
+                  <!-- SLOT : ACTION MENU BOTTOM -->
                </div>
             </div>
          </div>

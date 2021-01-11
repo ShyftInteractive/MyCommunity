@@ -1,11 +1,17 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
+import { slugify } from "@/Data/MCS/Globals"
 
 export default {
    layout: Layout,
    metaInfo: { title: "Create a New Post" },
 
+   watch: {
+      "form.title": function (newTitle, oldTitle) {
+         this.form.slug = slugify(newTitle)
+      },
+   },
    components: {
       Workspace,
    },

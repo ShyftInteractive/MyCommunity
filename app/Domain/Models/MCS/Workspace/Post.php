@@ -38,6 +38,7 @@ class Post extends Model
         'description',
         'visibility',           // required
         'featured_at',
+        'published',           // false
         'published_at',
         'created_at',
         'updated_at',
@@ -49,6 +50,7 @@ class Post extends Model
         'member_id' => 'string',
         'workspace_id' => 'string',
         'featured_at' => 'datetime',
+        'published' => 'boolean',
         'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
