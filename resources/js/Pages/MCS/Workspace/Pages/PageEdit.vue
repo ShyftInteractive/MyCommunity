@@ -57,7 +57,7 @@ export default {
          let vm = this
          vm.targets = []
 
-         let component = event.target.closest(".js-grid").querySelector("[data-component]")
+         let component = event.target.closest(".js-col").querySelector("[data-component]")
          let targets = component.querySelectorAll("[data-target]")
 
          targets.forEach(function (target) {
@@ -100,12 +100,9 @@ export default {
 
                               <div class="grid--page js-grid" v-for="(row, rowIndex) in form.page.content" :key="rowIndex" :style="`min-height: ${row.height}`">
                                  <!-- SLOT : ROW OPTIONS -->
-                                 <ul class="row-options">
-                                    <li>
-                                       <button class="button--icon remove-row" @click="edit($event)"><Icon name="edit" size="20" /></button>
-                                    </li>
-                                 </ul>
-                                 <div :class="`col-12 md::col-${col.span}`" v-for="(col, colIndex) in row.cols" :key="`row-${rowIndex}-col-${colIndex}`" :data-row="rowIndex" :data-col="colIndex">
+
+                                 <div :class="`col-12 md::col-${col.span} js-col`" v-for="(col, colIndex) in row.cols" :key="`row-${rowIndex}-col-${colIndex}`" :data-row="rowIndex" :data-col="colIndex">
+                                    <button class="button--icon remove-row" @click="edit($event)"><Icon name="edit" size="20" /></button>
                                     <div v-html="col.component" style="height: 100%"></div>
                                  </div>
                               </div>

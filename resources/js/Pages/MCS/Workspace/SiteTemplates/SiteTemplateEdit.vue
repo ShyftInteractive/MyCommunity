@@ -118,24 +118,11 @@ export default {
       <template #header>Editing Template: {{ form.template.name }}</template>
       <template #body>
          <div class="grid--top">
-            <div class="col-12 sm::col-10">
+            <div class="col-11">
                <div class="js-content">
                   <div class="mcs--template">
-                     <ActionMenu>
-                        <template v-slot:buttonText> <Icon name="plus" />Add Row </template>
-                        <ActionButton @click="addNewRow(1)">1 Column</ActionButton>
-                        <ActionButton @click="addNewRow(2)">2 Columns</ActionButton>
-                        <ActionButton @click="addNewRow(2, [8, 4])">2 80/20 Columns</ActionButton>
-                        <ActionButton @click="addNewRow(2, [4, 8])">2 20/80 Columns</ActionButton>
-                        <ActionButton @click="addNewRow(3)">3 Columns</ActionButton>
-                        <ActionButton @click="addNewRow(4)">4 Columns</ActionButton>
-                     </ActionMenu>
                      <div class="grid--page js-grid" v-for="(row, index) in form.template.content" :key="index" :style="`min-height: ${row.height}`">
                         <ul class="row-options">
-                           <li>
-                              <button class="button--icon remove-row" @click="remove(index)"><Icon name="close" size="20" /></button>
-                           </li>
-                           <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
                            <li>
                               <button class="button--icon remove-row" @click="adjustHeight(-10, index, $event)"><Icon name="minus" size="20" /></button>
                            </li>
@@ -148,6 +135,7 @@ export default {
                            <section class="component-picker">
                               <ActionMenu>
                                  <ActionButton @click="readyContent(index, key)">Add Content</ActionButton>
+                                 <ActionButton @click="remove(index)">Remove Row</ActionButton>
                               </ActionMenu>
                            </section>
 
@@ -155,7 +143,7 @@ export default {
                         </div>
                      </div>
                      <ActionMenu>
-                        <template v-slot:buttonText> <Icon name="plus" />Add Row </template>
+                        <template v-slot:buttonText><Icon name="plus-circle" /></template>
                         <ActionButton @click="addNewRow(1)">1 Column</ActionButton>
                         <ActionButton @click="addNewRow(2)">2 Columns</ActionButton>
                         <ActionButton @click="addNewRow(2, [8, 4])">2 80/20 Columns</ActionButton>
@@ -235,5 +223,9 @@ export default {
       padding: var(--px-4);
       margin: var(--px-4);
    }
+}
+
+.button--avatar {
+   display: flex;
 }
 </style>

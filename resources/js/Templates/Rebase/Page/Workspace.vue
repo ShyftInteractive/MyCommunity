@@ -204,6 +204,7 @@ $headerbar-height: 40px;
          bottom: 0;
          box-shadow: 2px 1px 5px 0px var(--color-coolGray-800);
          color: var(--color-coolGray-800);
+         overflow: scroll;
          padding: var(--px-16);
          position: absolute;
          right: 0;

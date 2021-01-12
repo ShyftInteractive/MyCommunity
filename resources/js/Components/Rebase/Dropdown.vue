@@ -68,7 +68,7 @@ export default {
    </button>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@@/abstract";
 
 .button--avatar {
