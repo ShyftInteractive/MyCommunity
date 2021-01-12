@@ -1,24 +1,16 @@
 //-----------------------------------------------------------------------------
 .mediabox {
-   display: grid;
-   grid-gap: 16px;
-   grid-template-areas: 'media content';
-   grid-template-columns: minmax(200px, 30%) 1fr;
    height: 100%;
 
    &--media {
-      background: #ccc;
-      grid-area: media;
-   }
-   &--content {
-      grid-area: content;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      min-height: 150px;
    }
 }
 
-.mediabox--right {
-   grid-template-areas: 'content media';
-   grid-template-columns: 1fr minmax(200px, 30%);
-}
 
 //-----------------------------------------------------------------------------
 .feature--image {

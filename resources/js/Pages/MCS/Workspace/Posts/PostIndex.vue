@@ -23,16 +23,37 @@ export default {
       posts: Array | Object,
    },
 
-   data: () => ({
-      sending: false,
-      form: {
-         post: null,
-      },
-   }),
+   data() {
+      return {
+         sending: false,
+         selectAll: false,
+         form: {
+            posts: this.posts,
+            post: null,
+            selected: [],
+         },
+      }
+   },
 
    methods: {
       cleanDate(dt) {
          return DTFormatter(dt)
+      },
+      deleteSelected() {
+         if (confirm(`Are you sure you want to delete ${this.form.selected.length} item(s)?`)) {
+         }
+      },
+      publishSelected() {
+         if (confirm(`Are you sure you want to publish/unpublish ${this.form.selected.length} item(s)?`)) {
+         }
+      },
+      all() {
+         this.form.selected = []
+         if (!this.selectAll) {
+            for (let i in this.form.posts.data) {
+               this.form.selected.push(this.form.posts.data[i].id)
+            }
+         }
       },
       togglePublish(post) {
          this.form.post = post
@@ -71,13 +92,19 @@ export default {
       <template #header>All Posts</template>
       <template #ribbon>
          <li><inertia-link :href="route('post.create')" class="button:small">Make a New Post</inertia-link></li>
+         <li><Button @click="publishSelected" class="button:small">Publish/Unpublish Selected</Button></li>
+         <li><Button @click="deleteSelected" class="button:small button:danger">Delete Selected</Button></li>
       </template>
       <template #body v-if="posts.data.length > 0">
          <div class="grid">
             <div class="col-12">
                <DataTable :links="posts.links">
                   <template #header>
-                     <th>&nbsp;</th>
+                     <th>
+                        <label>
+                           <input v-model="selectAll" type="checkbox" @click="all" />
+                        </label>
+                     </th>
                      <th>Title</th>
                      <th>Status</th>
                      <th>Publish Date</th>
@@ -85,7 +112,7 @@ export default {
                   </template>
                   <template #contents>
                      <tr v-for="post in posts.data" :key="post.id">
-                        <td><input type="checkbox" /></td>
+                        <td><input v-model="form.selected" type="checkbox" :value="post.id" /></td>
                         <td title="Name">{{ post.title }}</td>
                         <td title="Status">{{ post.published ? "Published" : "Draft" }}</td>
                         <td title="Publish Date">{{ post.published_at ? cleanDate(new Date(post.published_at)) : "Not Scheduled" }}</td>

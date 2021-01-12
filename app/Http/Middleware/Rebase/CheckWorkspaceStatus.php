@@ -40,9 +40,9 @@ class CheckWorkspaceStatus extends BaseMiddleware
         $workspace = Workspace::bysub($request->get('sub'))->first();
 
         if ($workspace->isPending()) {
-           if(auth()->user()->roles->hasAccountRole()) {
-               return redirect()->route('onboarding.start');
-           }
+            if (auth()->user()->roles->hasAccountRole()) {
+                return redirect()->route('onboarding.start');
+            }
 
             return redirect()->route('onboarding.hold');
         } elseif ($workspace->isArchived()) {

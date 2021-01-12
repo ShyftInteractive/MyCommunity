@@ -2,6 +2,7 @@
 import Icon from "@/Components/Rebase/Icon"
 import Layout from "@/Templates/Rebase/Layout"
 import Editor from "@/Components/MCS/EditorTools/Editor"
+import EventBus from "@/Data/MCS/event-bus"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
 import ActionButton from "@/Components/Rebase/Actions/ActionButton"
@@ -13,6 +14,7 @@ export default {
    components: {
       Workspace,
       Icon,
+      EventBus,
       Editor,
       ActionMenu,
       ActionButton,
@@ -20,6 +22,7 @@ export default {
 
    props: {
       template: Array | Object,
+      components: Array,
    },
 
    data() {
@@ -46,18 +49,15 @@ export default {
 
    methods: {
       save() {
+         EventBus.$emit("OPEN_DRAWER", false)
          this.$inertia.post(route("site-template.update", { templateID: this.form.template.id }), this.form, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
       },
 
-      pickComponent(name, row, col) {
-         this.form.component = {
-            name: name,
-            row: row,
-            col: col,
-         }
+      pickComponent(name) {
+         this.form.component["name"] = name
 
          this.save()
       },
@@ -65,7 +65,14 @@ export default {
       remove(row) {
          this.form.template.content.splice(row, 1)
       },
+      readyContent(row, col) {
+         this.form.component = {
+            row: row,
+            col: col,
+         }
 
+         EventBus.$emit("OPEN_DRAWER", true)
+      },
       addNewRow(colCount, splits) {
          let colSpan = 12 / colCount
          let row = {
@@ -107,7 +114,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="site-settings" secondary="design" tertiary="templates" :useDrawer="true">
+   <Workspace nav="site-settings" secondary="design" tertiary="templates" :drawer="true">
       <template #header>Editing Template: {{ form.template.name }}</template>
       <template #body>
          <div class="grid--top">
@@ -140,9 +147,7 @@ export default {
                         <div :class="`col-12 md::col-${col.span}`" v-for="(col, key) in row.cols" :key="`row-${index}-col-${key}`" :data-row="index" :data-col="key">
                            <section class="component-picker">
                               <ActionMenu>
-                                 <ActionButton @click="pickComponent('hero', index, key)">Hero</ActionButton>
-                                 <ActionButton @click="pickComponent('mediabox', index, key)">Mediabox</ActionButton>
-                                 <ActionButton @click="pickComponent('card', index, key)">Card</ActionButton>
+                                 <ActionButton @click="readyContent(index, key)">Add Content</ActionButton>
                               </ActionMenu>
                            </section>
 
@@ -167,6 +172,7 @@ export default {
          <div class="grid">
             <Button class="button col-12 sm::col-6" @click="save">Save</Button>
             <Button class="button--secondary col-12 sm::col-6" @click="save">Preview</Button>
+            <img v-for="(component, i) in components" class="col-4" @click="pickComponent(component.name)" :src="`${component.image}`" />
          </div>
       </template>
    </Workspace>

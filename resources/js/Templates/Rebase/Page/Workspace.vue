@@ -211,7 +211,6 @@ $headerbar-height: 40px;
          transition: width 350ms ease-in-out;
          width: 100vw;
          z-index: 2;
-         overflow: scroll;
 
          &.closed {
             width: 50px;

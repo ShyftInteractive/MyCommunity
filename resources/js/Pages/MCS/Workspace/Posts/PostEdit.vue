@@ -63,7 +63,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="posts" :useDrawer="true">
+   <Workspace nav="posts" :drawer="true">
       <template #header>Edit Post</template>
       <template #body>
          <div class="grid--top">

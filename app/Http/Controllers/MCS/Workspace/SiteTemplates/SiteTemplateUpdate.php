@@ -47,7 +47,7 @@ class SiteTemplateUpdate extends Controller
         $col = (int)$component['col'];
         $content = $items['content'];
 
-        $content[$row]['cols'][$col]['component'] = Storage::disk('components')->get("{$component['name']}.htm");
+        $content[$row]['cols'][$col]['component'] = Storage::disk('static')->get("components/{$component['name']}/{$component['name']}.htm");
         $items['content'] = $content;
 
         return $items;

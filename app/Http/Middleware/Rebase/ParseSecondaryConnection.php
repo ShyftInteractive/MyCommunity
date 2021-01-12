@@ -33,7 +33,6 @@ class ParseSecondaryConnection extends BaseMiddleware
         );
 
         if ($this->shouldIgnore($request->path())) {
-
             return $next($request);
         }
 

@@ -45,3 +45,21 @@
 .grid\:bottom {
    align-content: end;
 }
+
+.grid\:item-stretch {
+   align-items: stretch;
+}
+
+.text\:center {
+  text-align: center;
+}
+.text\:left {
+   text-align: left;
+}
+.text\:right {
+   text-align: right;
+}
+
+.flex\:self-start {
+   align-self: start !important;
+}

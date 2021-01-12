@@ -37,12 +37,13 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::get('/notifications', MCS\Workspace\Notifications\NotificationIndex::class)->name('notification.index');
 
         // Pages...
-        Route::get('/pages',                MCS\Workspace\Pages\PageIndex::class)->name('page.index');
-        Route::get('/pages/create',         MCS\Workspace\Pages\PageCreate::class)->name('page.create');
-        Route::post('/pages',               MCS\Workspace\Pages\PageStore::class)->name('page.store');
-        Route::get('/pages/{pageID}/edit',  MCS\Workspace\Pages\PageEdit::class)->name('page.edit');
-        Route::put('/pages/{pageID}',       MCS\Workspace\Pages\PageUpdate::class)->name('page.update');
-        Route::delete('/pages/{pageID}',    MCS\Workspace\Pages\PageDelete::class)->name('page.delete');
+        Route::get('/pages',                        MCS\Workspace\Pages\PageIndex::class)->name('page.index');
+        Route::get('/pages/create',                 MCS\Workspace\Pages\PageCreate::class)->name('page.create');
+        Route::post('/pages',                       MCS\Workspace\Pages\PageStore::class)->name('page.store');
+        Route::get('/pages/{pageID}/edit',          MCS\Workspace\Pages\PageEdit::class)->name('page.edit');
+        Route::put('/pages/{pageID}',               MCS\Workspace\Pages\PageUpdate::class)->name('page.update');
+        Route::delete('/pages/{pageID}',            MCS\Workspace\Pages\PageDelete::class)->name('page.delete');
+        Route::post('/pages/delete/selected',       MCS\Workspace\Pages\PageSelectedDelete::class)->name('page.delete.selected');
 
         // Posts...
         Route::get('/posts',                MCS\Workspace\Posts\PostIndex::class)->name('post.index');

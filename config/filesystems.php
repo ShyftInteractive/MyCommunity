@@ -53,9 +53,9 @@ return [
             'visibility' => 'public',
         ],
 
-        'components' => [
+        'static' => [
             'driver' => 'local',
-            'root' => base_path('resources/views/components'),
+            'root' => base_path('public/static'),
             'visibility' => 'public',
         ],
 

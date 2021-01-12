@@ -22,10 +22,16 @@ export default {
       pages: Array | Object,
    },
 
-   data: () => ({
-      sending: false,
-      form: {},
-   }),
+   data() {
+      return {
+         sending: false,
+         selectAll: false,
+         form: {
+            pages: this.pages,
+            selected: [],
+         },
+      }
+   },
 
    methods: {
       confirmDelete(id) {
@@ -40,6 +46,22 @@ export default {
             )
          }
       },
+      deleteSelected() {
+         if (confirm(`Are you sure you want to delete ${this.form.selected.length} item(s)?`)) {
+            this.$inertia.post(route("page.delete.selected"), this.form, {
+               onStart: () => (this.sending = true),
+               onFinish: () => (this.sending = false),
+            })
+         }
+      },
+      all() {
+         this.form.selected = []
+         if (!this.selectAll) {
+            for (let i in this.form.pages.data) {
+               this.form.selected.push(this.form.pages.data[i].id)
+            }
+         }
+      },
    },
 }
 </script>
@@ -49,20 +71,25 @@ export default {
       <template #header>Pages</template>
       <template #ribbon>
          <li><inertia-link :href="route('page.create')" class="button:small">Make a New Page</inertia-link></li>
+         <li><Button @click="deleteSelected" class="button:small button:danger">Delete Selected</Button></li>
       </template>
       <template #body v-if="pages.data.length > 0">
          <div class="grid">
             <div class="col-12">
                <DataTable :links="pages.links">
                   <template #header>
-                     <th>&nbsp;</th>
+                     <th>
+                        <label>
+                           <input v-model="selectAll" type="checkbox" @click="all" />
+                        </label>
+                     </th>
                      <th>Title</th>
                      <th>URL</th>
                      <th>&nbsp;</th>
                   </template>
                   <template #contents>
                      <tr v-for="page in pages.data" :key="page.id">
-                        <td><input type="checkbox" /></td>
+                        <td><input v-model="form.selected" type="checkbox" :value="page.id" /></td>
                         <td title="Name">{{ page.title }}</td>
                         <td title="Slug">{{ page.slug }}</td>
                         <td>
