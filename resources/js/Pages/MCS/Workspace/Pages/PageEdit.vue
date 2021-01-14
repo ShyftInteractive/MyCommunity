@@ -56,13 +56,11 @@ export default {
       edit(event) {
          let vm = this
          vm.targets = []
-
          let component = event.target.closest(".js-col").querySelector("[data-component]")
          let targets = component.querySelectorAll("[data-target]")
 
          targets.forEach(function (target) {
             vm.targets.push({
-               label: target.dataset.label,
                t: target,
             })
          })
@@ -102,7 +100,7 @@ export default {
                                  <!-- SLOT : ROW OPTIONS -->
 
                                  <div :class="`col-12 md::col-${col.span} js-col`" v-for="(col, colIndex) in row.cols" :key="`row-${rowIndex}-col-${colIndex}`" :data-row="rowIndex" :data-col="colIndex">
-                                    <button class="button--icon remove-row" @click="edit($event)"><Icon name="edit" size="20" /></button>
+                                    <button class="button--icon action--icons" @click="edit($event)"><Icon name="edit" size="20" /></button>
                                     <div v-html="col.component" style="height: 100%"></div>
                                  </div>
                               </div>
@@ -183,5 +181,12 @@ export default {
       padding: var(--px-4);
       margin: var(--px-4);
    }
+}
+
+.action--icons {
+   position: absolute;
+   bottom: 0;
+   right: 10px;
+   z-index: 2;
 }
 </style>

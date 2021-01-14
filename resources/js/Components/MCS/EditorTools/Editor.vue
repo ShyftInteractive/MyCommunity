@@ -3,6 +3,7 @@ import Icon from "@/Components/Rebase/Icon"
 import { Editor, EditorContent, EditorMenuBubble } from "tiptap"
 import { Blockquote, BulletList, Heading, ListItem, OrderedList, Bold, Italic, Link, Strike, Underline, Image } from "tiptap-extensions"
 import IFrame from "@/Data/MCS/IFrame.js"
+import EventBus from "@/Data/MCS/event-bus"
 
 export default {
    inheritAttrs: false,
@@ -25,6 +26,7 @@ export default {
             content: this.value,
             onUpdate: ({ getHTML }) => {
                this.$emit("input", getHTML())
+               EventBus.$emit("EDITOR_UPDATE", getHTML())
             },
          }),
       }

@@ -1,18 +1,21 @@
 <script>
 import EventBus from "@/Data/MCS/event-bus"
+import Editor from "@/Components/MCS/EditorTools/Editor"
 
 export default {
    components: {
       EventBus,
+      Editor,
    },
    mounted: function () {
       let vm = this
 
       EventBus.$on("EDIT_COMPONENT", (targets) => {
+         console.log("edit ")
+         vm.targets = []
          vm.targets = targets
-         vm.targets.forEach((t) => {
-            console.log(t.t.dataset.target.split(","))
-         })
+
+         console.log(vm.targets)
       })
    },
 
@@ -36,7 +39,19 @@ export default {
             target.classList.add(event.target.value)
          } else if (info === "opacity") {
             let opacity = parseInt(event.target.value) / 100
-            target.style.backgroundColor = `rgba(255,255,255, ${opacity})`
+            opacity = opacity === 1 ? 0.99 : opacity === 0 ? 0.01 : opacity
+            target.style.backgroundColor = target.style.backgroundColor.replace(/[^,]+(?=\))/, opacity)
+         } else if (info === "opacity-color") {
+            let current = target.style.backgroundColor
+            target.style.backgroundColor = current.replace("255, 255, 255", event).replace("0, 0, 0", event)
+         } else if (info === "flip") {
+            if (target.style.direction) {
+               target.style.direction = ""
+            } else {
+               target.style.direction = "rtl"
+            }
+         } else if (info === "editor") {
+            target.innerHTML = event
          } else {
             target.innerHTML = event.target.value
          }
@@ -55,11 +70,19 @@ export default {
                <h5 class="col-12">Text</h5>
                <input type="text" class="form-item--textbox col-12" @input="check(target.t, $event)" :value="target.t.innerText" />
             </div>
+            <div class="grid" v-if="block == 'headline'">
+               <h5 class="col-12">Headline</h5>
+               <input type="text" class="form-item--textbox col-12" @input="check(target.t, $event)" :value="target.t.innerText" />
+            </div>
+            <div class="grid" v-if="block.trim() === 'editor'">
+               <h5 class="col-12">Editor</h5>
+               <input type="text" class="form-item--textbox col-12" @input="check(target.t, $event)" :value="target.t.innerText" />
+            </div>
             <div class="grid" v-if="block.trim() == 'box-align'">
                <h5 class="col-12">Vertical Alignment</h5>
-               <label class="col-4">Top: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:top" :selected="target.t.classList.contains('grid:top')" /></label>
-               <label class="col-4">Middle: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:middle" :selected="target.t.classList.contains('grid:middle')" /></label>
-               <label class="col-4">Bottom: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:bottom" :selected="target.t.classList.contains('grid:bottom')" /></label>
+               <label class="col-4">Top: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:top" :selected="!!target.t.classList.contains('grid:top')" /></label>
+               <label class="col-4">Middle: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:middle" :selected="!!target.t.classList.contains('grid:middle')" /></label>
+               <label class="col-4">Bottom: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:bottom" :selected="!!target.t.classList.contains('grid:bottom')" /></label>
             </div>
             <div class="grid" v-if="block.trim() == 'text-align'">
                <h5 class="col-12">Text Alignment</h5>
@@ -78,7 +101,15 @@ export default {
             </div>
             <div class="grid" v-if="block.trim() == 'opacity'">
                <h5 class="col-12">Background Opacity</h5>
-               <input class="form-item--textbox col-12" type="range" min="1" max="100" value="0" @input="check(target.t, $event, 'opacity')" />
+               <ul class="opacity-color-picker col-12">
+                  <li class="white" @click="check(target.t, '255, 255, 255', 'opacity-color')"></li>
+                  <li class="black" @click="check(target.t, '0, 0, 0', 'opacity-color')"></li>
+               </ul>
+               <input class="form-item--textbox col-12" type="range" min="1" max="100" name="opacity-value" :value="0" @input="check(target.t, $event, 'opacity')" />
+            </div>
+            <div class="grid" v-if="block.trim() == 'flip'">
+               <h5 class="col-12">Reverse Image Text</h5>
+               <label class="col-4">Reverse: <input type="checkbox" name="reverse" @input="check(target.t, $event, 'flip')" :value="!!target.t.style.direction" :checked="target.t.style.direction" /></label>
             </div>
          </div>
       </div>
@@ -90,5 +121,33 @@ export default {
 
 .form-item--textbox {
    @include form-element;
+}
+
+.form-item--editor {
+   @include form-element;
+   min-height: 120px;
+}
+
+.opacity-color-picker {
+   list-style-type: none;
+   display: inline-block;
+   padding: 0;
+   margin: 0;
+
+   li {
+      display: inline-block;
+      border: 1px solid #ddd;
+      width: 20px;
+      height: 20px;
+      margin: 0px;
+      cursor: pointer;
+      &.white {
+         background: var(--color-true-white);
+      }
+
+      &.black {
+         background: var(--color-true-black);
+      }
+   }
 }
 </style>
