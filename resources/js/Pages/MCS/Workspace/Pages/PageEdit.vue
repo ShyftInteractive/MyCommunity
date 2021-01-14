@@ -22,6 +22,7 @@ export default {
 
    props: {
       page: Array | Object,
+      media: Array | Object,
    },
 
    data() {
@@ -29,6 +30,7 @@ export default {
          sending: false,
          targets: [],
          drawer: false,
+         modal: false,
          form: {
             page: this.page,
          },
@@ -36,6 +38,7 @@ export default {
    },
 
    mounted() {
+      let vm = this
       document.addEventListener("keydown", (e) => {
          if (e.ctrlKey && e.which === 83) {
             this.save()
@@ -118,7 +121,7 @@ export default {
             <Button class="button col-12 sm::col-6" @click="save">Save</Button>
             <Button class="button--secondary col-12 sm::col-6" @click="save">Preview</Button>
          </div>
-         <PageEditorTools />
+         <PageEditorTools :media="media" />
       </template>
    </Workspace>
 </template>

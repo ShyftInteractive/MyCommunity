@@ -1,31 +1,46 @@
 <script>
 import EventBus from "@/Data/MCS/event-bus"
 import Editor from "@/Components/MCS/EditorTools/Editor"
+import Modal from "@/Components/Rebase/Modal"
+import Icon from "@/Components/Rebase/Icon"
 
 export default {
    components: {
       EventBus,
       Editor,
+      Icon,
+      Modal,
    },
+
+   props: {
+      media: Object | Array,
+   },
+
    mounted: function () {
       let vm = this
 
       EventBus.$on("EDIT_COMPONENT", (targets) => {
-         console.log("edit ")
-         vm.targets = []
          vm.targets = targets
-
-         console.log(vm.targets)
       })
    },
 
    data() {
       return {
          targets: [],
+         mediaTarget: null,
+         gallery: this.media,
       }
    },
 
    methods: {
+      loadImage(url, target) {
+         target.style.backgroundImage = `url(${url})`
+         EventBus.$emit("MODAL_CLOSE")
+      },
+      openMediaModal(target) {
+         this.mediaTarget = target
+         EventBus.$emit("MODAL_OPEN")
+      },
       check(target, event, info) {
          if (info === "bg-image") {
             target.style.backgroundImage = `url(${event.target.value})`
@@ -38,12 +53,21 @@ export default {
             target.classList.remove("text:left", "text:right", "text:center")
             target.classList.add(event.target.value)
          } else if (info === "opacity") {
-            let opacity = parseInt(event.target.value) / 100
-            opacity = opacity === 1 ? 0.99 : opacity === 0 ? 0.01 : opacity
-            target.style.backgroundColor = target.style.backgroundColor.replace(/[^,]+(?=\))/, opacity)
+            console.log("opacity")
+            if (target.style.backgroundColor) {
+               let opacity = parseInt(event.target.value) / 100
+               opacity = opacity === 1 ? 0.99 : opacity === 0 ? 0.01 : opacity
+               target.style.backgroundColor = target.style.backgroundColor.replace(/[^,]+(?=\))/, opacity)
+            } else {
+               target.style.backgroundColor = "rgba(255, 255, 255, 0.1)"
+            }
          } else if (info === "opacity-color") {
-            let current = target.style.backgroundColor
-            target.style.backgroundColor = current.replace("255, 255, 255", event).replace("0, 0, 0", event)
+            if (target.style.backgroundColor) {
+               let current = target.style.backgroundColor
+               target.style.backgroundColor = current.replace("255, 255, 255", event).replace("0, 0, 0", event)
+            } else {
+               target.style.backgroundColor = "rgba(255, 255, 255, 0.1)"
+            }
          } else if (info === "flip") {
             if (target.style.direction) {
                target.style.direction = ""
@@ -80,9 +104,9 @@ export default {
             </div>
             <div class="grid" v-if="block.trim() == 'box-align'">
                <h5 class="col-12">Vertical Alignment</h5>
-               <label class="col-4">Top: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:top" :selected="!!target.t.classList.contains('grid:top')" /></label>
-               <label class="col-4">Middle: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:middle" :selected="!!target.t.classList.contains('grid:middle')" /></label>
-               <label class="col-4">Bottom: <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:bottom" :selected="!!target.t.classList.contains('grid:bottom')" /></label>
+               <label class="col-4"><Icon name="align-top" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:top" :selected="!!target.t.classList.contains('grid:top')" /></label>
+               <label class="col-4"><Icon name="align-middle" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:middle" :selected="!!target.t.classList.contains('grid:middle')" /></label>
+               <label class="col-4"><Icon name="align-bottom" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:bottom" :selected="!!target.t.classList.contains('grid:bottom')" /></label>
             </div>
             <div class="grid" v-if="block.trim() == 'text-align'">
                <h5 class="col-12">Text Alignment</h5>
@@ -97,7 +121,7 @@ export default {
             </div>
             <div class="grid" v-if="block.trim() == 'bg-image'">
                <h5 class="col-12">Background Image</h5>
-               <input type="text" class="form-item--textbox col-12" @input="check(target.t, $event, 'bg-image')" :value="target.t.style.backgroundImage.replace('url(', '').replace(')', '')" />
+               <Button class="button--icon" @click="openMediaModal(target.t)"><Icon name="image" />&nbsp; &nbsp;Open Gallery</Button>
             </div>
             <div class="grid" v-if="block.trim() == 'opacity'">
                <h5 class="col-12">Background Opacity</h5>
@@ -113,6 +137,16 @@ export default {
             </div>
          </div>
       </div>
+      <Modal>
+         <template #header>Pick an Image</template>
+         <template #body>
+            <div class="grid">
+               <div class="col-6 sm::col-4" v-for="(item, i) in gallery">
+                  <img :src="item.url" alt="" @click="loadImage(item.url, mediaTarget)" />
+               </div>
+            </div>
+         </template>
+      </Modal>
    </div>
 </template>
 
