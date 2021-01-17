@@ -31,7 +31,14 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::delete('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistDelete::class)->name('checklist.delete');
 
         // Events...
-        Route::get('/events', MCS\Workspace\Events\EventIndex::class)->name('event.index');
+        Route::get('/events',                        MCS\Workspace\Events\EventIndex::class)->name('event.index');
+        Route::get('/events/create',                 MCS\Workspace\Events\EventCreate::class)->name('event.create');
+        Route::post('/events',                       MCS\Workspace\Events\EventStore::class)->name('event.store');
+        Route::get('/events/{eventID}/edit',         MCS\Workspace\Events\EventEdit::class)->name('event.edit');
+        Route::get('/events/{eventID}',              MCS\Workspace\Events\EventShow::class)->name('event.show');
+        Route::put('/events/{eventID}',              MCS\Workspace\Events\EventUpdate::class)->name('event.update');
+        Route::delete('/events/{eventID}',           MCS\Workspace\Events\EventDelete::class)->name('event.delete');
+        Route::post('/events/selected/{action}',     MCS\Workspace\Events\EventSelected::class)->name('event.selected');
 
         // Notices...
         Route::get('/notifications', MCS\Workspace\Notifications\NotificationIndex::class)->name('notification.index');

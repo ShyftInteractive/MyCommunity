@@ -3,6 +3,8 @@ import EventBus from "@/Data/MCS/event-bus"
 import Editor from "@/Components/MCS/EditorTools/Editor"
 import Modal from "@/Components/Rebase/Modal"
 import Icon from "@/Components/Rebase/Icon"
+import { VueEditor } from "vue2-editor/dist/vue2-editor.core.js"
+import "quill/dist/quill.snow.css"
 
 export default {
    components: {
@@ -10,12 +12,17 @@ export default {
       Editor,
       Icon,
       Modal,
+      VueEditor,
    },
 
    props: {
       media: Object | Array,
    },
-
+   computed: {
+      editorOptions() {
+         return { theme: "snow" }
+      },
+   },
    mounted: function () {
       let vm = this
 
@@ -75,7 +82,7 @@ export default {
                target.style.direction = "rtl"
             }
          } else if (info === "editor") {
-            target.innerHTML = event
+            // target.innerHTML = event
          } else {
             target.innerHTML = event.target.value
          }
@@ -100,6 +107,13 @@ export default {
             </div>
             <div class="grid" v-if="block.trim() === 'editor'">
                <h5 class="col-12">Editor</h5>
+               <vue-editor
+                  class="col-12"
+                  :editorOptions="editorOptions"
+                  :editor-toolbar="[['bold', 'italic', 'underline', 'strike'], [{ align: [false, 'center', 'right'] }], ['link'], [{ list: 'ordered' }, { list: 'bullet' }]]"
+                  v-model="target.t.innerHTML"
+                  @input="check(target.t, target.t.innerHTML, 'editor')"
+               ></vue-editor>
                <input type="text" class="form-item--textbox col-12" @input="check(target.t, $event)" :value="target.t.innerText" />
             </div>
             <div class="grid" v-if="block.trim() == 'box-align'">
@@ -183,5 +197,19 @@ export default {
          background: var(--color-true-black);
       }
    }
+}
+
+.quillWrapper {
+   display: flex;
+   flex-direction: column;
+   background: #fbfbfb;
+}
+.ql-toolbar {
+   background-color: var(--color-true-white);
+}
+.ql-editor {
+   font-size: var(--px-16);
+   line-height: 1.3;
+   min-height: 300px;
 }
 </style>

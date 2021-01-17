@@ -48,6 +48,7 @@
     "vue-stripe-elements-plus": "^0.3.2",
     "vue-template-compiler": "^2.6.12",
     "vue2-datepicker": "^3.8.2",
+    "vue2-editor": "^2.10.2",
     "webpack": "^5.6.0",
     "zxcvbn": "^4.4.2"
   },

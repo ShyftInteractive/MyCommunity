@@ -22,7 +22,7 @@ class CreateEventsTable extends Migration
             $table->string('title');
             $table->string('feature_image')->nullable();
             $table->text('description')->nullable();
-            $table->timestamp('start_at')->nullable();
+            $table->timestamp('start_at');
             $table->timestamp('end_at')->nullable();
             $table->enum('visibility', Arr::flatten(MemberRoles::toArray()))->default(MemberRoles::PUBLIC_ACCESS());
             $table->timestamp('published_at')->nullable();
@@ -30,7 +30,7 @@ class CreateEventsTable extends Migration
 
             $table->foreign('member_id')
                 ->references('id')
-                ->on('workspaces')
+                ->on('members')
                 ->onDelete('cascade');
 
             $table->foreign('workspace_id')

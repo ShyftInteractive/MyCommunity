@@ -7,18 +7,13 @@ namespace App\Domain\Models\MCS\Workspace;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Domain\Builders\MCS\PageBuilder;
-use App\Domain\Builders\MCS\PostBuilder;
 use Illuminate\Database\Eloquent\Builder;
-use App\Domain\Collections\MCS\PageCollection;
-use App\Domain\Collections\MCS\PostCollection;
-use App\Domain\Factories\MCS\PageModelFactory;
-use App\Domain\Factories\MCS\PostModelFactory;
-use App\Domain\Models\Rebase\Workspace\Member;
+use App\Domain\Builders\Rebase\ModelBuilder;
+use App\Domain\Factories\Rebase\ModelFactory;
 use App\Domain\Models\Rebase\Workspace\Workspace;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Post extends Model
+class Event extends Model
 {
     // Traits...
 
@@ -32,15 +27,13 @@ class Post extends Model
         'id',                   // required
         'workspace_id',         // required
         'member_id',            // required
-        'slug',                 // required
         'title',                // required
         'feature_image',
         'description',
-        'content',
-        'description',
+        'start_at',             // required
+        'end_at',
         'visibility',           // required
-        'featured_at',
-        'published',           // false
+        'published',            // false
         'published_at',
         'created_at',
         'updated_at',
@@ -51,22 +44,31 @@ class Post extends Model
         'id' => 'string',
         'member_id' => 'string',
         'workspace_id' => 'string',
-        'featured_at' => 'datetime',
+        'start_at' => 'datetime',
+        'end_at' => 'datetime',
         'published' => 'boolean',
         'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
-    // Global Eager Loads...
-
     public static function boot(): void
     {
         parent::boot();
 
-        static::creating(function ($post): void {
-            $post->id = (string)Str::uuid();
+        static::creating(function ($event): void {
+            $event->id = (string)Str::uuid();
         });
+    }
+
+    public function setStartAtAttribute($value)
+    {
+        $this->attributes['start_at'] = Carbon::parse($value);
+    }
+
+    public function setEndAtAttribute($value)
+    {
+        $this->attributes['end_at'] = Carbon::parse($value);
     }
 
     // Relationships....
@@ -75,25 +77,20 @@ class Post extends Model
         return $this->hasOne(Workspace::class);
     }
 
-    public function member(): HasOne
-    {
-        return $this->hasOne(Member::class);
-    }
-
     // Collection Override....
-    public function newCollection(array $models = []): PostCollection
-    {
-        return new PostCollection($models);
-    }
+    // public function newCollection(array $models = []): PageCollection
+    // {
+    //     return new PageCollection($models);
+    // }
 
-    public function newEloquentBuilder($query): PostBuilder
+    public function newEloquentBuilder($query): ModelBuilder
     {
-        return new PostBuilder($query);
+        return new ModelBuilder($query);
     }
 
     // Factory...
-    public function scopeModelFactory(Builder $builder): PostModelFactory
+    public function scopeModelFactory(Builder $builder): ModelFactory
     {
-        return new PostModelFactory($builder);
+        return new ModelFactory($builder);
     }
 }

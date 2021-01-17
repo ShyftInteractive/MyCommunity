@@ -11,12 +11,19 @@ export default {
    },
 
    props: {
-      value: [String, Number],
+      value: [String, Number, Date],
+   },
+
+   data() {
+      return {
+         dt: this.value === null ? null : new Date(this.value),
+      }
    },
 
    methods: {
-      handleInput(e) {
-         this.$emit("input", e)
+      handleInput(newDT) {
+         this.dt = newDT
+         this.$emit("input", newDT)
       },
       notBeforeToday(date) {
          return date < new Date(new Date().setHours(0, 0, 0, 0))
@@ -28,11 +35,11 @@ export default {
 <template>
    <date-picker
       v-bind="$attrs"
-      :value="value"
+      :value="dt"
       @input="handleInput"
       :shortcuts="[
          {
-            text: 'Publish Now',
+            text: 'Now',
             onClick() {
                const date = new Date()
                return date
@@ -42,7 +49,7 @@ export default {
       type="datetime"
       :disabled-date="notBeforeToday"
       :editable="false"
-      value-type="YYYY-MM-DDTHH:mm:ss"
+      value-type="date"
       format="MM-DD-YYYY hh:mm:ss A"
       :time-picker-options="{
          start: '00:00',

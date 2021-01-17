@@ -35,7 +35,6 @@ export default {
          }
       })
    },
-
    methods: {
       save() {
          this.$inertia.put(route("post.update", { postID: this.form.post.id }), this.form, {
