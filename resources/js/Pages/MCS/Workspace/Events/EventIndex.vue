@@ -24,6 +24,7 @@ export default {
 
    data() {
       return {
+         DTFormatter,
          sending: false,
          selectAll: false,
          form: {
@@ -35,9 +36,6 @@ export default {
    },
 
    methods: {
-      cleanDate(dt) {
-         return DTFormatter(dt)
-      },
       deleteSelected() {
          if (confirm(`Are you sure you want to delete ${this.form.selected.length} item(s)?`)) {
             this.$inertia.post(route("event.selected", { action: "delete" }), this.form, {
@@ -74,8 +72,8 @@ export default {
    <Workspace nav="events">
       <template #header>Events</template>
       <template #ribbon>
-         <li><inertia-link :href="route('event.create')" class="button:small">Create a New Event</inertia-link></li>
-         <li><Button @click="deleteSelected" class="button:small button:danger">Delete Selected Events</Button></li>
+         <li><inertia-link :href="route('event.create')" class="button--secondary:small">Create a New Event</inertia-link></li>
+         <li><Button @click="deleteSelected" class="button--secondary:small">Delete Selected Events</Button></li>
       </template>
       <template #body v-if="events.data.length > 0">
          <div class="grid">
@@ -96,8 +94,8 @@ export default {
                      <tr v-for="event in events.data" :key="event.id">
                         <td><input v-model="form.selected" type="checkbox" :value="event.id" /></td>
                         <td>{{ event.title }}</td>
-                        <td>{{ cleanDate(new Date(event.start_at)) }}</td>
-                        <td>{{ event.end_at ? cleanDate(new Date(event.end_at)) : "All Day" }}</td>
+                        <td>{{ DTFormatter(new Date(event.start_at)) }}</td>
+                        <td>{{ event.end_at ? DTFormatter(new Date(event.end_at)) : "All Day" }}</td>
                         <td>
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('event.edit', { eventID: event.id })">Edit</ActionLink>

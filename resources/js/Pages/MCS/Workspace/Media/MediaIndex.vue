@@ -6,8 +6,8 @@ import ActionButton from "@/Components/Rebase/Actions/ActionButton"
 import ActionLink from "@/Components/Rebase/Actions/ActionLink"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
 import { Inertia } from "@inertiajs/inertia"
-import { Cropper } from "vue-advanced-cropper"
-import "vue-advanced-cropper/dist/style.css"
+import Multiselect from "vue-multiselect"
+import "vue-multiselect/dist/vue-multiselect.min.css"
 
 export default {
    layout: Layout,
@@ -15,7 +15,7 @@ export default {
 
    components: {
       Workspace,
-      Cropper,
+      Multiselect,
       DataTable,
       ActionButton,
       ActionLink,
@@ -24,7 +24,11 @@ export default {
 
    props: {
       media: Array | Object,
+      tags: Array,
    },
+
+   mounted() {},
+
    data() {
       return {
          show: false,
@@ -33,10 +37,32 @@ export default {
          fileRecords: [],
          uploadUrl: route("media.upload"),
          fileRecordsForUpload: [],
+         mediaList: this.media,
+         tagList: this.tags,
       }
    },
 
    methods: {
+      addTag(searchQuery, id) {
+         const tag = {
+            name: searchQuery,
+         }
+         this.mediaList.data[id].tags.push(tag)
+         this.tagList.push(tag)
+
+         const item = this.mediaList.data[id]
+         this.$inertia.post(route("tag.store", { mediaID: item.id }), tag, {
+            onStart: () => (this.sending = true),
+            onFinish: () => (this.sending = false),
+         })
+      },
+
+      handleInput(item) {
+         this.$inertia.post(route("media.update", { mediaID: item.id }), item, {
+            onStart: () => (this.sending = true),
+            onFinish: () => (this.sending = false),
+         })
+      },
       deleteFile(id) {
          if (confirm("You want to delete this file from the server? This action is cannot be reversed.")) {
             this.$inertia.delete(route("media.delete", { mediaID: id }), {
@@ -45,12 +71,7 @@ export default {
             })
          }
       },
-      change({ coordinates, canvas }) {
-         console.log(coordinates, canvas)
-      },
-      crop(image) {
-         this.show = true
-      },
+
       onUpload(responses) {
          let vm = this
          Inertia.reload({ only: ["media"] })
@@ -98,14 +119,30 @@ export default {
                   <th></th>
                   <th>Name</th>
                   <th>Type</th>
+                  <th>Tags</th>
                   <th>Preview</th>
                   <th></th>
                </template>
                <template #contents>
-                  <tr v-for="item in media.data">
+                  <tr v-for="(item, i) in mediaList.data" :key="i">
                      <td><input type="checkbox" /></td>
                      <td>{{ item.name }}</td>
                      <td>{{ item.type }}</td>
+                     <td class="fixed-500">
+                        <multiselect
+                           v-model="item.tags"
+                           :id="i"
+                           tag-placeholder="Add Tag"
+                           placeholder="Search or add a tag"
+                           label="name"
+                           track-by="name"
+                           :options="tagList"
+                           :multiple="true"
+                           :taggable="true"
+                           @tag="addTag"
+                           @input="handleInput(item)"
+                        ></multiselect>
+                     </td>
                      <td>
                         <img v-if="item.type === 'image'" style="width: 80px" :src="item.url" alt="" />
                      </td>
@@ -123,3 +160,20 @@ export default {
       </template>
    </Workspace>
 </template>
+
+<style lang="scss">
+@import "@@/abstract";
+.fixed-500 {
+   width: 500px !important;
+}
+.multiselect__input {
+   background-color: transparent;
+   border: none;
+   overflow: hidden;
+   padding-left: 0;
+   padding-top: 0;
+}
+.vue-input-tag-wrapper .new-tag {
+   @include form-element;
+}
+</style>

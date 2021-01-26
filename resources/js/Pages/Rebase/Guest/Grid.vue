@@ -1,6 +1,5 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
-import Editor from "@/Components/MCS/EditorTools/Editor"
 
 export default {
    layout: Layout,

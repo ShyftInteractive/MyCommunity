@@ -1,6 +1,5 @@
 <script>
 import EventBus from "@/Data/MCS/event-bus"
-import Editor from "@/Components/MCS/EditorTools/Editor"
 import Modal from "@/Components/Rebase/Modal"
 import Icon from "@/Components/Rebase/Icon"
 import { VueEditor } from "vue2-editor/dist/vue2-editor.core.js"
@@ -8,10 +7,9 @@ import "quill/dist/quill.snow.css"
 
 export default {
    components: {
-      EventBus,
-      Editor,
       Icon,
       Modal,
+      EventBus,
       VueEditor,
    },
 
@@ -27,12 +25,17 @@ export default {
       let vm = this
 
       EventBus.$on("EDIT_COMPONENT", (targets) => {
+         vm.show = true
          vm.targets = targets
+      })
+      EventBus.$on("CLOSE_DRAWER", () => {
+         vm.show = false
       })
    },
 
    data() {
       return {
+         show: false,
          targets: [],
          mediaTarget: null,
          gallery: this.media,
@@ -82,7 +85,9 @@ export default {
                target.style.direction = "rtl"
             }
          } else if (info === "editor") {
-            // target.innerHTML = event
+            target.innerHTML = event
+            // console.log("Editor")
+            console.log(target.innerHTML)
          } else {
             target.innerHTML = event.target.value
          }
@@ -114,7 +119,6 @@ export default {
                   v-model="target.t.innerHTML"
                   @input="check(target.t, target.t.innerHTML, 'editor')"
                ></vue-editor>
-               <input type="text" class="form-item--textbox col-12" @input="check(target.t, $event)" :value="target.t.innerText" />
             </div>
             <div class="grid" v-if="block.trim() == 'box-align'">
                <h5 class="col-12">Vertical Alignment</h5>

@@ -1,7 +1,8 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
-import Editor from "@/Components/MCS/EditorTools/Editor"
+import { VueEditor } from "vue2-editor/dist/vue2-editor.core.js"
+import "quill/dist/quill.bubble.css"
 import FormDatePicker from "@/Components/MCS/Form/FormDatePicker"
 
 export default {
@@ -11,7 +12,7 @@ export default {
    components: {
       FormDatePicker,
       Workspace,
-      Editor,
+      VueEditor,
    },
 
    props: {
@@ -27,7 +28,11 @@ export default {
          },
       }
    },
-
+   computed: {
+      editorOptions() {
+         return { theme: "bubble" }
+      },
+   },
    mounted() {
       document.addEventListener("keydown", (e) => {
          if (e.ctrlKey && e.which === 83) {
@@ -68,8 +73,13 @@ export default {
          <div class="grid--top">
             <div class="col-12 sm::col-10">
                <div class="grid">
-                  <div class="col-10--centered">
-                     <Editor v-model="form.post.content" />
+                  <div class="col-8--centered">
+                     <Editor v-model="post.content" :editor-options="['image']" :bubble="true" />
+                     <vue-editor
+                        :editorOptions="editorOptions"
+                        :editor-toolbar="[['bold', 'italic', 'underline', 'strike'], [{ align: [false, 'center', 'right'] }], ['link'], ['image'], [{ list: 'ordered' }, { list: 'bullet' }]]"
+                        v-model="post.content"
+                     ></vue-editor>
                   </div>
                </div>
             </div>

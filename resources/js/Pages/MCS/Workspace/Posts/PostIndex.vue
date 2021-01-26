@@ -91,9 +91,9 @@ export default {
    <Workspace nav="posts">
       <template #header>All Posts</template>
       <template #ribbon>
-         <li><inertia-link :href="route('post.create')" class="button:small">Make a New Post</inertia-link></li>
-         <li><Button @click="publishSelected" class="button:small">Publish/Unpublish Selected</Button></li>
-         <li><Button @click="deleteSelected" class="button:small button:danger">Delete Selected</Button></li>
+         <li><inertia-link :href="route('post.create')" class="button--secondary:small">Make a New Post</inertia-link></li>
+         <li><Button @click="publishSelected" class="button--secondary:small">Publish/Unpublish Selected</Button></li>
+         <li><Button @click="deleteSelected" class="button--secondary:small">Delete Selected</Button></li>
       </template>
       <template #body v-if="posts.data.length > 0">
          <div class="grid">

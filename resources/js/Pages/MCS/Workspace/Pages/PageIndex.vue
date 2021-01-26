@@ -70,8 +70,8 @@ export default {
    <Workspace nav="pages">
       <template #header>Pages</template>
       <template #ribbon>
-         <li><inertia-link :href="route('page.create')" class="button:small">Make a New Page</inertia-link></li>
-         <li><Button @click="deleteSelected" class="button:small button:danger">Delete Selected</Button></li>
+         <li><inertia-link :href="route('page.create')" class="button--secondary:small">Make a New Page</inertia-link></li>
+         <li><Button @click="deleteSelected" class="button--secondary:small">Delete Selected</Button></li>
       </template>
       <template #body v-if="pages.data.length > 0">
          <div class="grid">

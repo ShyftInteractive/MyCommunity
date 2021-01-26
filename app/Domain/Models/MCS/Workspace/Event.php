@@ -93,4 +93,9 @@ class Event extends Model
     {
         return new ModelFactory($builder);
     }
+
+    public function scopeByWorkspace($query, $id)
+    {
+        return $query->where('workspace_id', $id);
+    }
 }

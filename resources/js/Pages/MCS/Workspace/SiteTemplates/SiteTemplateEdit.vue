@@ -1,7 +1,6 @@
 <script>
 import Icon from "@/Components/Rebase/Icon"
 import Layout from "@/Templates/Rebase/Layout"
-import Editor from "@/Components/MCS/EditorTools/Editor"
 import EventBus from "@/Data/MCS/event-bus"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
@@ -15,8 +14,6 @@ export default {
       Workspace,
       Icon,
       EventBus,
-      Editor,
-      ActionMenu,
       ActionButton,
    },
 

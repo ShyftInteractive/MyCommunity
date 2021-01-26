@@ -19,16 +19,27 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::get('/members', Rebase\Workspace\Members\WorkspaceMemberIndex::class)->name('workspace-members.index');
 
         // Media...
-        Route::get('/media', MCS\Workspace\Media\MediaIndex::class)->name('media.index');
-        Route::post('/media/upload', MCS\Workspace\Media\MediaUpload::class)->name('media.upload');
-        Route::delete('/media/{mediaID}',    MCS\Workspace\Media\MediaDelete::class)->name('media.delete');
+        Route::get('/media',                            MCS\Workspace\Media\MediaIndex::class)->name('media.index');
+        Route::post('/media/upload',                    MCS\Workspace\Media\MediaUpload::class)->name('media.upload');
+        Route::post('/media/{mediaID}',                 MCS\Workspace\Media\MediaUpdate::class)->name('media.update');
+        Route::delete('/media/{mediaID}',               MCS\Workspace\Media\MediaDelete::class)->name('media.delete');
+        Route::post('/media/{mediaID}/{type}/{tagID}',  MCS\Workspace\Media\MediaTagUpdate::class)->name('media.tag.update');
 
-        Route::get('/checklists', MCS\Workspace\Checklists\ChecklistIndex::class)->name('checklist.index');
-        Route::get('/checklists/create', MCS\Workspace\Checklists\ChecklistCreate::class)->name('checklist.create');
-        Route::post('/checklists', MCS\Workspace\Checklists\ChecklistStore::class)->name('checklist.store');
-        Route::get('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistEdit::class)->name('checklist.edit');
-        Route::get('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistUpdate::class)->name('checklist.update');
-        Route::delete('/checklists/{checklistID}', MCS\Workspace\Checklists\ChecklistDelete::class)->name('checklist.delete');
+        // Tags...
+        Route::get('/tags', MCS\Workspace\Tags\TagIndex::class)->name('tag.index');
+        Route::get('/tags/create', MCS\Workspace\Tags\TagCreate::class)->name('tag.create');
+        Route::post('/tags/{mediaID}', MCS\Workspace\Tags\TagStore::class)->name('tag.store');
+        Route::get('/tags/{groupID}', MCS\Workspace\Tags\TagEdit::class)->name('tag.edit');
+        Route::get('/tags/{groupID}', MCS\Workspace\Tags\TagUpdate::class)->name('tag.update');
+        Route::delete('/tags/{groupID}', MCS\Workspace\Tags\TagDelete::class)->name('tag.delete');
+
+        // Groups...
+        Route::get('/groups', MCS\Workspace\Groups\GroupIndex::class)->name('group.index');
+        Route::get('/groups/create', MCS\Workspace\Groups\GroupCreate::class)->name('group.create');
+        Route::post('/groups', MCS\Workspace\Groups\GroupStore::class)->name('group.store');
+        Route::get('/groups/{groupID}', MCS\Workspace\Groups\GroupEdit::class)->name('group.edit');
+        Route::get('/groups/{groupID}', MCS\Workspace\Groups\GroupUpdate::class)->name('group.update');
+        Route::delete('/groups/{groupID}', MCS\Workspace\Groups\GroupDelete::class)->name('group.delete');
 
         // Events...
         Route::get('/events',                        MCS\Workspace\Events\EventIndex::class)->name('event.index');
@@ -40,8 +51,14 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::delete('/events/{eventID}',           MCS\Workspace\Events\EventDelete::class)->name('event.delete');
         Route::post('/events/selected/{action}',     MCS\Workspace\Events\EventSelected::class)->name('event.selected');
 
-        // Notices...
-        Route::get('/notifications', MCS\Workspace\Notifications\NotificationIndex::class)->name('notification.index');
+        // Notifications...
+        Route::get('/notifications',                        MCS\Workspace\Notifications\NotificationIndex::class)->name('notification.index');
+        Route::get('/notifications/create',                 MCS\Workspace\Notifications\NotificationCreate::class)->name('notification.create');
+        Route::post('/notifications',                       MCS\Workspace\Notifications\NotificationStore::class)->name('notification.store');
+        Route::get('/notifications/{notificationID}/edit',  MCS\Workspace\Notifications\NotificationEdit::class)->name('notification.edit');
+        Route::put('/notifications/{notificationID}',       MCS\Workspace\Notifications\NotificationUpdate::class)->name('notification.update');
+        Route::delete('/notifications/{notificationID}',    MCS\Workspace\Notifications\NotificationDelete::class)->name('notification.delete');
+        Route::post('/notifications/selected/{action}',     MCS\Workspace\Notifications\NotificationSelected::class)->name('notification.selected');
 
         // Pages...
         Route::get('/pages',                        MCS\Workspace\Pages\PageIndex::class)->name('page.index');

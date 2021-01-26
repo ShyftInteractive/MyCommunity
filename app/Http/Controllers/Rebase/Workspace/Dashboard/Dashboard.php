@@ -7,18 +7,23 @@ namespace App\Http\Controllers\Rebase\Workspace\Dashboard;
 use Inertia\Response;
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Services\MCS\EventService;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Event;
 
 class Dashboard extends Controller
 {
+    public function __construct(
+        private EventService $eventService,
+    ) {
+    }
+
     public function __invoke(Request $request): Response
     {
+        $events = $this->eventService->getLastFiveEvents($request->get('workspace_id'));
 
-        $events = Event::byWorkspace($request->get('workspace_id'))->get();
+        // $latestNotices = $this->notificationService->getLastFiveNoitces();
+        // $bannerNotice = $this->notificationService->getActiveBanner();
 
-        return inertia(Action::getView($this), [
-            'events' => $events->toArray()
-        ]);
+        return inertia(Action::getView($this), compact('events'));
     }
 }

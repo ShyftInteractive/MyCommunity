@@ -38,7 +38,7 @@ class EventStore extends Controller
         return [
             'title' => ['string', 'required', 'max:100'],
             'start_at' => 'required|date',
-            'end_date' => 'date|after:start_at',
+            'end_date' => 'nullable|date|after:start_at',
             'visibility' => ['required'],
         ];
     }

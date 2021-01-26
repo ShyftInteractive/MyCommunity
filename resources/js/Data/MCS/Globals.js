@@ -22,11 +22,6 @@ export const DTFormatter = function (dt) {
    });
 }
 
-export const p = function(x) {
-   console.log("look at this" + x)
-}
-
-
 export const DTF = function(dt) {
    const date = new Date(dt);
 

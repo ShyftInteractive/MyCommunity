@@ -7,11 +7,15 @@ namespace App\Domain\Models\MCS\Workspace;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use App\Domain\Models\MCS\Workspace\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\Domain\Builders\Rebase\ModelBuilder;
 use App\Domain\Factories\Rebase\ModelFactory;
 use App\Domain\Models\Rebase\Workspace\Workspace;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Media extends Model
 {
@@ -62,6 +66,10 @@ class Media extends Model
         return $this->hasOne(Workspace::class);
     }
 
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 
     // public function newCollection(array $models = []): MediaCollection
     // {

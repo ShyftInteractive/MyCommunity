@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Enums\Rebase\MemberRoles;
 use App\Domain\Facades\Rebase\RoleRepository;
+use App\Enums\MCS\NotificationTypes;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -59,6 +60,7 @@ class HandleInertiaRequests extends Middleware
                     'domain' => config('app.domain'),
                     'pricing' => config('pricing.product.test'),
                     'roles' => Arr::except(MemberRoles::toArray(), ['SUPER']),
+                    'notifications' => NotificationTypes::toArray(),
                 ];
             },
             'flash' => function (): array {

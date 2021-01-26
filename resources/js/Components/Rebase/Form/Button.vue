@@ -46,7 +46,6 @@ export default {
 
 @mixin button {
    align-items: center;
-   align-self: end;
    background: var(--color-coolGray-800);
    border: 1px solid var(--color-coolGray-800);
    border-radius: var(--radius-2);
@@ -57,12 +56,12 @@ export default {
    justify-content: center;
    line-height: var(--leading-normal);
    margin: 0;
-   height: var(--px-40);
+   height: inherit;
    padding: 0 var(--px-16);
    position: relative;
    text-align: center;
    text-decoration: none;
-   white-space: nowrap;
+   white-space: word-wrap;
 }
 
 @mixin size-lists {

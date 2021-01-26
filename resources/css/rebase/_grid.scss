@@ -22,6 +22,7 @@
    &--center {
       @extend .grid;
       align-items: center;
+      align-content: center;
    }
 
    &--page {
