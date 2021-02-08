@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Tags;
 
-use Laravel\Horizon\Tags;
 use App\Domain\Media\Media;
 use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
 use App\Domain\Workspaces\Workspace;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use App\Domain\Builders\Rebase\ModelBuilder;
-use App\Domain\Factories\Rebase\ModelFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tag extends Model

@@ -15,6 +15,11 @@ class BaseRepository
         return $this->model->get();
     }
 
+    public function create(array $item)
+    {
+        return $this->model->create($item);
+    }
+
     public function getByID(string $id): Model
     {
         return $this->model->where('id', $id)->first();
@@ -29,7 +34,6 @@ class BaseRepository
     {
         return $this->model->where($col, $value)->update($updates);
     }
-
 
     public function deleteAll(string $col, array $values)
     {

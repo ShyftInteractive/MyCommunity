@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Media;
 
+use App\Domain\Tags\Tag;
 use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\DocBlock\Tag;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Media extends Model

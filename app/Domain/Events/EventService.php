@@ -11,14 +11,12 @@ class EventService extends BaseService
 {
     public function __construct(Event $model)
     {
-        parent::__construct(
-            repository: new EventRepository($model),
-        );
+        parent::__construct(new EventRepository($model));
     }
 
     public function createEvent(array $request, string $workspaceID, string $memberID)
     {
-        return $this->repositiory->create($this->repository->resource(
+        return $this->repository->create($this->repository->resource(
             item: $request,
             workspaceID: $workspaceID,
             memberID: $memberID,
