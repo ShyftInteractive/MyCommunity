@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands\MCS;
 
+use App\Domain\Pages\Page;
+use App\Domain\Posts\Post;
+use App\Domain\Lookup\Lookup;
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
+use App\Domain\Workspaces\Workspace;
 use App\Helpers\Rebase\DatabaseHelper;
-use App\Domain\Models\MCS\Workspace\Page;
-use App\Domain\Models\MCS\Workspace\Post;
-use App\Domain\Models\Rebase\Admin\Lookup;
-use App\Domain\Models\Rebase\Workspace\Workspace;
 
 class Publish extends Command
 {

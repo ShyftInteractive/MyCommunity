@@ -2,7 +2,7 @@
 
 namespace App\Services\Rebase\Registration;
 
-use App\Domain\Models\Rebase\Workspace\Workspace;
+use App\Domain\Workspaces\Workspace;
 use Illuminate\Support\Facades\Artisan;
 
 class AddCustomerWorkspace

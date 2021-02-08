@@ -2,8 +2,8 @@
 
 namespace App\Services\Rebase\Registration;
 
-use App\Domain\Models\Rebase\Workspace\Member;
-use App\Domain\Models\Rebase\Workspace\Role;
+use App\Domain\Roles\Role;
+use App\Domain\Members\Member;
 use Illuminate\Support\Carbon;
 use App\Enums\Rebase\MemberRoles;
 

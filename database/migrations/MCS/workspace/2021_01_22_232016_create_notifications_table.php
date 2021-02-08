@@ -24,8 +24,6 @@ class CreateNotificationsTable extends Migration
             $table->text('details')->nullable();
             $table->enum('visibility', Arr::flatten(MemberRoles::toArray()))->default(MemberRoles::MEMBER());
             $table->boolean('active')->default(false);
-            $table->timestamp('banner_display_at')->nullable();
-            $table->timestamp('banner_hide_at')->nullable();
             $table->timestamps();
 
             $table->foreign('workspace_id')

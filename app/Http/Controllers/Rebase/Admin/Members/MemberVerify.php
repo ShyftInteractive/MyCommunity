@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Rebase\Admin\Members;
 
-use App\Domain\Models\Rebase\Workspace\Member;
+use App\Domain\Members\Member;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;

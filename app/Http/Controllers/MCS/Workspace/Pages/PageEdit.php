@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\MCS\Workspace\Pages;
 
 use App\Actions\Action;
+use App\Domain\Media\Media;
 use Illuminate\Http\Request;
+use Dompdf\FrameDecorator\Page;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Page;
-use App\Domain\Models\MCS\Workspace\Media;
 
 class PageEdit extends Controller
 {

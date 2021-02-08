@@ -18,6 +18,7 @@ export default {
 
 <template>
    <MainNavigation>
+      <li><a class="view-website" href="/" target="_blank">Open Website</a></li>
       <li><inertia-link :href="route('dashboard')" :class="{ selected: this.nav === 'dashboard' }">Dashboard</inertia-link></li>
       <li><inertia-link :href="route('media.index')" :class="{ selected: this.nav === 'documents' }">Documents &amp; Media</inertia-link></li>
       <li>
@@ -37,9 +38,19 @@ export default {
                   <li><inertia-link :href="route('site-theme.index')" :class="{ selected: this.tertiary === 'themes' }">Site Themes</inertia-link></li>
                </ul>
             </li>
-            <li><inertia-link href="#" :class="{ selected: this.secondary === 'members' }">Members</inertia-link></li>
+            <li><inertia-link :href="route('member.index')" :class="{ selected: this.secondary === 'member' }">Members</inertia-link></li>
             <li><inertia-link :href="route('dashboard')" :class="{ selected: this.secondary === 'workspace-settings' }">Website Settings</inertia-link></li>
          </ul>
       </li>
    </MainNavigation>
 </template>
+
+<style lang="scss">
+@import "@@/abstract";
+
+.view-website {
+   background: var(--color-blueGray-900);
+   margin-top: calc(var(--px-48) * -1);
+   text-align: center;
+}
+</style>

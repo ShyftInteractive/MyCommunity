@@ -7,6 +7,10 @@ import ActionLink from "@/Components/Rebase/Actions/ActionLink"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
 import { Inertia } from "@inertiajs/inertia"
 import Multiselect from "vue-multiselect"
+import mapValues from "lodash/mapValues"
+import pickBy from "lodash/pickBy"
+import throttle from "lodash/throttle"
+import merge from "lodash/merge"
 import "vue-multiselect/dist/vue-multiselect.min.css"
 
 export default {
@@ -35,7 +39,7 @@ export default {
          sending: false,
          img: "https://images.pexels.com/photos/4323307/pexels-photo-4323307.jpeg",
          fileRecords: [],
-         uploadUrl: route("media.upload"),
+         uploadUrl: route("media.store"),
          fileRecordsForUpload: [],
          mediaList: this.media,
          tagList: this.tags,
@@ -51,6 +55,7 @@ export default {
          this.tagList.push(tag)
 
          const item = this.mediaList.data[id]
+
          this.$inertia.post(route("tag.store", { mediaID: item.id }), tag, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
@@ -63,6 +68,7 @@ export default {
             onFinish: () => (this.sending = false),
          })
       },
+
       deleteFile(id) {
          if (confirm("You want to delete this file from the server? This action is cannot be reversed.")) {
             this.$inertia.delete(route("media.delete", { mediaID: id }), {
@@ -111,7 +117,7 @@ export default {
    <Workspace nav="documents">
       <template #header>Documents &amp; Media</template>
       <template v-slot:body>
-         <div class="grid">
+         <div class="grid grid--content-y:start">
             <VueFileAgent class="col-12" :theme="'list'" @upload="onUpload($event)" @upload:error="onUploadError($event)" :uploadUrl="uploadUrl" v-model="fileRecords" :deletable="true" :meta="true"></VueFileAgent>
 
             <DataTable class="col-12" :links="media.links" routeName="media.index">
@@ -124,7 +130,7 @@ export default {
                   <th></th>
                </template>
                <template #contents>
-                  <tr v-for="(item, i) in mediaList.data" :key="i">
+                  <tr v-for="(item, i) in media.data" :key="i">
                      <td><input type="checkbox" /></td>
                      <td>{{ item.name }}</td>
                      <td>{{ item.type }}</td>

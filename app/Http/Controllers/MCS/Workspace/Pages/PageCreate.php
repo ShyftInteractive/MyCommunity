@@ -5,7 +5,7 @@ namespace App\Http\Controllers\MCS\Workspace\Pages;
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Template;
+use SebastianBergmann\Template\Template;
 
 class PageCreate extends Controller
 {

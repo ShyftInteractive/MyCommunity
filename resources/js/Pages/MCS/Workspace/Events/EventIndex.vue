@@ -95,7 +95,7 @@ export default {
                         <td><input v-model="form.selected" type="checkbox" :value="event.id" /></td>
                         <td>{{ event.title }}</td>
                         <td>{{ DTFormatter(new Date(event.start_at)) }}</td>
-                        <td>{{ event.end_at ? DTFormatter(new Date(event.end_at)) : "All Day" }}</td>
+                        <td>{{ event.end_at !== null ? DTFormatter(new Date(event.end_at)) : "All Day" }}</td>
                         <td>
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('event.edit', { eventID: event.id })">Edit</ActionLink>

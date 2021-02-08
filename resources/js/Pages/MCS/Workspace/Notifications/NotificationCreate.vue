@@ -32,8 +32,6 @@ export default {
             details: null,
             active: false,
             visibility: this.$page.props.app.roles.PUBLIC_ACCESS,
-            banner_display_at: null,
-            banner_hide_at: null,
          },
       }
    },
@@ -102,17 +100,6 @@ export default {
                      <FormCheckbox v-model="form.active">Show Banner Now</FormCheckbox>
                      <small v-if="form.active">Marking this banner as active will hide any presently showing banners, you'll also need to deactive manually.</small>
                   </FormField>
-                  <template v-if="!form.active">
-                     <FormField validate="banner_display_at" class="col-10--centered wd::col-3:at-4">
-                        <FieldLabel>Show Banner On</FieldLabel>
-                        <FormDatePicker v-model="form.banner_display_at" />
-                     </FormField>
-                     <FormField validate="banner_hide_at" class="col-10--centered wd::col-3">
-                        <FieldLabel>Hide Banner On</FieldLabel>
-                        <FormDatePicker v-model="form.banner_hide_at" />
-                        <small><em>You can leave this empty</em></small>
-                     </FormField>
-                  </template>
                </template>
                <Button class="col-10--centered md::col-6--centered button" type="submit" :disable="sending">Make</Button>
             </section>

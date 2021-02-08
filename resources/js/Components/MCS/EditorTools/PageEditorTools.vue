@@ -57,7 +57,7 @@ export default {
          } else if (info === "url") {
             target.href = event.target.value
          } else if (info === "box-align") {
-            target.classList.remove("grid:top", "grid:middle", "grid:bottom")
+            target.classList.remove("grid--content-y:start", "grid--content-y:center", "grid--content-y:end")
             target.classList.add(event.target.value)
          } else if (info === "text-align") {
             target.classList.remove("text:left", "text:right", "text:center")
@@ -122,9 +122,15 @@ export default {
             </div>
             <div class="grid" v-if="block.trim() == 'box-align'">
                <h5 class="col-12">Vertical Alignment</h5>
-               <label class="col-4"><Icon name="align-top" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:top" :selected="!!target.t.classList.contains('grid:top')" /></label>
-               <label class="col-4"><Icon name="align-middle" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:middle" :selected="!!target.t.classList.contains('grid:middle')" /></label>
-               <label class="col-4"><Icon name="align-bottom" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid:bottom" :selected="!!target.t.classList.contains('grid:bottom')" /></label>
+               <label class="col-4"
+                  ><Icon name="align-top" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid--content-y:start" :selected="!!target.t.classList.contains('grid--content-y:start')"
+               /></label>
+               <label class="col-4"
+                  ><Icon name="align-middle" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid--content-y:center" :selected="!!target.t.classList.contains('grid--content-y:center')"
+               /></label>
+               <label class="col-4"
+                  ><Icon name="align-bottom" /> <input type="radio" name="box-align" @input="check(target.t, $event, 'box-align')" value="grid--content-y:end" :selected="!!target.t.classList.contains('grid--content-y:end')"
+               /></label>
             </div>
             <div class="grid" v-if="block.trim() == 'text-align'">
                <h5 class="col-12">Text Alignment</h5>

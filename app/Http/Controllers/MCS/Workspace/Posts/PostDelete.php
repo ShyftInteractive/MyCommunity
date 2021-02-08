@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\MCS\Workspace\Posts;
 
-use App\Actions\Action;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Domain\Posts\PostService;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Post;
 
 class PostDelete extends Controller
 {
+    public function __construct(private PostService $postService) { }
+
     public function __invoke(string $postID, Request $request)
     {
-        Post::modelFactory()->remove(ids: [$postID]);
+        $this->postService->removeItems(ids: [$postID]);
 
         return redirect()->back()->with(['success' => 'Post Deleted']);
     }

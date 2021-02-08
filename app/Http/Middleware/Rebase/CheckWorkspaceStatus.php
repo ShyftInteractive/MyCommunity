@@ -5,10 +5,10 @@ namespace App\Http\Middleware\Rebase;
 use Closure;
 use Illuminate\Http\Request;
 use App\Enums\Rebase\MemberRoles;
+use App\Domain\Workspaces\Workspace;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\BaseMiddleware;
 use App\Domain\Facades\Rebase\RoleRepository;
-use App\Domain\Models\Rebase\Workspace\Workspace;
 use App\Domain\Facades\Rebase\WorkspaceRepository;
 
 class CheckWorkspaceStatus extends BaseMiddleware

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Rebase\Admin\Workspaces;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Domain\Workspaces\Workspace;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\Rebase\Workspace\Workspace;
 
 class WorkspaceIndex extends Controller
 {

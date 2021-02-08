@@ -12,20 +12,34 @@ export default {
 
    props: {
       value: [String, Number, Date],
+      starting: {
+         default: null,
+         type: [String, Number, Date],
+      },
    },
 
    data() {
       return {
          dt: this.value === null ? null : new Date(this.value),
+         start: this.starting === null ? null : new Date().setDate(this.start.getDate() - 1),
       }
    },
 
+   watch: {
+      starting(startTime) {
+         this.start = new Date().setDate(startTime.getDate() - 1)
+      },
+   },
    methods: {
       handleInput(newDT) {
          this.dt = newDT
          this.$emit("input", newDT)
       },
       notBeforeToday(date) {
+         console.log(this.start)
+         if (this.start) {
+            return date < this.start
+         }
          return date < new Date(new Date().setHours(0, 0, 0, 0))
       },
    },

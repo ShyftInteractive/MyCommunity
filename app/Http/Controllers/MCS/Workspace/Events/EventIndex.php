@@ -6,20 +6,23 @@ namespace App\Http\Controllers\MCS\Workspace\Events;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Domain\Events\EventService;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Event;
 
 class EventIndex extends Controller
 {
+    public function __construct(private EventService $eventService)
+    {
+    }
+
     public function __invoke(Request $request)
     {
-        $events = Event::byWorkspace($request->get('workspace_id'))
-            ->orderable(
-                column: 'start_at',
-            )->searchable(
-                searchTerm: $request->get('s'),
-                searchFields: ['title']
-            )->paginate($request->get('count') ?? 10);
+        $events = $this->eventService->findEvents(
+            workspaceID: $request->get('workspace_id'),
+            search: $request->get('s'),
+            count: (int) $request->get('count'),
+        );
+
 
         return inertia(Action::getView($this), [
             'events' => $events->toArray(),

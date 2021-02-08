@@ -61,7 +61,7 @@ export default {
                </FormField>
                <FormField class="col-10--centered wd::col-2">
                   <FieldLabel>Ends At</FieldLabel>
-                  <FormDatePicker v-model="form.end_at" />
+                  <FormDatePicker v-model="form.end_at" :starting="form.start_at" />
                   <small><em>You can leave this empty</em></small>
                </FormField>
                <FormField validate="visibility" class="col-10--centered wd::col-2">

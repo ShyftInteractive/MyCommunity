@@ -12,7 +12,5 @@ class NotificationSelected extends Controller
 {
     public function __invoke(string $action, Request $request)
     {
-        match ($action) {
-        };
     }
 }

@@ -15,6 +15,7 @@ class CreateMemberWorkspaceTable extends Migration
             $table->id();
             $table->uuid('member_id');
             $table->uuid('workspace_id');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
 
             $table->foreign('member_id')

@@ -5,11 +5,12 @@ namespace App\Http\Middleware\Rebase;
 use Closure;
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Domain\Lookup\Lookup;
 use App\Helpers\Rebase\HostHelper;
+use App\Domain\Lookup\LookupService;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Middleware\BaseMiddleware;
 use App\Helpers\Rebase\DatabaseHelper;
-use App\Domain\Models\Rebase\Admin\Lookup;
+use App\Http\Middleware\BaseMiddleware;
 use App\Domain\Facades\Rebase\LookupRepository;
 use App\Exceptions\SubdomainConnectionException;
 
@@ -24,6 +25,8 @@ class ParseSecondaryConnection extends BaseMiddleware
         'stripe',
         'search',
     ];
+
+    public function __construct(private LookupService $lookupService) { }
 
     public function handle(Request $request, Closure $next): mixed
     {

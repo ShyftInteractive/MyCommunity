@@ -9,7 +9,7 @@ use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Domain\Models\MCS\Workspace\Template;
+use SebastianBergmann\Template\Template;
 
 class SiteTemplateEdit extends Controller
 {

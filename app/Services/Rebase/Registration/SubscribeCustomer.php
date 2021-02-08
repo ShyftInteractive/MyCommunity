@@ -3,7 +3,7 @@
 namespace App\Services\Rebase\Registration;
 
 use App\Domain\Factories\Rebase\CustomerModelFactory;
-use App\Domain\Models\Rebase\Admin\Customer;
+use App\Domain\Customers\Customer;
 use Laravel\Cashier\Exceptions\PaymentFailure;
 use Laravel\Cashier\Exceptions\SubscriptionUpdateFailure;
 

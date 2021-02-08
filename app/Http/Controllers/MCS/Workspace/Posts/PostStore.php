@@ -2,39 +2,25 @@
 
 namespace App\Http\Controllers\MCS\Workspace\Posts;
 
-use App\Actions\Action;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Domain\Posts\PostService;
+use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Domain\Models\MCS\Workspace\Post;
 
 class PostStore extends Controller
 {
-    public function __invoke(Request $request)
-    {
-        $request->validate($this->rules($request->get('workspace_id')));
+    public function __construct(private PostService $postService) { }
 
-        $post = Post::modelFactory()->create([
-            "slug" => $request->input('slug'),
-            "title" => $request->input('title'),
-            "content" => "<h1>Start typin'....</h1>",
-            "visibility" => $request->input('visibility'),
-            "workspace_id" => $request->get('workspace_id'),
-            "member_id" => auth()->user()->id,
-        ]);
+    public function __invoke(PostRequest $request)
+    {
+
+        $post = $this->postService->createPost(
+            memberID: auth()->user()->id,
+            workspaceID: $request->get('workspace_id'),
+            request: $request->input(),
+        );
 
         return redirect()->route('post.edit', [
             'postID' => $post->id,
         ]);
-    }
-
-    private function rules(string $workspaceID): array
-    {
-        return [
-            'title' => ['string', 'required', 'max:100'],
-            'slug' => ['string', 'required', 'max:100', Rule::unique('workspace.posts')->where('workspace_id', $workspaceID)],
-            'visibility' => ['required'],
-        ];
     }
 }

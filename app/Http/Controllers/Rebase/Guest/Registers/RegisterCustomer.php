@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Rebase\Guest\Registers;
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\Rebase\Admin\Customer;
+use App\Domain\Customers\Customer;
 
 class RegisterCustomer extends Controller
 {

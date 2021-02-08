@@ -14,6 +14,7 @@ export default {
       Workspace,
       Icon,
       EventBus,
+      ActionMenu,
       ActionButton,
    },
 
@@ -106,6 +107,8 @@ export default {
          currentHeight += adjustment
          this.form.template.content[index].height = `${currentHeight}px`
       },
+
+      toggleLock(index) {},
    },
 }
 </script>
@@ -120,11 +123,21 @@ export default {
                   <div class="mcs--template">
                      <div class="grid--page js-grid" v-for="(row, index) in form.template.content" :key="index" :style="`min-height: ${row.height}`">
                         <ul class="row-options">
-                           <li>
-                              <button class="button--icon remove-row" @click="adjustHeight(-10, index, $event)"><Icon name="minus" size="20" /></button>
+                           <li class="row-metadata">
+                              <span class="help">
+                                 <h2>Adjust the Row</h2>
+
+                                 Row Height: {{ row.height }}
+                              </span>
                            </li>
                            <li>
-                              <button class="button--icon remove-row" @click="adjustHeight(10, index, $event)"><Icon name="plus" size="20" /></button>
+                              <button class="button--icon" @click="adjustHeight(-10, index, $event)" title="Decrease Height of Row"><Icon name="minus" size="20" /></button>
+                           </li>
+                           <li>
+                              <button class="button--icon" @click="adjustHeight(10, index, $event)" title="Increase Height of Row"><Icon name="plus" size="20" /></button>
+                           </li>
+                           <li>
+                              <Button class="button--icon" @click="remove(index)" title="Remove Whole Row"><Icon name="close" size="20" /></Button>
                            </li>
                         </ul>
 
@@ -132,7 +145,6 @@ export default {
                            <section class="component-picker">
                               <ActionMenu>
                                  <ActionButton @click="readyContent(index, key)">Add Content</ActionButton>
-                                 <ActionButton @click="remove(index)">Remove Row</ActionButton>
                               </ActionMenu>
                            </section>
 
@@ -165,11 +177,19 @@ export default {
 
 <style lang="scss">
 .grid--page {
-   transition: all 250ms ease-in-and-out;
-   &:hover {
-      .row-options {
-         opacity: 1;
-         height: auto;
+   position: relative;
+
+   .row-options:hover {
+      background: rgba(#222, 0.8);
+      width: calc(100% + 44px);
+      color: #fff;
+
+      .row-metadata {
+         margin-bottom: -84px;
+      }
+
+      .help {
+         display: block;
       }
    }
 }
@@ -177,21 +197,42 @@ export default {
    position: absolute;
    right: 20px;
    bottom: 0;
+   z-index: 10;
 }
+
 .row-options {
    position: absolute;
-   width: 100%;
-   height: 0;
+   width: 40px;
+   height: 100%;
+   right: -44px;
    background: var(--color-coolGray-200);
    margin: 0;
    z-index: 1;
    list-style-type: none;
    border-bottom: 1px solid var(--color-coolGray-400);
-   transition: opacity 500ms;
-   opacity: 0;
+   display: flex;
+   align-items: flex-end;
+   flex-direction: column;
+   padding: var(--px-16) 0;
+   transition: 250ms all;
+
+   .row-metadata {
+      font-size: var(--px-24);
+      align-self: flex-start;
+   }
+
+   .help {
+      display: none;
+   }
 
    li {
-      display: inline-block;
+      padding: 0 var(--px-16);
+
+      &:last-of-type {
+         flex-grow: 1;
+         display: flex;
+         align-items: flex-end;
+      }
    }
 }
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\MCS\Workspace\Pages;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use Dompdf\FrameDecorator\Page;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Page;
 
 class PageIndex extends Controller
 {

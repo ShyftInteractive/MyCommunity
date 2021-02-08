@@ -9,7 +9,7 @@ use App\Mail\Rebase\PasswordReset;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use App\Domain\Models\Rebase\Workspace\Member;
+use App\Domain\Members\Member;
 
 class ProcessForgot extends Controller
 {

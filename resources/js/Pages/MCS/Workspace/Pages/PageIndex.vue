@@ -46,6 +46,33 @@ export default {
             )
          }
       },
+      togglePublish(page) {
+         let message = "Ready to publish?"
+         if (page.published === true) {
+            message = "Are you sure you want to unpublish this page, people will no longer be able to visit it?"
+         }
+
+         page.published = this.update(message, page.id, { published: !page.published })
+      },
+
+      toggleHomepage(page) {
+         let message = "Set as homepage? This will unset any other page you may have set as the homepage, ok?"
+         if (page.is_homepage === true) {
+            message = "Unset as homepage? Without a homepage people who come to you site may think it doesn't work"
+         }
+
+         this.update(message, page.id, { is_homepage: !page.is_homepage })
+      },
+
+      update(message, id, updates) {
+         if (confirm(message)) {
+            this.$inertia.put(route("page.update", { pageID: id }), updates, {
+               onStart: () => (this.sending = true),
+               onFinish: () => (this.sending = false),
+            })
+         }
+      },
+
       deleteSelected() {
          if (confirm(`Are you sure you want to delete ${this.form.selected.length} item(s)?`)) {
             this.$inertia.post(route("page.delete.selected"), this.form, {
@@ -95,7 +122,14 @@ export default {
                         <td>
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('page.edit', { pageID: page.id })">Edit</ActionLink>
-                              <ActionLink link="#">Publish</ActionLink>
+                              <ActionButton @click="toggleHomepage(page)">
+                                 <template v-if="page.is_homepage">Unset Homepage</template>
+                                 <template v-else>Set as Home</template>
+                              </ActionButton>
+                              <ActionButton @click="togglePublish(page)">
+                                 <template v-if="page.published">Unpublish</template>
+                                 <template v-else>Publish</template>
+                              </ActionButton>
                               <ActionButton @click="confirmDelete(page.id)">Delete</ActionButton>
                            </ActionMenu>
                         </td>

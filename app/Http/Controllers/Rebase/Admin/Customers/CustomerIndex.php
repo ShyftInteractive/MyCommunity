@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Rebase\Admin\Customers;
 
 use App\Actions\Action;
+use App\Domain\Roles\Role;
 use Illuminate\Http\Request;
 use App\Enums\Rebase\MemberRoles;
+use App\Domain\Customers\Customer;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\Rebase\Admin\Customer;
-use App\Domain\Models\Rebase\Workspace\Role;
 use App\Domain\Facades\Rebase\RoleRepository;
 use App\Domain\Facades\Rebase\MemberRepository;
 use App\Domain\Facades\Rebase\CustomerRepository;

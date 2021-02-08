@@ -18,9 +18,9 @@ Route::domain($domain)->prefix('{customerID}')->group(function (): void {
         Route::get('invoice/{invoiceID}',   Rebase\Admin\Customers\ShowInvoice::class)->name('customer.invoice.show');
 
         // Workspace
-        Route::get('workspaces', Rebase\Admin\Workspaces\WorkspaceIndex::class)->name('workspace.index');
+        Route::get('customer/workspaces', Rebase\Admin\Workspaces\WorkspaceIndex::class)->name('customer.workspace.index');
 
         // Member
-        Route::get('members', Rebase\Admin\Members\MemberIndex::class)->name('member.index');
+        Route::get('customer/members', Rebase\Admin\Members\MemberIndex::class)->name('customer.member.index');
     });
 });

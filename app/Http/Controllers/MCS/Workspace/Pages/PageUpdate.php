@@ -1,34 +1,39 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\Pages;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Domain\Pages\PageService;
 use App\Http\Controllers\Controller;
 use App\Domain\Models\MCS\Workspace\Page;
 
 class PageUpdate extends Controller
 {
+    public function __construct(private PageService $pageService)
+    {
+    }
     public function __invoke(string $pageID, Request $request)
     {
-            $updateItems = collect($request->only([
-                "page.id",
-                "page.workspace_id",
-                "page.slug",
-                "page.path",
-                "page.title",
-                "page.description",
-                "page.content",
-                "page.visibility",
-                "page.published_at",
-            ]))->get('page');
+        $this->pageService->updatePage(
+            pageID: $pageID,
+            updates: $request->only(
+                "id",
+                "workspace_id",
+                "slug",
+                "path",
+                "title",
+                "description",
+                "content",
+                "published",
+                "is_homepage",
+                "visibility",
+                "published_at",
+            )
+        );
 
-        Page::modelFactory()->update(
-            whereCol: 'id',
-            whereValue: $pageID,
-            update: $updateItems);
-
-
-        return redirect()->back()->withSuccess('Saved');
+        return redirect()->back()->withSuccess('Page has been updated');
     }
 }

@@ -13,6 +13,9 @@ export const slugify = function(strVal) {
 }
 
 export const DTFormatter = function (dt) {
+   if (typeof dt === "string") {
+      dt = new Date(dt);
+   }
    return dt.toLocaleTimeString([], {
       year: 'numeric',
       month: '2-digit',

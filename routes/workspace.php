@@ -16,22 +16,27 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::post('/onboarding/complete', Rebase\Workspace\Onboarding\OnboardingComplete::class)->name('onboarding.complete');
 
         // Members....
-        Route::get('/members', Rebase\Workspace\Members\WorkspaceMemberIndex::class)->name('workspace-members.index');
+        Route::get('/members',                  MCS\Workspace\Members\MemberIndex::class)->name('member.index');
+        Route::post('/members',                 MCS\Workspace\Members\MemberStore::class)->name('member.store');
+        Route::get('/members/{memberID}/edit',  MCS\Workspace\Members\MemberEdit::class)->name('member.edit');
+        Route::post('/members/{memberID}',      MCS\Workspace\Members\MemberUpdate::class)->name('member.update');
+        Route::delete('/members/{memberID}',    MCS\Workspace\Members\MemberDelete::class)->name('member.delete');
 
         // Media...
         Route::get('/media',                            MCS\Workspace\Media\MediaIndex::class)->name('media.index');
-        Route::post('/media/upload',                    MCS\Workspace\Media\MediaUpload::class)->name('media.upload');
+        Route::post('/media',                           MCS\Workspace\Media\MediaStore::class)->name('media.store');
         Route::post('/media/{mediaID}',                 MCS\Workspace\Media\MediaUpdate::class)->name('media.update');
         Route::delete('/media/{mediaID}',               MCS\Workspace\Media\MediaDelete::class)->name('media.delete');
-        Route::post('/media/{mediaID}/{type}/{tagID}',  MCS\Workspace\Media\MediaTagUpdate::class)->name('media.tag.update');
+        Route::post('/media/{mediaID}/{type}/{tagID}',  MCS\Workspace\Media\MediaTagStore::class)->name('media.tag.store');
 
         // Tags...
-        Route::get('/tags', MCS\Workspace\Tags\TagIndex::class)->name('tag.index');
-        Route::get('/tags/create', MCS\Workspace\Tags\TagCreate::class)->name('tag.create');
-        Route::post('/tags/{mediaID}', MCS\Workspace\Tags\TagStore::class)->name('tag.store');
-        Route::get('/tags/{groupID}', MCS\Workspace\Tags\TagEdit::class)->name('tag.edit');
-        Route::get('/tags/{groupID}', MCS\Workspace\Tags\TagUpdate::class)->name('tag.update');
-        Route::delete('/tags/{groupID}', MCS\Workspace\Tags\TagDelete::class)->name('tag.delete');
+        // Route::get('/tags',                     MCS\Workspace\Tags\TagIndex::class)->name('tag.index');
+        // Route::get('/tags/create',              MCS\Workspace\Tags\TagCreate::class)->name('tag.create');
+        // Route::post('/tags/{mediaID}',          MCS\Workspace\Tags\TagStore::class)->name('tag.store');
+        // Route::post('/tags/attach/{mediaID}',   MCS\Workspace\Tags\TagAttach::class)->name('tag.attach');
+        // Route::get('/tags/{groupID}',           MCS\Workspace\Tags\TagEdit::class)->name('tag.edit');
+        // Route::get('/tags/{groupID}',           MCS\Workspace\Tags\TagUpdate::class)->name('tag.update');
+        // Route::delete('/tags/{groupID}',        MCS\Workspace\Tags\TagDelete::class)->name('tag.delete');
 
         // Groups...
         Route::get('/groups', MCS\Workspace\Groups\GroupIndex::class)->name('group.index');
@@ -99,7 +104,7 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
     });
 
     // This *MUST* be last as it's a catch-all route
-    Route::get('/{page}', MCS\Workspace\Front\Index::class)
-        ->where('page', '.*')
+    Route::get('/{slug}', MCS\Workspace\Front\Index::class)
+        ->where('slug', '.*')
         ->name('front.index');
 });

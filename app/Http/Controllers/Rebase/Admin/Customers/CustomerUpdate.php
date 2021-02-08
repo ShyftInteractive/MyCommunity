@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rebase\Admin\Customers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\Rebase\Admin\Customer;
+use App\Domain\Customers\Customer;
 
 class CustomerUpdate extends Controller
 {

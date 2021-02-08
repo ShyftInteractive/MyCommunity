@@ -7,7 +7,7 @@ namespace App\Http\Controllers\MCS\Workspace\Notifications;
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\MCS\NotificationService;
+use App\Domain\Notifications\NotificationService;
 
 class NotificationIndex extends Controller
 {
@@ -17,6 +17,7 @@ class NotificationIndex extends Controller
 
     public function __invoke(Request $request)
     {
+
         $banners = $this->notificationService->findBannerNotifications(
             workspaceID: $request->get('workspace_id'),
             terms: $request->get('banners'),

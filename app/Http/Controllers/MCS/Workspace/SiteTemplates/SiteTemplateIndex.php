@@ -5,7 +5,7 @@ namespace App\Http\Controllers\MCS\Workspace\SiteTemplates;
 use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Template;
+use SebastianBergmann\Template\Template;
 
 class SiteTemplateIndex extends Controller
 {

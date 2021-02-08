@@ -84,7 +84,7 @@ export default {
             <div class="content-container">
                <slot name="body"></slot>
                <div class="drawer" :class="{ closed: !drawerState }" v-if="useDrawer">
-                  <div class="grid">
+                  <div class="grid grid--content-y:start">
                      <div class="col-1">
                         <button class="button--link" @click="drawerState = !drawerState">
                            <Icon v-if="drawerState" name="chevrons-right" size="20" />
@@ -204,14 +204,15 @@ $headerbar-height: 40px;
          bottom: 0;
          box-shadow: 2px 1px 5px 0px var(--color-coolGray-800);
          color: var(--color-coolGray-800);
-         overflow: scroll;
+         overflow-x: hidden;
+         overflow-y: auto;
          padding: var(--px-16);
          position: absolute;
          right: 0;
          top: $headerbar-height * 2;
          transition: width 350ms ease-in-out;
          width: 100vw;
-         z-index: 2;
+         z-index: 12;
 
          &.closed {
             width: 50px;

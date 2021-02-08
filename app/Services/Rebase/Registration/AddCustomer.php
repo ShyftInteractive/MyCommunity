@@ -2,7 +2,7 @@
 
 namespace App\Services\Rebase\Registration;
 
-use App\Domain\Models\Rebase\Admin\Customer;
+use App\Domain\Customers\Customer;
 use Carbon\Carbon;
 
 class AddCustomer

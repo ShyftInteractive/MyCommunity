@@ -4,24 +4,24 @@ namespace Database\Seeders\Rebase;
 
 use Exception;
 use Faker\Provider\Lorem;
+use App\Domain\Roles\Role;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Faker\Provider\Internet;
 use Faker\Generator as Faker;
+use App\Domain\Members\Member;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Faker\Provider\en_US\Person;
 use App\Enums\Rebase\MemberRoles;
 use Faker\Provider\en_US\Address;
 use Faker\Provider\en_US\Company;
+use App\Domain\Customers\Customer;
+use App\Domain\Workspaces\Workspace;
 use Illuminate\Support\Facades\Hash;
 use Faker\Provider\en_US\PhoneNumber;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
-use App\Domain\Models\Rebase\Admin\Customer;
-use App\Domain\Models\Rebase\Workspace\Role;
-use App\Domain\Models\Rebase\Workspace\Member;
-use App\Domain\Models\Rebase\Workspace\Workspace;
+use Illuminate\Support\Facades\Storage;
 
 class PersonalWorkspace extends Seeder
 {

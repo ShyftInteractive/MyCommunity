@@ -1,0 +1,107 @@
+@import 'rebase/size';
+@import 'rebase/font';
+@import 'rebase/defaults-variables';
+@import 'app/variables';
+@import url('normalize.css/normalize.css');
+@import 'rebase/grid';
+@import 'rebase/baseline';
+
+@import 'customer/components/_components.scss';
+
+.component {
+   height: 100%;
+}
+
+:root {
+   --background-color: #f6f3fe;
+   --normal-text-color: #6a6a6a;
+   --accent-background: #9c13fe;
+   --accent-text: #fff;
+   --secondary-color: #ff5757;
+
+   --text-decoration: none;
+}
+
+body {
+   background: var(--background-color);
+   color: var(--normal-text-color);
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+   text-decoration: var(--text-decoration);
+
+   &:hover {
+      color: var(--secondary-color);
+   }
+}
+
+.notification--banner {
+   background: var(--accent-background);
+   color: var(--accent-text);
+   font-size: 1.3rem;
+   padding: var(--px-16);
+   line-height: 1.4;
+}
+
+.header--main {
+   padding: var(--px-16);
+}
+.workspace--logo {
+   margin: 0;
+   padding: 0;
+}
+
+.container {
+   background: #fff;
+}
+
+.navigation--main {
+   flex-direction: row;
+   gap: var(--px-12);
+}
+.navigation--secondary {
+   flex-direction: row;
+   gap: var(--px-12);
+   justify-content: end;
+}
+
+.footer--main {
+   font-size: 0.8rem;
+   padding: var(--px-24) 0 0 0;
+   text-align: center;
+}
+
+
+
+.grid\:middle {
+   align-content: center;
+}
+.grid\:top {
+   align-content: start;
+}
+.grid\:bottom {
+   align-content: end;
+}
+
+.grid\:item-stretch {
+   align-items: stretch;
+}
+
+.text\:center {
+  text-align: center;
+}
+.text\:left {
+   text-align: left;
+}
+.text\:right {
+   text-align: right;
+}
+
+.flex\:self-start {
+   align-self: start !important;
+}
+
+.flex\:align-start {
+   align-self: start;
+}

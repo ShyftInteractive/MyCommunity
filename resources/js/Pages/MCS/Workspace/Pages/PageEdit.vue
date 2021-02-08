@@ -51,7 +51,7 @@ export default {
          this.dirtyCheck()
          EventBus.$emit("OPEN_DRAWER", false)
 
-         this.$inertia.put(route("page.update", { pageID: this.form.page.id }), this.form, {
+         this.$inertia.put(route("page.update", { pageID: this.form.page.id }), this.form.page, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })

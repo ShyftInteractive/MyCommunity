@@ -1,25 +1,42 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\Front;
 
-use App\Actions\Action;
+use Exception;
 use Illuminate\Http\Request;
-use InvalidArgumentException;
+use App\Services\MCS\PageService;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
+use App\Services\MCS\NotificationService;
 
 class Index extends Controller
 {
-    public function __invoke(Request $request, string $page = '')
-    {
-        $page = $this->getWorkspaceStoragePath($request) .'.'.str_replace('/', '.', $page);
+    public function __construct(
+        private PageService $pageService,
+        private NotificationService $notificationService
+    ) {
+    }
 
+    public function __invoke(Request $request, string $slug = '')
+    {
         try {
-            return view($page);
-        } catch (InvalidArgumentException $e) {
+            $banner = $this->notificationService->getActiveBanner($request->get('workspace_id'));
+            $pages = $this->pageService->getPublishedPages($request->get('workspace_id'));
+
+            $content = $this->pageService->getActiveContent(
+                slug: $slug,
+                pages: $pages,
+            );
+        } catch (Exception $e) {
             return abort(404);
         }
 
+        return view('front.front', [
+            'pages' => $pages,
+            'content' => $content,
+            'banner' => $banner,
+        ]);
     }
 
     private function getWorkspaceStoragePath($request)

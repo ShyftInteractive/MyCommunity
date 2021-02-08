@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Rebase\Workspace\Onboarding;
 
 use Illuminate\Http\Request;
+use App\Domain\Workspaces\Workspace;
 use App\Http\Controllers\Controller;
 use App\Enums\Rebase\WorkspaceStatus;
-use App\Domain\Models\Rebase\Workspace\Workspace;
 
 class OnboardingComplete extends Controller
 {

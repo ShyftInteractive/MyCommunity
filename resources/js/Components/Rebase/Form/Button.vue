@@ -56,7 +56,7 @@ export default {
    justify-content: center;
    line-height: var(--leading-normal);
    margin: 0;
-   height: inherit;
+   height: var(--px-40);
    padding: 0 var(--px-16);
    position: relative;
    text-align: center;

@@ -1,5 +1,6 @@
 <?php
 
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Domain\Models\Rebase\Workspace\Member::class,
+            'model' => App\Domain\Members\Member::class,
         ],
 
         // 'users' => [

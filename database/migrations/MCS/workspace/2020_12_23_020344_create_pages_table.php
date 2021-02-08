@@ -25,7 +25,10 @@ class CreatePagesTable extends Migration
             $table->json('content')->nullable();
             $table->enum('visibility', Arr::flatten(MemberRoles::toArray()))->default(MemberRoles::PUBLIC_ACCESS());
             $table->boolean('published')->default(false);
+            $table->boolean('is_homepage')->default(false);
             $table->timestamp('published_at')->nullable();
+            $table->integer('order')->nullable();
+            $table->uuid('parent_id')->nullable();
             $table->timestamps();
 
             $table->unique(['workspace_id', 'slug']);

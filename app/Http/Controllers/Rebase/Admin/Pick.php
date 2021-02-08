@@ -6,10 +6,10 @@ namespace App\Http\Controllers\Rebase\Admin;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Domain\Workspaces\Workspace;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Facades\Rebase\MemberRepository;
-use App\Domain\Models\Rebase\Workspace\Workspace;
 
 class Pick extends Controller
 {

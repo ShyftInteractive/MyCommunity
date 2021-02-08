@@ -6,19 +6,26 @@ namespace App\Http\Controllers\MCS\Workspace\Media;
 
 use App\Actions\Action;
 use Illuminate\Http\Request;
+use App\Services\MCS\MediaService;
 use App\Http\Controllers\Controller;
 use App\Domain\Models\MCS\Workspace\Tag;
 use App\Domain\Models\MCS\Workspace\Media;
 
 class MediaIndex extends Controller
 {
+    public function __construct(private MediaService $mediaService)
+    {
+    }
+
     public function __invoke(Request $request)
     {
 
-        $media = Media::byWorkspace($request->get('workspace_id'))->with('tags')->searchable(
-            searchTerm: $request->get('s'),
-            searchFields: ['name']
-        )->paginate($request->get('count') ?? 10);
+        $media = $this->mediaService->findMediaAndTags(
+            workspaceID: $request->get('workspace_id'),
+            search: $request->get('s'),
+            count: (int) $request->get('count'),
+        );
+
 
         return inertia(Action::getView($this), [
             'media' => $media->toArray(),

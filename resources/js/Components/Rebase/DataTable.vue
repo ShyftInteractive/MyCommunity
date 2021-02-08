@@ -13,15 +13,22 @@ export default {
          },
       }
    },
+
    watch: {
       form: {
-         handler: throttle(function () {
-            let query = pickBy(this.form)
-            this.$inertia.replace(this.route(this.routeName, merge(query, this.routeParams)))
+         handler: throttle(function (f) {
+            let query = pickBy(f)
+            this.$inertia.get(this.route(this.routeName), merge(query, this.routeParams), {
+               replace: true,
+               preserveState: true,
+               onStart: () => (this.sending = true),
+               onFinish: () => (this.sending = false),
+            })
          }, 150),
          deep: true,
       },
    },
+
    methods: {
       reset() {
          this.form = mapValues(this.form, () => null)
@@ -40,12 +47,12 @@ export default {
 
 <template>
    <section>
-      <form class="grid search-bar" action="get" v-if="routeName">
-         <FormFieldInline class="col-6">
+      <form class="grid search-bar">
+         <FormFieldInline class="col-8">
             <FieldLabel>Search:</FieldLabel>
             <FormInput v-model="form.s" />
          </FormFieldInline>
-         <div class="col-6 text--column:start">
+         <div class="col-4 text--column:start">
             <Button class="button--link:inline" @click="reset">Reset</Button>
          </div>
       </form>
@@ -98,7 +105,7 @@ export default {
          flex-wrap: wrap;
          justify-content: space-between;
 
-         &:nth-of-type(4n + 1) {
+         &:nth-of-type(2n + 1) {
             background: var(--color-blueGray-50);
          }
 

@@ -31,6 +31,7 @@ mix
    })
    .sass(`${process.env.MIX_INPUT_STYLE}/app.scss`, process.env.MIX_OUTPUT_STYLE)
    .sass(`${process.env.MIX_INPUT_STYLE}/customer.scss`, process.env.MIX_OUTPUT_STYLE)
+   .sass(`${process.env.MIX_INPUT_STYLE}/front.scss`, process.env.MIX_OUTPUT_STYLE)
    .js(`${process.env.MIX_INPUT_JS}/app.js`, process.env.MIX_OUTPUT_JS)
    .vue({
       extractVueStyles: true,

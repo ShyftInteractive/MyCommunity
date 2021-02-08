@@ -6,7 +6,7 @@ use App\Actions\Action;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Template;
+use SebastianBergmann\Template\Template;
 
 class SiteTemplateDelete extends Controller
 {

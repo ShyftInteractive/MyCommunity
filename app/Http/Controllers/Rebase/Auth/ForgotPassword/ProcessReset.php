@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rebase\Auth\ForgotPassword;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\Rebase\Workspace\Member;
+use App\Domain\Members\Member;
 use App\Domain\Facades\Rebase\MemberRepository;
 
 class ProcessReset extends Controller

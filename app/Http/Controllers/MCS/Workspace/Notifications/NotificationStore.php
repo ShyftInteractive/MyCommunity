@@ -6,7 +6,7 @@ namespace App\Http\Controllers\MCS\Workspace\Notifications;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\MCS\NotificationService;
+use App\Domain\Notifications\NotificationService;
 
 class NotificationStore extends Controller
 {
@@ -31,8 +31,6 @@ class NotificationStore extends Controller
         return [
             'message' => 'required',
             'type' => 'required',
-            'banner_dispaly_at' => 'sometimes|date',
-            'banner_hide_at' => 'exclude_if:banner_display_at,null|nullable|date|after:banner_display_at'
         ];
     }
 }
