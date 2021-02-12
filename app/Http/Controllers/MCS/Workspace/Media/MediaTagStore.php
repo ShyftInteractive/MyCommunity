@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\MCS\Workspace\Media;
 
 use Illuminate\Http\Request;
-use App\Services\MCS\TagService;
-use App\Services\MCS\MediaService;
+use App\Domain\Tags\TagService;
+use App\Domain\Media\MediaService;
 use App\Http\Controllers\Controller;
 
 class MediaTagStore extends Controller

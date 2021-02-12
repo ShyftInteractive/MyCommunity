@@ -14,4 +14,12 @@ class TagService extends BaseService {
         );
     }
 
+    public function createTag(string $workspaceID, string $name)
+    {
+        return $this->repository->create([
+            "workspace_id" => $workspaceID,
+            "name" => $name,
+        ]);
+    }
+
 }

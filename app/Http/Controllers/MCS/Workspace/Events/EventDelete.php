@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\Events;
 
@@ -10,9 +8,7 @@ use App\Http\Controllers\Controller;
 
 class EventDelete extends Controller
 {
-    public function __construct(private EventService $eventService)
-    {
-    }
+    public function __construct(private EventService $eventService) { }
 
     public function __invoke(string $eventID, Request $request)
     {

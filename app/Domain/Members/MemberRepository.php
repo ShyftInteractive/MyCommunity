@@ -3,6 +3,7 @@
 namespace App\Domain\Members;
 
 use App\Domain\Members\Member;
+use App\Domain\Base\BaseRepository;
 
 class MemberRepository extends BaseRepository
 {

@@ -39,6 +39,15 @@ class BaseService
         return $this->repository->delete(col: 'id', value: $id);
     }
 
+    public function removeWorkspaceItem(string $workspaceID, string $id)
+    {
+        return $this->repository->deleteScopedToWorkspace(
+            col: 'id',
+            value: $id,
+            workspaceID: $workspaceID,
+        );
+    }
+
     public function removeItems(array $ids)
     {
         return $this->repository->deleteAll(col: 'id', values: $ids);

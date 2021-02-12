@@ -32,11 +32,13 @@
    &--top {
       @extend .grid;
       align-items: start;
+      align-content: start;
    }
 
    &--bottom {
       @extend .grid;
       align-items: end;
+      align-content: end;
    }
 }
 
@@ -99,8 +101,17 @@
    }
 }
 
+.col-- {
+   &direction\: {
+      &row { flex-direction: row; }
+      &col { flex-direction: column; }
+   }
+
+}
+
 .grid-- {
    @include with-queries {
+
       &self {
          &-x\: {
             &start   { justify-self: start;     }

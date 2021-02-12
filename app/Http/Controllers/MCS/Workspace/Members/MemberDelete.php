@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Domain\Members\MemberService;
 use App\Exceptions\SelfRemovalException;
 use App\Exceptions\AccountRemovalException;
-use App\Exceptions\AccountOwnerRemovalException;
 
 class MemberDelete extends Controller
 {

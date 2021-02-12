@@ -7,7 +7,6 @@ use App\Enums\MCS\MediaTypes;
 use App\Domain\Base\BaseService;
 use App\Enums\Rebase\MemberRoles;
 use App\Http\Requests\MediaRequest;
-use App\Domain\Factories\BaseFactory;
 use App\Domain\Media\MediaRepository;
 use Illuminate\Support\Facades\Storage;
 

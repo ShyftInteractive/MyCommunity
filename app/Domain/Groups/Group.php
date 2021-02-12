@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Groups;
 
+use App\Domain\Tags\Tag;
 use Laravel\Horizon\Tags;
 use App\Domain\Media\Media;
 use App\Traits\ModelScopes;
@@ -47,13 +48,9 @@ class Group extends Model
     {
         parent::boot();
 
-        static::creating(function ($tag): void {
-            $tag->id = (string)Str::uuid();
+        static::creating(function ($group): void {
+            $group->id = (string)Str::uuid();
         });
-
-        // static::deleting(function (Media $media) {
-        //     Storage::disk('spaces')->delete($media->path);
-        // });
     }
 
     public function workspace(): HasOne
@@ -61,8 +58,9 @@ class Group extends Model
         return $this->hasOne(Workspace::class);
     }
 
-    public function media(): BelongsToMany
+    public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Media::class);
+        return $this->belongsToMany(Tag::class);
     }
+
 }

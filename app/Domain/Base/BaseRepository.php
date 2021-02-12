@@ -45,6 +45,11 @@ class BaseRepository
         return $this->model->where($col, $value)->first()->delete();
     }
 
+    public function deleteScopedToWorkspace(string $col, string $value, string $workspaceID)
+    {
+        return $this->model->byWorkspace($workspaceID)->where($col, $value)->delete();
+    }
+
     public function searchWorkspace(string $workspaceID, ?string $terms = null, ?array $fields = null, ?int $count, string $orderBy = 'created_at', string $orderDirection = 'asc')
     {
         return $this->model

@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\MCS\Workspace\Tags;
 
 use Illuminate\Http\Request;
-use App\Services\MCS\TagService;
+use App\Domain\Tags\TagService;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Tag;
-use App\Domain\Models\MCS\Workspace\Media;
 
 class TagStore extends Controller
 {
-    public function __invoke(string $mediaID, Request $request)
+    public function __construct(private TagService $tagService) {}
+
+    public function __invoke(Request $request)
     {
+        $this->tagService->createTag(
+            workspaceID: $request->get('workspace_id'),
+            name:$request->input('name'),
+        );
 
-        $newTag = Tag::create([
-            'workspace_id' => $request->get('workspace_id'),
-            'name' => $request->get('name')
-        ]);
-
-        Media::byWorkspace($request->get('workspace_id'))->with('tags')->where('id', $mediaID)->first()->tags()->attach($newTag);
+        // Media::byWorkspace($request->get('workspace_id'))->with('tags')->where('id', $mediaID)->first()->tags()->attach($newTag);
 
         return redirect()->back();
     }

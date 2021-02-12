@@ -32,19 +32,22 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         // Tags...
         // Route::get('/tags',                     MCS\Workspace\Tags\TagIndex::class)->name('tag.index');
         // Route::get('/tags/create',              MCS\Workspace\Tags\TagCreate::class)->name('tag.create');
-        // Route::post('/tags/{mediaID}',          MCS\Workspace\Tags\TagStore::class)->name('tag.store');
+
         // Route::post('/tags/attach/{mediaID}',   MCS\Workspace\Tags\TagAttach::class)->name('tag.attach');
         // Route::get('/tags/{groupID}',           MCS\Workspace\Tags\TagEdit::class)->name('tag.edit');
         // Route::get('/tags/{groupID}',           MCS\Workspace\Tags\TagUpdate::class)->name('tag.update');
         // Route::delete('/tags/{groupID}',        MCS\Workspace\Tags\TagDelete::class)->name('tag.delete');
 
         // Groups...
-        Route::get('/groups', MCS\Workspace\Groups\GroupIndex::class)->name('group.index');
-        Route::get('/groups/create', MCS\Workspace\Groups\GroupCreate::class)->name('group.create');
-        Route::post('/groups', MCS\Workspace\Groups\GroupStore::class)->name('group.store');
-        Route::get('/groups/{groupID}', MCS\Workspace\Groups\GroupEdit::class)->name('group.edit');
-        Route::get('/groups/{groupID}', MCS\Workspace\Groups\GroupUpdate::class)->name('group.update');
-        Route::delete('/groups/{groupID}', MCS\Workspace\Groups\GroupDelete::class)->name('group.delete');
+        Route::get('/groups',                   MCS\Workspace\Groups\GroupIndex::class)->name('group.index');
+        Route::get('/groups/create',            MCS\Workspace\Groups\GroupCreate::class)->name('group.create');
+        Route::post('/groups',                  MCS\Workspace\Groups\GroupStore::class)->name('group.store');
+        Route::get('/groups/{groupID}/edit',    MCS\Workspace\Groups\GroupEdit::class)->name('group.edit');
+        Route::put('/groups/{groupID}',         MCS\Workspace\Groups\GroupUpdate::class)->name('group.update');
+        Route::delete('/groups/{groupID}',      MCS\Workspace\Groups\GroupDelete::class)->name('group.delete');
+        Route::post('/groups/selected/{action}',MCS\Workspace\Groups\GroupSelected::class)->name('group.selected');
+        Route::post('/groups/{groupID}/tag',    MCS\Workspace\Groups\GroupTagCreate::class)->name('group.tag.create');
+
 
         // Events...
         Route::get('/events',                        MCS\Workspace\Events\EventIndex::class)->name('event.index');

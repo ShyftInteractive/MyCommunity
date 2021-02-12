@@ -4,15 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\Groups;
 
-use App\Actions\Action;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use App\Domain\Tags\TagService;
+use App\Domain\Groups\GroupService;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Post;
 
 class GroupUpdate extends Controller
 {
-    public function __invoke(string $postID, Request $request)
+    public function __construct(private GroupService $groupService, private TagService $tagService) { }
+
+    public function __invoke(string $groupID, Request $request)
     {
+        $this->groupService->updateGroupWithTags(
+            workspaceID: $request->get('workspace_id'),
+            groupID: $groupID,
+            group: $request->input(),
+        );
+
+        return redirect()->route('group.index')->with('success', 'Updated');
     }
 }

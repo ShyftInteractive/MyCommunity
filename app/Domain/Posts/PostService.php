@@ -2,11 +2,10 @@
 
 namespace App\Domain\Posts;
 
-use App\Services\BaseService;
+use App\Domain\Posts\Post;
 use Illuminate\Support\Carbon;
-use App\Domain\Factories\BaseFactory;
-use App\Domain\Models\MCS\Workspace\Post;
-use App\Domain\Repositories\PostRepository;
+use App\Domain\Base\BaseService;
+use App\Domain\Posts\PostRepository;
 
 class PostService extends BaseService
 {
@@ -14,29 +13,12 @@ class PostService extends BaseService
     {
         parent::__construct(
             repository: new PostRepository($model),
-            factory: new BaseFactory($model)
         );
-    }
-
-    public function resource(array $item, string $workspaceID, string $memberID): array
-    {
-        return [
-            'workspace_id' => $workspaceID,
-            "slug" => $item['slug'],
-            "title" => $item['title'],
-            "content" => $item['content'] ?? "<h1>Start Writing Here</h1>",
-            "visibility" => $item['visibility'],
-            "workspace_id" => $workspaceID,
-            "description" => isset($item["description"]) ? $item["description"] : null,
-            "published" => isset($item["published"]) ? $item["published"] : false,
-            "published_at" => isset($item['published_at']) ? Carbon::parse($item['published_at']) : null,
-            "member_id" => $memberID,
-        ];
     }
 
     public function createPost(array $request, string $workspaceID, string $memberID)
     {
-        return $this->factory->store($this->resource(
+        return $this->repository->create($this->repository->resource(
             workspaceID: $workspaceID,
             memberID: $memberID,
             item: $request,
@@ -45,9 +27,10 @@ class PostService extends BaseService
 
     public function updatePost(string $workspaceID, string $memberID, string $postID, array $post)
     {
-        return $this->factory->updateByID(
-            id: $postID,
-            updates: $this->resource(
+        return $this->repository->updateWhere(
+            col: 'id',
+            value: $postID,
+            updates: $this->repository->resource(
                 item: $post['post'],
                 workspaceID: $workspaceID,
                 memberID: $memberID
@@ -57,7 +40,7 @@ class PostService extends BaseService
 
     public function getPost(string $workspaceID, string $postID)
     {
-        return $this->repository->getWorkspaceItemByID(
+        return $this->repository->getByIDScopedToWorkspace(
             workspaceID: $workspaceID,
             id: $postID,
         );

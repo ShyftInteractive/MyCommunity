@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\MCS\Workspace\Media;
 
-use App\Services\MCS\MediaService;
-use App\Http\Controllers\Controller;
+use App\Domain\Media\MediaService;
 use App\Http\Requests\MediaRequest;
+use App\Http\Controllers\Controller;
 
 class MediaStore extends Controller
 {

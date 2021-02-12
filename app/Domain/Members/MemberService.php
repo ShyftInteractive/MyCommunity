@@ -5,7 +5,6 @@ namespace App\Domain\Members;
 use App\Domain\Members\Member;
 use App\Domain\Base\BaseService;
 use App\Enums\Rebase\MemberRoles;
-use App\Domain\Factories\BaseFactory;
 use App\Domain\Members\MemberRepository;
 use App\Exceptions\SelfRemovalException;
 use App\Exceptions\AccountRemovalException;

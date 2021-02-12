@@ -10,6 +10,7 @@ export default {
       return {
          form: {
             s: null,
+            selected: [],
          },
       }
    },
@@ -38,6 +39,7 @@ export default {
       Paginator,
    },
    props: {
+      deleteRoute: String,
       routeName: String,
       routeParams: Object,
       links: Array,
@@ -48,14 +50,15 @@ export default {
 <template>
    <section>
       <form class="grid search-bar">
-         <FormFieldInline class="col-8">
+         <FormFieldInline class="col-4">
             <FieldLabel>Search:</FieldLabel>
             <FormInput v-model="form.s" />
          </FormFieldInline>
-         <div class="col-4 text--column:start">
-            <Button class="button--link:inline" @click="reset">Reset</Button>
+         <div class="col-8 col--direction:row">
+            <Button class="button--link" @click="reset">Reset</Button>
          </div>
       </form>
+
       <table class="table--data">
          <thead>
             <tr>

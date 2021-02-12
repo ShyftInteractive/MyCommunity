@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Domain\Pages;
 
-use App\Services\BaseService;
+use App\Domain\Pages\Page;
+use App\Domain\Base\BaseService;
 use App\Services\Queries\PageQueries;
 use App\Services\Factories\PageFactory;
-use App\Domain\Models\MCS\Workspace\Page;
 use App\Domain\Collections\MCS\PageCollection;
 
 class PageService extends BaseService
 {
     public function __construct(Page $model)
     {
-        parent::__construct($model);
+        // parent::__construct($model);
     }
 
     public function query()

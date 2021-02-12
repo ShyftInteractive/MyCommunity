@@ -7,6 +7,7 @@ namespace App\Domain\Tags;
 use App\Domain\Media\Media;
 use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
+use App\Domain\Groups\Group;
 use App\Domain\Workspaces\Workspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -58,5 +59,10 @@ class Tag extends Model
     public function media(): BelongsToMany
     {
         return $this->belongsToMany(Media::class);
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class);
     }
 }

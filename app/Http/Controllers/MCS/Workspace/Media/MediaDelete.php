@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\MCS\Workspace\Media;
 
 use Illuminate\Http\Request;
+use App\Domain\Media\MediaService;
 use App\Http\Controllers\Controller;
-use App\Services\MCS\MediaService;
 
 class MediaDelete extends Controller
 {

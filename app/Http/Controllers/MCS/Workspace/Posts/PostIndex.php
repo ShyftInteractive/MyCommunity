@@ -6,7 +6,6 @@ use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Domain\Posts\PostService;
 use App\Http\Controllers\Controller;
-use App\Domain\Models\MCS\Workspace\Post;
 
 class PostIndex extends Controller
 {

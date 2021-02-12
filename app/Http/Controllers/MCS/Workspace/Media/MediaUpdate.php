@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\MCS\Workspace\Media;
 
 use Illuminate\Http\Request;
-use App\Services\MCS\MediaService;
+use App\Domain\Media\MediaService;
 use App\Http\Controllers\Controller;
 
 class MediaUpdate extends Controller

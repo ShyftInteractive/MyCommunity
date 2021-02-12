@@ -6,9 +6,9 @@ namespace App\Http\Controllers\MCS\Workspace\Front;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Services\MCS\PageService;
+use App\Domain\Pages\PageService;
 use App\Http\Controllers\Controller;
-use App\Services\MCS\NotificationService;
+use App\Domain\Notifications\NotificationService;
 
 class Index extends Controller
 {
