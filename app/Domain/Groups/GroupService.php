@@ -4,10 +4,15 @@ namespace App\Domain\Groups;
 
 use App\Domain\Tags\Tag;
 use App\Domain\Base\BaseService;
+use App\Domain\Tags\TagService;
 
 class GroupService extends BaseService {
 
-    public function __construct(Group $model) {
+    private $tagModel;
+
+    public function __construct(Group $model, Tag $tagModel) {
+
+        $this->tagModel = $tagModel;
 
         parent::__construct(
             repository: new GroupRepository($model)
@@ -33,9 +38,15 @@ class GroupService extends BaseService {
             item: $item
         ));
 
+        $tagService = new TagService($this->tagModel);
+        $tags = $tagService->mapNamesToTags(
+            workspaceID: $workspaceID,
+            tags: $item['tags']
+        );
+
         $this->repository->syncTags(
             model: $group,
-            tags: $item['tags']
+            tags: $tags
         );
     }
 

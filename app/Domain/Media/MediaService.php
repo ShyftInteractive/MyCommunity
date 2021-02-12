@@ -2,6 +2,7 @@
 
 namespace App\Domain\Media;
 
+use App\Domain\Tags\Tag;
 use App\Domain\Media\Media;
 use App\Enums\MCS\MediaTypes;
 use App\Domain\Base\BaseService;
@@ -20,16 +21,6 @@ class MediaService extends BaseService
         );
     }
 
-    public function syncTags(string $workspaceID, string $mediaID, array $tags)
-    {
-        $media = $this->repository->getWithTags(
-            workspaceID: $workspaceID,
-            mediaID: $mediaID
-        );
-
-        $media->tags()->sync($tags);
-    }
-
     public function resource(array $items, string $relativePath, string $workspaceID)
     {
         $name = $items['name'];
@@ -43,6 +34,28 @@ class MediaService extends BaseService
             'visiblity' => MemberRoles::MEMBER(),
             'workspace_id' => $workspaceID,
         ];
+    }
+
+    public function updateMediaTags(string $workspaceID, string $mediaID, array $media)
+    {
+        return $this->repository->workspaceMediaAndTagUpdate(
+            workspaceID: $workspaceID,
+            mediaID: $mediaID,
+            tags: $media['tags'],
+        );
+    }
+
+    public function createTagForMedia(string $workspaceID, string $mediaID, Tag $tag)
+    {
+        $media = $this->repository->getWithTags(
+            workspaceID: $workspaceID,
+            mediaID: $mediaID,
+        );
+
+        $this->repository->syncTags(
+            model: $media,
+            tags: array_merge($media->tags->toArray(), [$tag])
+        );
     }
 
     public function allMediaForWorkspace(string $workspaceID)
@@ -65,10 +78,11 @@ class MediaService extends BaseService
 
     public function uploadAndSaveFile(string $customerID, string $workspaceID, MediaRequest $request)
     {
+
         $relativePath = "{$customerID}/{$workspaceID}";
         Storage::disk('spaces')->putFileAs($relativePath, $request->file, $request->name, 'public');
 
-        return $this->factory->store(resource: $this->resource(
+        return $this->repository->create(item: $this->resource(
             items: $request->input(),
             relativePath:$relativePath,
             workspaceID: $workspaceID,

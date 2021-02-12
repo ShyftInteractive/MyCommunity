@@ -13,12 +13,10 @@ class MediaUpdate extends Controller
 
     public function __invoke(string $mediaID, Request $request)
     {
-        $this->mediaService->syncTags(
+        $this->mediaService->updateMediaTags(
             workspaceID: $request->get('workspace_id'),
             mediaID: $mediaID,
-            tags: collect($request->input('tags'))->map(function ($tag) {
-                return $tag['id'];
-            })->toArray(),
+            media: $request->input(),
         );
 
         return redirect()->back();

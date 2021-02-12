@@ -39,13 +39,6 @@ class GroupRepository extends BaseRepository
                     ->first();
     }
 
-    public function mapToIDs(array $tags)
-    {
-        return collect($tags)->map(function($item) {
-            return $item['id'];
-        });
-    }
-
     public function syncTags(Group $model, array $tags, array $existingTags = [])
     {
         $model->tags()->sync(

@@ -45,7 +45,7 @@ class PersonalWorkspace extends Seeder
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Internet($faker));
 
-        $customer = Customer::modelFactory()->create([
+        $customer = Customer::create([
             'name' => 'Personal Test Company',
             'line1' => $faker->streetAddress,
             'city' => $faker->city,
@@ -63,7 +63,7 @@ class PersonalWorkspace extends Seeder
         ]);
 
         if ($code === 0) {
-            $member = Member::modelFactory()->create([
+            $member = Member::create([
                 'name' => self::PERSONAL_NAME,
                 'email' => self::PERSONAL_EMAIL,
                 'password' => Hash::make(self::PERSONAL_PASSWORD),
@@ -71,21 +71,24 @@ class PersonalWorkspace extends Seeder
                 'updated_at' => Carbon::now(),
             ]);
 
-            Role::modelFactory()->addAccountOwner($member->id);
+            Role::updateOrCreate(
+                ['type' => MemberRoles::ACCOUNT_OWNER()],
+                ['member_id' => $member->id]
+            );
 
             for ($i = 1; $i <= self::WORKSPACES; $i++) {
                 $sub = $i === 1 ? self::PERSONAL_SUB : self::PERSONAL_SUB . '-' . $i;
 
-                $workspace = Workspace::modelFactory()->create([
+                $workspace = Workspace::create([
                     'customer_id' => $customer->id,
                     'name' => 'Personal Test Workspace ' . $i,
                     'sub' => $sub,
                 ]);
 
-                Member::modelFactory()->attachToWorkspace($member, $workspace->id);
+                $member->workspaces()->attach($workspace->id);
 
                 for ($k = 1; $k <= self::MEMBERS_PER_WORKSPACE; $k++) {
-                    $otherMembers = Member::modelFactory()->create([
+                    $otherMembers = Member::create([
                         'name' => $faker->name,
                         'email' => $faker->unique()->safeEmail,
                         'password' => Hash::make(self::PERSONAL_PASSWORD),
@@ -93,8 +96,12 @@ class PersonalWorkspace extends Seeder
                         'updated_at' => Carbon::now(),
                     ]);
 
-                    Role::modelFactory()->addWorkspaceRole($this->generateRandomRole(), $workspace->id,  $otherMembers->id);
-                    Member::modelFactory()->attachToWorkspace($otherMembers, $workspace->id);
+                    Role::updateorCreate(
+                        ['member_id' => $otherMembers->id, 'workspace_id' => $workspace->id],
+                        ['type' => $this->generateRandomRole()]
+                    );
+
+                    $otherMembers->workspaces()->attach($workspace->id);
                 }
 
                 $this->generateFolderStructure($customer->id, $workspace->id);

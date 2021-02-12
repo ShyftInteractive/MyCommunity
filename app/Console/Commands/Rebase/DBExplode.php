@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use App\Domain\Workspaces\Workspace;
 use App\Helpers\Rebase\DatabaseHelper;
-use App\Domain\Facades\Rebase\WorkspaceRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DBExplode extends Command

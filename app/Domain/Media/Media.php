@@ -7,8 +7,10 @@ namespace App\Domain\Media;
 use App\Domain\Tags\Tag;
 use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
+use App\Domain\Workspaces\Workspace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Media extends Model
@@ -57,6 +59,11 @@ class Media extends Model
         static::deleting(function (Media $media) {
             Storage::disk('spaces')->delete($media->path);
         });
+    }
+
+    public function workspace(): HasOne
+    {
+        return $this->hasOne(Workspace::class);
     }
 
     public function tags(): BelongsToMany

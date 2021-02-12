@@ -22,4 +22,19 @@ class TagService extends BaseService {
         ]);
     }
 
+    public function mapNamesToTags(string $workspaceID, array $tags)
+    {
+        return collect($tags)->map(function ($tag) use ($workspaceID) {
+            if (isset($tag['id'])) {
+                return $tag;
+            }
+
+            return $this->repository->getTagByNameScopedByWorkspace(
+                workspaceID: $workspaceID,
+                name: $tag['name'],
+            )->toArray();
+
+        })->toArray();
+    }
+
 }

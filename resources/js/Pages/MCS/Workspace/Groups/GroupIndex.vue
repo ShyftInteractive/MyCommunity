@@ -90,7 +90,7 @@ export default {
    <Workspace nav="pages">
       <template #header>Groups</template>
       <template #ribbon>
-         <li><inertia-link :href="route('page.create')" class="button--secondary:small">Create a New Group</inertia-link></li>
+         <li><inertia-link :href="route('group.create')" class="button--secondary:small">Create a New Group</inertia-link></li>
       </template>
       <template #body v-if="form.groups.data.length > 0">
          <div class="grid">

@@ -21,6 +21,15 @@ class MediaRepository extends BaseRepository
                     ->get();
     }
 
+    public function syncTags(Media $model, array $tags, array $existingTags = [])
+    {
+        $model->tags()->sync(
+            collect($tags)->flatMap(function($item) use($model) {
+                return [$item['id'] => ['workspace_id' => $model->workspace_id]];
+            })->toArray()
+        );
+    }
+
     public function getWithTags(string $workspaceID, string $mediaID)
     {
         return $this->model
@@ -28,6 +37,13 @@ class MediaRepository extends BaseRepository
                     ->byWorkspace($workspaceID)
                     ->where('id', $mediaID)
                     ->first();
+    }
+
+    public function workspaceMediaAndTagUpdate(string $workspaceID, string $mediaID, array $tags)
+    {
+        $model = $this->model->with('tags')->byWorkspace($workspaceID)->where('id', $mediaID)->first();
+
+        $this->syncTags($model, $tags);
     }
 
     public function searchable(string $workspaceID, ?string $terms = null, ?array $fields = null, ?int $count, string $orderBy = 'created_at', string $orderDirection = 'asc')

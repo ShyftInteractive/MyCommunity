@@ -12,5 +12,11 @@ class TagRepository extends BaseRepository
         parent::__construct(model: $model);
     }
 
-
+    public function getTagByNameScopedByWorkspace(string $workspaceID, string $name)
+    {
+        return $this->model
+                    ->byWorkspace($workspaceID)
+                    ->where('name', $name)
+                    ->first();
+    }
 }

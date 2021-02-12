@@ -9,22 +9,22 @@ use App\Domain\Tags\TagService;
 use App\Domain\Media\MediaService;
 use App\Http\Controllers\Controller;
 
-class MediaTagStore extends Controller
+class MediaTagCreate extends Controller
 {
     public function __construct(private TagService $tagService, private MediaService $mediaService)
     {
     }
-    public function __invoke(string $mediaID, string $type, string $tagID, Request $request)
+    public function __invoke(string $mediaID, Request $request)
     {
-        $newTag = $this->tagService->createNewTag(
+        $tag = $this->tagService->createTag(
             workspaceID: $request->get('workspace_id'),
-            name: $request->get('name'),
+            name:$request->input('name'),
         );
 
-        $this->mediaService->addTagToMedia(
-            workspaceID: $request->get('workspace_id'),
+        $this->mediaService->createTagForMedia(
             mediaID: $mediaID,
-            newTag: $newTag,
+            tag: $tag,
+            workspaceID: $request->get('workspace_id'),
         );
 
         return redirect()->back();

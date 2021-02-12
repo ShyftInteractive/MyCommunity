@@ -56,7 +56,7 @@ export default {
 
          const item = this.mediaList.data[id]
 
-         this.$inertia.post(route("tag.store", { mediaID: item.id }), tag, {
+         this.$inertia.post(route("media.tag.create", { mediaID: item.id }), tag, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
@@ -154,7 +154,6 @@ export default {
                      </td>
                      <td>
                         <ActionMenu>
-                           <ActionButton v-if="item.type === 'image'" @click="edit(item.id)">Edit</ActionButton>
                            <ActionButton @click="download(item.id)">Download</ActionButton>
                            <ActionButton @click="deleteFile(item.id)">Delete</ActionButton>
                         </ActionMenu>

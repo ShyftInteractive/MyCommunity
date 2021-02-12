@@ -28,6 +28,7 @@ export default {
    data() {
       return {
          sending: false,
+         tagList: this.tags,
          form: {
             name: null,
             tags: [],
@@ -46,12 +47,11 @@ export default {
          const tag = {
             name: searchQuery,
          }
-         this.mediaList.data[id].tags.push(tag)
+
+         this.form.tags.push(tag);
          this.tagList.push(tag)
 
-         const item = this.mediaList.data[id]
-
-         this.$inertia.post(route("tag.store", { mediaID: item.id }), tag, {
+         this.$inertia.post(route("tag.store"), tag, {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })

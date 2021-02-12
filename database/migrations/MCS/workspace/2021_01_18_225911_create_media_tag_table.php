@@ -15,19 +15,25 @@ class CreateMediaTagTable extends Migration
     {
         Schema::create('media_tag', function (Blueprint $table) {
             $table->id();
+            $table->uuid('workspace_id');
             $table->uuid('media_id');
             $table->uuid('tag_id');
             $table->timestamps();
 
+            $table->foreign('workspace_id')
+                  ->references('id')
+                  ->on('workspaces')
+                  ->onDelete('cascade');
+
             $table->foreign('media_id')
-                ->references('id')
-                ->on('media')
-                ->onDelete('cascade');
+                  ->references('id')
+                  ->on('media')
+                  ->onDelete('cascade');
 
             $table->foreign('tag_id')
-                ->references('id')
-                ->on('tags')
-                ->onDelete('cascade');
+                  ->references('id')
+                  ->on('tags')
+                  ->onDelete('cascade');
         });
     }
 
