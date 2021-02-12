@@ -62,7 +62,6 @@ class EventService extends BaseService
             );
     }
 
-
     public function getLastFiveEvents(string $workspaceID)
     {
         return $this->repository->getWorkspaceLatestEvents(

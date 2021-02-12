@@ -34,4 +34,12 @@ class NotificationRepository extends BaseRepository
                     ->paginate($count ?? 10);
     }
 
+    public function getActiveBannerScopedToWorkspace(string $workspaceID)
+    {
+        return $this->model
+                    ->byWorkspace($workspaceID)
+                    ->byBanner()
+                    ->where('active', true)
+                    ->first();
+    }
 }

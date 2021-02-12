@@ -62,7 +62,7 @@ class NotificationService extends BaseService
 
     public function createNewNotification(string $workspaceID, array $request)
     {
-        return $this->factory->store($this->resource(
+        return $this->repository->create($this->resource(
             item: $request,
             workspaceID: $workspaceID,
         ));
@@ -70,7 +70,7 @@ class NotificationService extends BaseService
 
     public function updateNotification(string $notificationID, string $workspaceID, array $request)
     {
-        return $this->factory->updateByID(
+        return $this->repository->updateByID(
             id: $notificationID,
             updates: $this->resource(
                 item: $request,
@@ -82,5 +82,12 @@ class NotificationService extends BaseService
     public function getAllSystemMessageNotifications(string $workspaceID): Collection|LengthAwarePaginator
     {
         return collect([]);
+    }
+
+    public function getActiveBanner(string $workspaceID)
+    {
+        return $this->repository->getActiveBannerScopedToWorkspace(
+            workspaceID: $workspaceID
+        );
     }
 }

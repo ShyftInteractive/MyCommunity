@@ -16,8 +16,10 @@ class Dashboard extends Controller
     public function __invoke(Request $request): Response
     {
         $events = $this->eventService->getLastFiveEvents($request->get('workspace_id'));
+
+        $banner = $this->notificationService->getActiveBanner($request->get('workspace_id'));
         $messages = $this->notificationService->getLastFiveMessages($request->get('workspace_id'));
 
-        return inertia(Action::getView($this), compact('events', 'messages'));
+        return inertia(Action::getView($this), compact('events', 'messages', 'banner'));
     }
 }

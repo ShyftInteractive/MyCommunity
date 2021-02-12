@@ -65,6 +65,7 @@ export default {
 
 <template>
    <section>
+      <slot name="banner"></slot>
       <div class="layout--main">
          <header>
             <Logo />

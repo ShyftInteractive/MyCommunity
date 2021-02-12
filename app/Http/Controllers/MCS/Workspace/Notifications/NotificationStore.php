@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\Notifications;
 
@@ -10,9 +8,7 @@ use App\Domain\Notifications\NotificationService;
 
 class NotificationStore extends Controller
 {
-    public function __construct(private NotificationService $notificationService)
-    {
-    }
+    public function __construct(private NotificationService $notificationService) { }
 
     public function __invoke(Request $request)
     {

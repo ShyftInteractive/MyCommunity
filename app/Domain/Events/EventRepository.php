@@ -36,7 +36,7 @@ class EventRepository extends BaseRepository
                     ->first();
     }
 
-    public function getWorkspaceLatestEvents(string $workspaceID, int $count): Collection
+    public function getWorkspaceLatestEvents(string $workspaceID, int $count)
     {
         return $this->model
             ->byWorkspace($workspaceID)
@@ -45,4 +45,5 @@ class EventRepository extends BaseRepository
             ->limit($count)
             ->get();
     }
+
 }

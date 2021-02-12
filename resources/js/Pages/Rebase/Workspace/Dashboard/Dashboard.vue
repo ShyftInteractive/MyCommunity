@@ -2,17 +2,20 @@
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
 import { DTF } from "@/Data/MCS/Globals"
+import BannerDisplay from "@/Templates/Rebase/Page/Components/BannerDisplay"
 
 export default {
    layout: Layout,
    metaInfo: { title: "Dashboard" },
 
    components: {
+      BannerDisplay,
       Workspace,
    },
 
    props: {
       events: Array | Object,
+      banner: Object,
    },
 
    data: () => ({
@@ -27,6 +30,9 @@ export default {
 
 <template>
    <Workspace nav="dashboard">
+      <template v-slot:banner>
+         <BannerDisplay :message="banner.message"></BannerDisplay>
+      </template>
       <template #header>Dashboard</template>
       <template v-slot:body>
          <div class="grid">

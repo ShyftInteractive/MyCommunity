@@ -78,7 +78,7 @@ export default {
                      <FieldLabel>Title</FieldLabel>
                      <FormInput v-model="form.message" />
                   </FormField>
-                  <FormField validate="details" class="col-10--centered wd::col-6--centered">
+                  <div class="col-10--centered wd::col-6--centered">
                      <FieldLabel>Message</FieldLabel>
                      <vue-editor
                         class="col-12"
@@ -86,16 +86,16 @@ export default {
                         :editor-toolbar="[[{ size: ['small', false, 'large', 'huge'] }], ['bold', 'italic', 'underline', 'strike'], [{ align: [false, 'center', 'right'] }], ['link'], [{ list: 'ordered' }, { list: 'bullet' }]]"
                         v-model="form.details"
                      ></vue-editor>
-                  </FormField>
+                  </div>
                </template>
                <template v-if="form.type === $page.props.app.notifications.BANNER">
                   <p class="col-10 wd::col-6--centered">
                      <small> A Site Banner will go across the top of all pages on your website, it will stay there until you remove it or a pre-defined date that you set. </small>
                   </p>
-                  <FormField validate="message" class="col-10--centered wd::col-6--centered">
+                  <div class="col-10--centered wd::col-6--centered">
                      <FieldLabel>Message</FieldLabel>
                      <vue-editor class="col-12" :editorOptions="editorOptions" :editor-toolbar="[['bold', 'italic', 'underline', 'strike'], ['link']]" v-model="form.message"></vue-editor>
-                  </FormField>
+                  </div>
                   <FormField validate="active" class="col-10--centered wd::col-6--centered">
                      <FormCheckbox v-model="form.active">Show Banner Now</FormCheckbox>
                      <small v-if="form.active">Marking this banner as active will hide any presently showing banners, you'll also need to deactive manually.</small>

@@ -63,7 +63,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="pages">
+   <Workspace nav="groups">
       <template #header>Edit Group: {{group.name}}</template>
       <template #ribbon>
          <li><inertia-link :href="route('page.create')" class="button--secondary:small">Create a New Group</inertia-link></li>
