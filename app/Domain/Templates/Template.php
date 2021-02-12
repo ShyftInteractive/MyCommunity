@@ -45,4 +45,5 @@ class Template extends Model
         return $this->hasOne(Workspace::class);
     }
 
+
 }

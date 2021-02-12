@@ -1,10 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Domain\Templates;
 
-use App\Domain\Models\MCS\Workspace\Template;
+use App\Domain\Templates\Template;
+use App\Domain\Base\BaseRepository;
 
 class TemplateRepository extends BaseRepository
 {

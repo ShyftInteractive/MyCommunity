@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\MCS\Workspace\Pages;
 
 use App\Actions\Action;
+use App\Domain\Pages\Page;
 use Illuminate\Http\Request;
-use Dompdf\FrameReflower\Page;
 use Illuminate\Validation\Rule;
+use App\Domain\Templates\Template;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use SebastianBergmann\Template\Template;
 use App\Domain\Models\MCS\Workspace\Content;
 
 class PageStore extends Controller
@@ -17,7 +17,7 @@ class PageStore extends Controller
     {
         $request->validate($this->rules($request->get('workspace_id')));
 
-        $page = Page::modelFactory()->create([
+        $page = Page::create([
             "slug" => $request->input('slug'),
             "title" => $request->input('title'),
             "isHomepage" => $request->input('isHomepage'),

@@ -95,10 +95,9 @@ export default {
                            <input v-model="selectAll" type="checkbox" @click="all" />
                         </label>
                      </th>
-                     <th>Message</th>
+                     <th>Message/Title</th>
+                     <th>Notification Type</th>
                      <th>Currently Active?</th>
-                     <th>Show On</th>
-                     <th>Remove On</th>
                      <th>&nbsp;</th>
                   </template>
                   <template #contents>
@@ -106,8 +105,7 @@ export default {
                         <td><input v-model="form.selected" type="checkbox" :value="banner.id" /></td>
                         <td v-html="banner.message"></td>
                         <td>{{ banner.active ? `Active` : `` }}</td>
-                        <td>{{ banner.banner_display_at ? DTFormatter(new Date(banner_display_at)) : `` }}</td>
-                        <td>{{ banner.banner_hide_at ? DTFormatter(new Date(banner_hide_at)) : `` }}</td>
+
                         <td>
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('notification.edit', { notificationID: banner.id })">Edit</ActionLink>

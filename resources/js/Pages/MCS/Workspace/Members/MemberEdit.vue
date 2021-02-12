@@ -33,7 +33,7 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="events">
+   <Workspace nav="site-settings" secondary="member">
       <template #header>Edit: {{ member.name }}</template>
       <template #body>
          <form class="layout__main" action="post" @submit.prevent="save">

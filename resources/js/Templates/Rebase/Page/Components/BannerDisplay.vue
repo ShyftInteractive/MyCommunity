@@ -3,7 +3,7 @@ export default {
    components: {},
    props: {
       message: {
-         type: Object,
+         type: String,
          default: false,
       },
    },

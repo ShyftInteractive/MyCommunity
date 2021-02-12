@@ -14,10 +14,10 @@ class NotificationUpdate extends Controller
     {
         $this->notificationService->updateNotification(
             notificationID: $notificationID,
-            request: $request->input(),
+            request: $request->input('notification'),
             workspaceID: $request->get('workspace_id'),
         );
 
-        return redirect()->back()->withSuccess('Saved');
+        return redirect()->route('notification.index')->withSuccess('Saved');
     }
 }

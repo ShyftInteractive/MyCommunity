@@ -7,18 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use SebastianBergmann\Template\Template;
+use App\Domain\Templates\TemplateService;
 
 class SiteTemplateStore extends Controller
 {
+    public function __construct(private TemplateService $templateService) { }
+
     public function __invoke(Request $request)
     {
         $request->validate($this->rules($request->get('workspace_id')));
 
-        $template = Template::modelFactory()->create([
-            'name' => $request->input('name'),
-            'workspace_id' => $request->get('workspace_id'),
-            'content' => []
-        ]);
+        $template = $this->templateService->createTemplate(
+            inputs: $request->input(),
+            workspaceID: $request->get('workspace_id'),
+        );
 
         return redirect()->route('site-template.edit', [
             'templateID' => $template->id,

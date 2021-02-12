@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Http\Controllers\MCS\Workspace\SiteTemplates;
 
@@ -10,9 +8,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use SebastianBergmann\Template\Template;
+use App\Domain\Templates\TemplateService;
 
 class SiteTemplateUpdate extends Controller
 {
+
+    public function __construct(private TemplateService $templateService) {}
+
     public function __invoke(string $templateID, Request $request)
     {
         $updateItems = collect($request->only([
@@ -25,10 +27,9 @@ class SiteTemplateUpdate extends Controller
 
         $updateItems = $this->appendComponent($updateItems, $request->input('component'));
 
-        Template::modelFactory()->update(
-            whereCol: 'id',
-            whereValue: $templateID,
-            update: $updateItems
+        $this->templateService->updateTemplate(
+            id: $templateID,
+            updates: $updateItems,
         );
 
         if (!is_null($request->input('component')['name'])) {

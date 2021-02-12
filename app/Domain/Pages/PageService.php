@@ -1,58 +1,28 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Domain\Pages;
 
-use App\Domain\Pages\Page;
 use App\Domain\Base\BaseService;
-use App\Services\Queries\PageQueries;
-use App\Services\Factories\PageFactory;
-use App\Domain\Collections\MCS\PageCollection;
+use App\Domain\Pages\PageRepository;
 
-class PageService extends BaseService
-{
-    public function __construct(Page $model)
-    {
-        // parent::__construct($model);
-    }
+class PageService extends BaseService {
 
-    public function query()
-    {
-        return new PageQueries($this->model);
-    }
+    public function __construct(Page $model) {
 
-    public function factory()
-    {
-        return new PageFactory($this->model);
-    }
-
-    public function updatePage(string $pageID, array $updates)
-    {
-        if (array_key_exists('is_homepage', $updates)) {
-            return $this->toggleHomepage();
-        }
-
-        return $this->factory()->updateByID(
-            id: $pageID,
-            updates: $updates
+        parent::__construct(
+            repository: new PageRepository($model)
         );
     }
 
-    public function getPublishedPages(string $workspaceID)
+    public function findPages(string $workspaceID, ?string $search, ?int $count)
     {
-        return $this->model
-            ->byWorkspace($workspaceID)
-            ->where('published', true)
-            ->get();
-    }
-
-    public function getActiveContent(string $slug, PageCollection $pages)
-    {
-        if ($slug === '') {
-            return $pages->where('is_homepage', true)->first()->content;
-        }
-
-        return $pages->where('slug', $slug)->first()->content;
+        return $this->repository
+            ->searchWorkspace(
+                workspaceID: $workspaceID,
+                terms: $search,
+                fields: ['slug', 'title'],
+                orderBy: 'start_at',
+                count: $count
+            );
     }
 }

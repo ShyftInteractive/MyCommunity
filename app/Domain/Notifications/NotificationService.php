@@ -70,7 +70,7 @@ class NotificationService extends BaseService
 
     public function updateNotification(string $notificationID, string $workspaceID, array $request)
     {
-        return $this->repository->updateByID(
+        return $this->updateItem(
             id: $notificationID,
             updates: $this->resource(
                 item: $request,

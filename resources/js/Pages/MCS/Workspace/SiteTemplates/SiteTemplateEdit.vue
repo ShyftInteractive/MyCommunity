@@ -1,3 +1,4 @@
+1
 <script>
 import Icon from "@/Components/Rebase/Icon"
 import Layout from "@/Templates/Rebase/Layout"

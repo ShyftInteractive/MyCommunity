@@ -92,10 +92,10 @@ export default {
       <template #ribbon>
          <li><inertia-link :href="route('group.create')" class="button--secondary:small">Create a New Group</inertia-link></li>
       </template>
-      <template #body v-if="form.groups.data.length > 0">
+      <template #body v-if="groups.data.length > 0">
          <div class="grid">
             <div class="col-12">
-               <DataTable :links="form.groups.links" :deleteRoute="route('group.selected', { action: 'delete' })">
+               <DataTable :links="groups.links">
                   <template #header>
                      <th>
                         <label>
@@ -107,7 +107,7 @@ export default {
                      <th>&nbsp;</th>
                   </template>
                   <template #contents>
-                     <tr v-for="(group, i) in form.groups.data" :key="group.id">
+                     <tr v-for="(group, i) in groups.data" :key="group.id">
                         <td><input v-model="form.selected" type="checkbox" :value="group.id" /></td>
                         <td>{{ group.name }}</td>
                         <td>

@@ -16,6 +16,7 @@ export default {
    props: {
       events: Array | Object,
       banner: Object,
+      messages: Array,
    },
 
    data: () => ({
@@ -35,13 +36,17 @@ export default {
       </template>
       <template #header>Dashboard</template>
       <template v-slot:body>
-         <div class="grid">
+         <div class="grid--top">
             <div class="col-12 wd::col-8">
                <h3>Your Notices</h3>
-               <p>No notices at this time</p>
+               <p v-if="messages.length < 1">No notices at this time</p>
+               <dl v-else class="dashboard--message" v-for="(message, i) in messages" :key="i">
+                  <dt>{{ message.message }}</dt>
+                  <dd v-html="message.details"></dd>
+               </dl>
             </div>
             <div class="col-12 wd::col-4">
-               <h2>Upcoming Events</h2>
+               <h3>Upcoming Events</h3>
                <div v-if="events.length < 1">
                   <p>No upcoming events</p>
                </div>
@@ -76,13 +81,26 @@ export default {
    margin: 0;
 
    li {
-      border-bottom: 1px solid var(--color-gray-500);
+      background-color: var(--color-true-white);
+      border-bottom: 1px solid var(--color-gray-300);
       padding: var(--px-16);
-      border-top: 1px solid var(--color-gray-500);
+   }
+}
 
-      &:last-of-type {
-         border-bottom: 0;
-      }
+.dashboard--message {
+   background-color: var(--color-true-white);
+   border-bottom: 1px solid var(--color-gray-300);
+   padding: var(--px-16);
+   margin: var(--px-16) 0 0 0;
+
+   &:first-of-type {
+      margin-top: 0;
+   }
+
+   dt {
+      font-size: var(--px-24);
+      font-weight: 900;
+      margin-bottom: var(--px-4);
    }
 }
 </style>

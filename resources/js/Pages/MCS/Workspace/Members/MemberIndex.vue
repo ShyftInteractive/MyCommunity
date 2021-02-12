@@ -69,10 +69,10 @@ export default {
 </script>
 
 <template>
-   <Workspace nav="members">
+   <Workspace nav="site-settings" secondary="member">
       <template #header>Members</template>
       <template #ribbon>
-         <li><Button @click="deleteSelected" class="button--secondary:small">Delete Selected Members</Button></li>
+         <li><Button @click="deleteSelected" class="button--secondary:small">Remove Selected Members</Button></li>
       </template>
       <template #body v-if="members.data.length > 0">
          <div class="grid">

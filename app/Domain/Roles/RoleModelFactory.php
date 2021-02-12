@@ -15,13 +15,6 @@ class RoleModelFactory extends ModelFactory
             ->remove();
     }
 
-    public function addAccountOwner(string $memberID): void
-    {
-        $this->builder->updateOrCreate(
-            ['type' => MemberRoles::ACCOUNT_OWNER()],
-            ['member_id' => $memberID]
-        );
-    }
 
     public function addAccountAdmin(string $memberID): void
     {

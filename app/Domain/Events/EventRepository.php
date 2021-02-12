@@ -38,9 +38,12 @@ class EventRepository extends BaseRepository
 
     public function getWorkspaceLatestEvents(string $workspaceID, int $count)
     {
+        $now = Carbon::now();
+        $dt = Carbon::createMidnightDate($now->year, $now->month, $now->day);
+
         return $this->model
             ->byWorkspace($workspaceID)
-            ->where('start_at', '>=', Carbon::now())
+            ->where('start_at', '>', $dt->addDay(-1))
             ->orderBy('start_at')
             ->limit($count)
             ->get();
