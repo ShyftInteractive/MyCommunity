@@ -15,7 +15,10 @@ export default {
 
    props: {
       events: Array | Object,
-      banner: Object,
+      banner: {
+         type: Object,
+         default: null,
+      },
       messages: Array,
    },
 
@@ -32,7 +35,7 @@ export default {
 <template>
    <Workspace nav="dashboard">
       <template v-slot:banner>
-         <BannerDisplay :message="banner.message"></BannerDisplay>
+         <BannerDisplay :message="banner"></BannerDisplay>
       </template>
       <template #header>Dashboard</template>
       <template v-slot:body>

@@ -4,15 +4,15 @@ export default {
    props: {
       message: {
          type: String,
-         default: false,
+         default: null,
       },
    },
 }
 </script>
 
 <template>
-   <div class="banner-notification" v-if="message !== false">
-      <div v-html="message"></div>
+   <div class="banner-notification" v-if="message">
+      <div v-html="message.message"></div>
    </div>
 </template>
 

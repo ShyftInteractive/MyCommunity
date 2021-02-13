@@ -7,7 +7,6 @@ use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
 use App\Domain\Workspaces\Workspace;
 use Illuminate\Notifications\Notifiable;
-use App\Domain\Members\MemberTransformers;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,7 +15,6 @@ class Member extends Authenticatable
 {
     use Notifiable;
     use ModelScopes;
-    use MemberTransformers;
 
     public $incrementing = false;
 

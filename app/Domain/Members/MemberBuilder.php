@@ -8,13 +8,6 @@ use App\Domain\Builders\Rebase\ModelBuilder;
 
 class MemberBuilder extends ModelBuilder
 {
-    public function byEmail(string $email)
-    {
-        $this->where('email', $email);
-
-        return $this;
-    }
-
     public function canResetPassword(string $email, string $token): bool
     {
         $resetter = DB::table(config('paths.db.workspace.name').'.password_resets')

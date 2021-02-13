@@ -6,12 +6,13 @@ use League\Pipeline\Pipeline;
 use App\Mail\Rebase\NewCustomer;
 use Illuminate\Support\Facades\Mail;
 use App\Events\Rebase\StartCustomerSignup;
+use App\Pipelines\Registration\AddCustomer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Exceptions\CustomerRegistrationException;
-use App\Services\Rebase\Registration\AddCustomer;
-use App\Services\Rebase\Registration\SubscribeCustomer;
-use App\Services\Rebase\Registration\AddCustomerWorkspace;
-use App\Services\Rebase\Registration\AddFirstMemberToWorkspace;
+use App\Pipelines\Registration\SubscribeCustomer;
+use App\Pipelines\Registration\AddCustomerWorkspace;
+use App\Pipelines\Registration\AddFirstMemberToWorkspace;
+use App\Pipelines\Registration\CreateWorkspace;
 
 class CreateNewCustomer implements ShouldQueue
 {
@@ -35,6 +36,7 @@ class CreateNewCustomer implements ShouldQueue
             $pipeline = (new Pipeline())
                 ->pipe(new AddCustomer())
                 ->pipe(new SubscribeCustomer())
+                ->pipe(new CreateWorkspace())
                 ->pipe(new AddCustomerWorkspace())
                 ->pipe(new AddFirstMemberToWorkspace());
 

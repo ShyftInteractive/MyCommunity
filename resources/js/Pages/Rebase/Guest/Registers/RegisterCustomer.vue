@@ -112,6 +112,10 @@ export default {
                <FormInput v-model="form.unit_number" />
             </FormField>
 
+            <div class="col-10--centered md::col-8--centered">
+               <Button class="button--link justify:start" @click="showAddress = showAddress ? false : true">{{ showAddress ? `Hide extra address fields` : `Need more lines for your address?` }} </Button>
+            </div>
+
             <template v-if="showAddress">
                <FormField validate="line2" class="col-10--centered md::col-8--centered">
                   <FieldLabel>Address Line 2:</FieldLabel>
@@ -123,10 +127,6 @@ export default {
                   <FormInput v-model="form.line3" />
                </FormField>
             </template>
-
-            <div class="col-10--centered md::col-8--centered">
-               <Button class="button--secondary:block:xsmall" @click="showAddress = showAddress ? false : true">{{ showAddress ? `Hide` : `Show Extra` }} Address Lines</Button>
-            </div>
 
             <FormField validate="city" class="col-10--centered md::col-4:at-3">
                <FieldLabel>City:</FieldLabel>

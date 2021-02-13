@@ -13,7 +13,7 @@ class BannedSubdomainService extends BaseService {
         );
     }
 
-    public function checkIfBanned(string $name)
+    public function subdomainBanned(string $name)
     {
         return $this->repository->subdomainExists(sub: $name);
     }

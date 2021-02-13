@@ -2,9 +2,12 @@
 
 namespace App\Domain\Members;
 
+use Exception;
 use App\Domain\Members\Member;
+use Illuminate\Support\Carbon;
 use App\Domain\Base\BaseService;
-use App\Enums\Rebase\MemberRoles;
+use App\Domain\Roles\RoleService;
+use Illuminate\Support\Facades\Hash;
 use App\Domain\Members\MemberRepository;
 use App\Exceptions\SelfRemovalException;
 use App\Exceptions\AccountRemovalException;
@@ -19,9 +22,49 @@ class MemberService extends BaseService
         );
     }
 
-    public function resource(array $items, string $workspaceID)
+    public function createAsAccountOwner(string $workspaceID, array $item)
     {
-        return [ ];
+
+        $member = $this->repository->create($this->repository->resource(
+            item: $item
+        ));
+
+        $roleService = app()->make(RoleService::class);
+        $roleService->makeAccountOwner(
+            memberID: $member->id,
+        );
+
+        return $member;
+    }
+
+    public function isVerified(string $memberID, string $requestingMemberID, string $requestingToken, string $memberToken): bool
+    {
+        return $memberID === $requestingMemberID && $memberToken === $requestingToken;
+    }
+
+    public function verifyMember(array $items)
+    {
+        $member = $this->repository->getMemberByEmail(email: $items['email']);
+
+        $isVerified = $this->isVerified(
+            memberID: $member->id,
+            requestingMemberID: $items['memberID'],
+            requestingToken: $items['token'],
+            memberToken: $member->email_token,
+        );
+
+        if (! $isVerified) {
+            throw new Exception("Token Email Mismatch");
+        }
+
+        $this->updateItem(
+            id: $member->id,
+            updates: [
+                'password' => Hash::make($items['password']),
+                'email_token' => null,
+                'email_verified_at' => Carbon::now(),
+            ]
+        );
     }
 
     public function getWorkspaceMember(string $workspaceID, string $memberID)

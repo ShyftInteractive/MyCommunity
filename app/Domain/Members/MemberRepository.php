@@ -3,6 +3,7 @@
 namespace App\Domain\Members;
 
 use App\Domain\Members\Member;
+use Illuminate\Support\Carbon;
 use App\Domain\Base\BaseRepository;
 
 class MemberRepository extends BaseRepository
@@ -11,6 +12,23 @@ class MemberRepository extends BaseRepository
     public function __construct(Member $model)
     {
         parent::__construct($model);
+    }
+
+    public function resource(array $item)
+    {
+        return [
+            'name' => $item['name'],
+            'email' => $item['email'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+    }
+
+    public function getMemberByEmail(string $email)
+    {
+        return $this->model
+                    ->where('email', $email)
+                    ->firstOrFail();
     }
 
     public function getWorkspaceMemberByID(string $workspaceID, string $id)

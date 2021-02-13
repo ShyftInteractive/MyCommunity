@@ -101,66 +101,42 @@
    }
 }
 
-.col-- {
-   &direction\: {
-      &row { flex-direction: row; }
-      &col { flex-direction: column; }
+.justify\: {
+   @include with-queries {
+      &start   { justify-content: start;           }
+      &end     { justify-content: end;             }
+      &center  { justify-content: center;          }
+      &stretch { justify-content: stretch;         }
+      &around  { justify-content: space-around;    }
+      &between { justify-content: space-between;   }
+      &evenly  { justify-content: space-evenly;    }
    }
-
+}
+.justifyItems\: {
+   @include with-queries {
+      &start   { justify-items: start;    }
+      &end     { justify-items: end;      }
+      &center  { justify-items: center;   }
+      &stretch { justify-items: stretch;  }
+   }
 }
 
-.grid-- {
+.content\: {
    @include with-queries {
-
-      &self {
-         &-x\: {
-            &start   { justify-self: start;     }
-            &end     { justify-self: end;       }
-            &center  { justify-self: center;    }
-            &stretch { justify-self: stretch;   }
-         }
-         &-y\: {
-            &start   { align-self: start;    }
-            &end     { align-self: end;      }
-            &center  { align-self: center;   }
-            &stretch { align-self: stretch;  }
-         }
-      }
-
-      &content {
-         &-x\: {
-            &start   { justify-content: start;           }
-            &end     { justify-content: end;             }
-            &center  { justify-content: center;          }
-            &stretch { justify-content: stretch;         }
-            &around  { justify-content: space-around;    }
-            &between { justify-content: space-between;   }
-            &evenly  { justify-content: space-evenly;    }
-         }
-         &-y\: {
-            &start   { align-content: start;          }
-            &end     { align-content: end;            }
-            &center  { align-content: center;         }
-            &stretch { align-content: stretch;        }
-            &around  { align-content: space-around;   }
-            &between { align-content: space-between;  }
-            &evenly  { align-content: space-evenly;   }
-         }
-      }
-
-      &items {
-         &-x\: {
-            &start   { justify-items: start;    }
-            &end     { justify-items: end;      }
-            &center  { justify-items: center;   }
-            &stretch { justify-items: stretch;  }
-         }
-         &-y\: {
-            &start   { align-items: start;   }
-            &end     { align-items: end;     }
-            &center  { align-items: center;  }
-            &stretch { align-items: stretch; }
-         }
-      }
+      &start   { align-content: start;          }
+      &end     { align-content: end;            }
+      &center  { align-content: center;         }
+      &stretch { align-content: stretch;        }
+      &around  { align-content: space-around;   }
+      &between { align-content: space-between;  }
+      &evenly  { align-content: space-evenly;   }
+   }
+}
+.items\: {
+   @include with-queries {
+      &start   { align-items: start;   }
+      &end     { align-items: end;     }
+      &center  { align-items: center;  }
+      &stretch { align-items: stretch; }
    }
 }

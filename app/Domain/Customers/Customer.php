@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Domain\Subscriptions\Subscription;
 use App\Domain\Customers\CustomerTransformers;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Domain\Factories\Rebase\CustomerModelFactory;

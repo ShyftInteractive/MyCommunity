@@ -2,8 +2,8 @@
 
 namespace App\Rules\Rebase;
 
+use App\Domain\BannedSubdomains\BannedSubdomainService;
 use Illuminate\Contracts\Validation\Rule;
-use App\Domain\Models\Rebase\Admin\BannedSubdomain;
 
 class SubdomainIsNotBanned implements Rule
 {
@@ -12,6 +12,7 @@ class SubdomainIsNotBanned implements Rule
      */
     public function __construct()
     {
+
     }
 
     /**
@@ -24,7 +25,8 @@ class SubdomainIsNotBanned implements Rule
      */
     public function passes($attribute, $value)
     {
-        return is_string($value) && !BannedSubdomain::subExists($value);
+        $service = app()->make(BannedSubdomainService::class);
+        return is_string($value) && ! $service->subdomainBanned($value);
     }
 
     /**
