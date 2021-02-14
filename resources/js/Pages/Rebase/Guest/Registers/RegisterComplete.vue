@@ -41,8 +41,8 @@ export default {
 
 <template>
    <Register :step="4">
-      <section class="grid">
-         <div class="col-10--centered">
+      <section class="grid--center">
+         <div class="col-10--centered text:center">
             <h1>All Done!</h1>
             <p>We'll be sending you an email in a few minutes.</p>
          </div>

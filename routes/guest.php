@@ -25,7 +25,7 @@ Route::domain(config('app.domain'))->group(function (): void {
     Route::post('register/payment', Rebase\Guest\Registers\RegisterPay::class)->name('register.pay.process');
 
     // Registration Step 4
-    // Route::get('register/complete');
+    Route::get('register/complete', Rebase\Guest\Registers\RegisterComplete::class)->name('register.complete');
 
     // Search
     Route::get('search',            Rebase\Guest\CustomerSearch\SearchIndex::class)->name('search.index');
