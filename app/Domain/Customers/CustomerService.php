@@ -19,7 +19,6 @@ class CustomerService extends BaseService {
         return $this->repository->create($this->repository->resource(item: $item));
     }
 
-
     public function chargeCustomer(Customer $customer, array $item)
     {
         return $this->repository->subscribe(

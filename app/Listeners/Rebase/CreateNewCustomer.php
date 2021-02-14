@@ -9,6 +9,7 @@ use App\Events\Rebase\StartCustomerSignup;
 use App\Pipelines\Registration\AddCustomer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Exceptions\CustomerRegistrationException;
+use App\Mail\NewCustomerInformation;
 use App\Pipelines\Registration\SubscribeCustomer;
 use App\Pipelines\Registration\AddCustomerWorkspace;
 use App\Pipelines\Registration\AddFirstMemberToWorkspace;
@@ -46,5 +47,6 @@ class CreateNewCustomer implements ShouldQueue
         }
 
         Mail::to($payload->get('email'))->send(new NewCustomer($pipeData));
+        Mail::to(config('mail.admins'))->send(new NewCustomerInformation($pipeData));
     }
 }

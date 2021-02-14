@@ -12,4 +12,14 @@ class LookupRepository extends BaseRepository
     {
         parent::__construct(model: $model);
     }
+
+    public function customerIDExists(string $customerID)
+    {
+        return $this->model->where('customer_id', $customerID)->exists();
+    }
+
+    public function customerSubdomainExists(string $customerID, string $subdomain)
+    {
+        return $this->model->where('customer_id', $customerID)->where('sub', $subdomain)->exists();
+    }
 }
