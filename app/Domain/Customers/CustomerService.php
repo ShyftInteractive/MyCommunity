@@ -21,21 +21,24 @@ class CustomerService extends BaseService {
 
     public function chargeCustomer(Customer $customer, array $item)
     {
-        return $this->repository->subscribe(
-            customer: $customer,
-            plan: $item['plan'],
-            method: $item['payment_method'],
-            options: [
-                'name' => $customer->name,
-                'email' => $item['email'],
-                'address' => [
-                    'line1' => $item['line1'],
-                    'line2' => $item['line2'],
-                    'city' => $item['city'],
-                    'state' => $item['state'],
-                    'postal_code' => $item['postal_code'],
-                ],
-            ]
-        );
+        if ($item['payment_type'] == 'cc') {
+            return $this->repository->subscribe(
+                customer: $customer,
+                plan: $item['plan'],
+                method: $item['payment_method'],
+                options: [
+                    'name' => $customer->name,
+                    'email' => $item['email'],
+                    'address' => [
+                        'line1' => $item['line1'],
+                        'line2' => $item['line2'],
+                        'city' => $item['city'],
+                        'state' => $item['state'],
+                        'postal_code' => $item['postal_code'],
+                    ],
+                ]
+            );
+        }
+        return $customer;
     }
 }

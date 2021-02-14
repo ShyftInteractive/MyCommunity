@@ -17,20 +17,20 @@ export default {
          <slot name="sidebar">
             <ol class="step-counter">
                <li class="step-counter--item" :class="{ selected: this.step === 1 }">
-                  Register Your Website
-                  <div class="helper-text">Your website needs a URL, what do you want to call your website? Don't worry you can change this later!</div>
+                  Basic Information
+                  <div class="helper-text">Your website needs a URL, what do you want to call your website? We also need some information on you.</div>
                </li>
                <li class="step-counter--item" :class="{ selected: this.step === 2 }">
-                  Create Your Email Address
-                  <div class="helper-text">Well, how else are you going to log in? You'll set up a password later</div>
+                  Pick Your Plan and Payment Method
+                  <div class="helper-text">Pick your plan! You can pay via check or credit card, but please note the ACH payment will take longer to set up your account</div>
                </li>
                <li class="step-counter--item" :class="{ selected: this.step === 3 }">
-                  Register Your Account and Pay
-                  <div class="helper-text">Give us a few more details about your account and pick your plan. Once you pay, we'll create your app and send you an email when it's done</div>
+                  Pay
+                  <div class="helper-text">Once you pay we build your workspace, so this is an importatnt final step</div>
                </li>
                <li class="step-counter--item" :class="{ selected: this.step === 4 }">
-                  All Done, Check Your Email
-                  <div class="helper-text">Last step! Before you can sign in, we're going to send you an email with a link to verify your email address AND set your pasword.</div>
+                  Check Your Email
+                  <div class="helper-text">All done, now just wait for our email</div>
                </li>
             </ol>
          </slot>

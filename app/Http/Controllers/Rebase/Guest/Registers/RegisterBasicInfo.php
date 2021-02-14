@@ -6,7 +6,7 @@ use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class RegisterIndex extends Controller
+class RegisterBasicInfo extends Controller
 {
     /**
      * @return mixed

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Events\Rebase\StartCustomerSignup;
 use App\Http\Requests\CustomerSignupRequest;
 
-class RegisterStore extends Controller
+class RegisterPay extends Controller
 {
     public function __invoke(CustomerSignupRequest $request)
     {

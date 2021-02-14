@@ -2,23 +2,30 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/registration', fn () => redirect()->route('register.index'));
-Route::get('/signup', fn () => redirect()->route('register.index'));
-Route::get('/sign-up', fn () => redirect()->route('register.index'));
+Route::get('/registration', fn () => redirect()->route('register.basic-info'));
+Route::get('/signup', fn () => redirect()->route('register.basic-info'));
+Route::get('/sign-up', fn () => redirect()->route('register.basic-info'));
 
 Route::domain(config('app.domain'))->group(function (): void {
     // Legal
     Route::get('legal/privacy', Rebase\Guest\Legal\Privacy::class)->name('privacy');
     Route::get('legal/terms',   Rebase\Guest\Legal\Terms::class)->name('terms');
 
-    // Registration
-    Route::get('register',              Rebase\Guest\Registers\RegisterIndex::class)->name('register.index');
-    Route::post('register',             Rebase\Guest\Registers\RegisterCheckSubdomain::class)->name('register.check.sub');
-    Route::get('register/email',        Rebase\Guest\Registers\RegisterEmail::class)->name('register.email');
-    Route::post('register/email',       Rebase\Guest\Registers\RegisterCheckEmail::class)->name('register.check.email');
-    Route::get('register/customer',     Rebase\Guest\Registers\RegisterCustomer::class)->name('register.customer');
-    Route::post('register/customer',    Rebase\Guest\Registers\RegisterStore::class)->name('register.store');
-    Route::get('register/complete',     Rebase\Guest\Registers\RegisterComplete::class)->name('register.complete');
+    // Registration Step 1
+    Route::get('register', Rebase\Guest\Registers\RegisterBasicInfo::class)->name('register.basic-info');
+    Route::post('register', Rebase\Guest\Registers\RegisterBasicInfoProcess::class)->name('register.basic-info.process');
+
+    // Registration Step 2
+    Route::get('register/plan',  Rebase\Guest\Registers\RegisterPickPlan::class)->name('register.pick-plan');
+    Route::post('register/plan', Rebase\Guest\Registers\RegisterPickPlanProcess::class)->name('register.pick-plan.process');
+
+    // Registration Step 3
+    Route::get('register/cc', Rebase\Guest\Registers\RegisterPayCC::class)->name('register.pay.cc');
+    Route::get('register/ach', Rebase\Guest\Registers\RegisterPayACH::class)->name('register.pay.ach');
+    Route::post('register/payment', Rebase\Guest\Registers\RegisterPay::class)->name('register.pay.process');
+
+    // Registration Step 4
+    // Route::get('register/complete');
 
     // Search
     Route::get('search',            Rebase\Guest\CustomerSearch\SearchIndex::class)->name('search.index');

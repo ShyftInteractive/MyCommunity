@@ -31,6 +31,10 @@ class NewCustomerInformation extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('New Community Signup')->markdown('email.system.signup');
+        if ($this->payload['payment_type'] === 'cc') {
+            return $this->subject('New Community Signup')->markdown('email.system.signup');
+        }
+
+        return $this->subject('New ACH Signup')->markdown('email.system.signup');
     }
 }

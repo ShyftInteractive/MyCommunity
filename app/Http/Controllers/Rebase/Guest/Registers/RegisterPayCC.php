@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domain\Customers\Customer;
 
-class RegisterCustomer extends Controller
+class RegisterPayCC extends Controller
 {
     /**
      * @return mixed
@@ -18,6 +18,8 @@ class RegisterCustomer extends Controller
             'sub' => $request->get('sub'),
             'email' => $request->get('email'),
             'name' => $request->get('name'),
+            'plan' => $request->get('plan'),
+            'pickedProduct' => $request->get('pickedProduct'),
             'stripe_key' => config('services.stripe.key'),
             'intent' => $intent->createSetupIntent(),
         ])->withViewData('withStripe', true);
