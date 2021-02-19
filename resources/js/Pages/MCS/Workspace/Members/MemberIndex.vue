@@ -6,10 +6,12 @@ import ActionLink from "@/Components/Rebase/Actions/ActionLink"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
 import DataTable from "@/Components/Rebase/DataTable"
 import { DTFormatter } from "@/Data/MCS/Globals"
+import Listing from "@/Mixins/Listing"
 
 export default {
    layout: Layout,
    metaInfo: { title: "Members" },
+   mixins: [Listing],
 
    components: {
       Workspace,
@@ -52,18 +54,6 @@ export default {
             }
          }
       },
-      confirmDelete(id) {
-         if (confirm("Are you sure you want to delete this member?")) {
-            this.$inertia.delete(
-               route("member.delete", { memberID: id }),
-               {},
-               {
-                  onStart: () => (this.sending = true),
-                  onFinish: () => (this.sending = false),
-               }
-            )
-         }
-      },
    },
 }
 </script>
@@ -72,6 +62,7 @@ export default {
    <Workspace nav="site-settings" secondary="member">
       <template #header>Members</template>
       <template #ribbon>
+         <li><inertia-link href="#" class="button--secondary:small">Add A New mem</inertia-link></li>
          <li><Button @click="deleteSelected" class="button--secondary:small">Remove Selected Members</Button></li>
       </template>
       <template #body v-if="members.data.length > 0">
@@ -104,7 +95,7 @@ export default {
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('member.edit', { memberID: member.id })">Edit</ActionLink>
                               <ActionButton @click="confirmDelete(member.id)">Force Password Reset</ActionButton>
-                              <ActionButton @click="confirmDelete(member.id)">Delete</ActionButton>
+                              <ActionButton @click="listingDelete(route('member.delete', { memberID: member.id }))">Delete</ActionButton>
                            </ActionMenu>
                         </td>
                      </tr>

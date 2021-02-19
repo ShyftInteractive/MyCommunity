@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\MCS\Workspace\Members;
 
-use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domain\Members\MemberService;
-use App\Domain\Facades\Rebase\MemberRepository;
-use App\Domain\Facades\Rebase\WorkspaceRepository;
 
 class MemberStore extends Controller
 {
@@ -15,7 +12,14 @@ class MemberStore extends Controller
 
     public function __invoke(Request $request) {
 
-        dd ("hello there");
+        $member = $this->memberService->createMember(
+
+            workspaceID: $request->get('workspace_id'),
+            updates: $request->input(),
+        );
+
+
+        return redirect()->route('member.index')->with('success', "Member Created");
 
     }
 }

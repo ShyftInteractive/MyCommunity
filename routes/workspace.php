@@ -16,13 +16,15 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::post('/onboarding/complete', Rebase\Workspace\Onboarding\OnboardingComplete::class)->name('onboarding.complete');
 
         // Members....
-        Route::get('/members',                      MCS\Workspace\Members\MemberIndex::class)->name('member.index');
-        Route::post('/members',                     MCS\Workspace\Members\MemberStore::class)->name('member.store');
-        Route::get('/members/{memberID}/edit',      MCS\Workspace\Members\MemberEdit::class)->name('member.edit');
-        Route::post('/members/{memberID}/upload',   MCS\Workspace\Members\MemberUpload::class)->name('member.upload');
-        Route::delete('/members/{memberID}/upload/delete',   MCS\Workspace\Members\MemberUploadDelete::class)->name('member.upload.delete');
-        Route::put('/members/{memberID}',           MCS\Workspace\Members\MemberUpdate::class)->name('member.update');
-        Route::delete('/members/{memberID}',        MCS\Workspace\Members\MemberDelete::class)->name('member.delete');
+        Route::get('/members',                              MCS\Workspace\Members\MemberIndex::class)->name('member.index');
+        Route::get('/members/create',                       MCS\Workspace\Members\MemberCreate::class)->name('member.create');
+        Route::post('/members',                             MCS\Workspace\Members\MemberStore::class)->name('member.store');
+        Route::get('/members/{memberID}/edit',              MCS\Workspace\Members\MemberEdit::class)->name('member.edit');
+        Route::post('/members/{memberID}/upload',           MCS\Workspace\Members\MemberUpload::class)->name('member.upload');
+        Route::delete('/members/{memberID}/upload/delete',  MCS\Workspace\Members\MemberUploadDelete::class)->name('member.upload.delete');
+        Route::post('/members/selected/{action}',           MCS\Workspace\Members\MemberSelected::class)->name('member.selected');
+        Route::put('/members/{memberID}',                   MCS\Workspace\Members\MemberUpdate::class)->name('member.update');
+        Route::delete('/members/{memberID}',                MCS\Workspace\Members\MemberDelete::class)->name('member.delete');
 
         // Media...
         Route::get('/media',                MCS\Workspace\Media\MediaIndex::class)->name('media.index');

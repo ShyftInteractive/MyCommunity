@@ -119,6 +119,13 @@ class MemberService extends BaseService
         );
     }
 
+    public function updateSelectedMembers(string $action, array $requests)
+    {
+        return match ($action) {
+            'delete' => $this->removeItems(ids: $requests['selected'])
+        };
+    }
+
     public function getWorkspaceMember(string $workspaceID, string $memberID)
     {
         $member = $this->repository->getWorkspaceMemberByID(

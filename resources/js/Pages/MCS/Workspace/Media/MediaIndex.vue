@@ -11,6 +11,7 @@ import mapValues from "lodash/mapValues"
 import pickBy from "lodash/pickBy"
 import throttle from "lodash/throttle"
 import merge from "lodash/merge"
+import Listing from "@/Mixins/Listing"
 import "vue-multiselect/dist/vue-multiselect.min.css"
 
 export default {
@@ -31,7 +32,7 @@ export default {
       tags: Array,
    },
 
-   mounted() {},
+   mixins: [Listing],
 
    data() {
       return {
@@ -67,15 +68,6 @@ export default {
             onStart: () => (this.sending = true),
             onFinish: () => (this.sending = false),
          })
-      },
-
-      deleteFile(id) {
-         if (confirm("You want to delete this file from the server? This action is cannot be reversed.")) {
-            this.$inertia.delete(route("media.delete", { mediaID: id }), {
-               onStart: () => (this.sending = true),
-               onFinish: () => (this.sending = false),
-            })
-         }
       },
 
       onUpload(responses) {
@@ -155,7 +147,7 @@ export default {
                      <td>
                         <ActionMenu>
                            <ActionButton @click="download(item.id)">Download</ActionButton>
-                           <ActionButton @click="deleteFile(item.id)">Delete</ActionButton>
+                           <ActionButton @click="listingDelete(route('media.delete', { mediaID: item.id }), 'You want to delete this file from the server? This action is cannot be reversed.')">Delete</ActionButton>
                         </ActionMenu>
                      </td>
                   </tr>

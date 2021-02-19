@@ -6,12 +6,14 @@ import ActionLink from "@/Components/Rebase/Actions/ActionLink"
 import ActionMenu from "@/Components/Rebase/Actions/ActionMenu"
 import DataTable from "@/Components/Rebase/DataTable"
 import Multiselect from "vue-multiselect"
+import Listing from "@/Mixins/Listing"
 import "vue-multiselect/dist/vue-multiselect.min.css"
 
 export default {
    layout: Layout,
    metaInfo: { title: "Groups" },
 
+   mixins: [Listing],
    components: {
       Multiselect,
       Workspace,
@@ -70,18 +72,6 @@ export default {
             }
          }
       },
-      confirmDelete(id) {
-         if (confirm("Are you sure you want to delete this group?")) {
-            this.$inertia.delete(
-               route("group.delete", { groupID: id }),
-               {},
-               {
-                  onStart: () => (this.sending = true),
-                  onFinish: () => (this.sending = false),
-               }
-            )
-         }
-      },
    },
 }
 </script>
@@ -128,7 +118,7 @@ export default {
                         <td>
                            <ActionMenu>
                               <ActionLink :inertia="true" :link="route('group.edit', { groupID: group.id })">Edit</ActionLink>
-                              <ActionButton @click="confirmDelete(group.id)">Delete</ActionButton>
+                              <ActionButton @click="listingDelete(route('group.delete', { groupID: group.id }))">Delete</ActionButton>
                            </ActionMenu>
                         </td>
                      </tr>
