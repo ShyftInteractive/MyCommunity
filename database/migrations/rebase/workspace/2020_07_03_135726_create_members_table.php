@@ -19,6 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('avatar')->nullable();
             $table->json('profile')->nullable();
             $table->string('remember_token')->nullable();
+            $table->boolean('activated')->default(false);
             $table->uuid('email_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

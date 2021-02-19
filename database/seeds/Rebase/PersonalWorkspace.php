@@ -67,6 +67,7 @@ class PersonalWorkspace extends Seeder
                 'name' => self::PERSONAL_NAME,
                 'email' => self::PERSONAL_EMAIL,
                 'password' => Hash::make(self::PERSONAL_PASSWORD),
+                'activated' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

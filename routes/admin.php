@@ -12,6 +12,7 @@ Route::domain($domain)->prefix('{customerID}')->group(function (): void {
     Route::middleware(['auth'])->group(function (): void {
         // Pick a Sub-Domain
         Route::get('pick', Rebase\Admin\Pick::class)->name('pick');
+        Route::get('hold', Rebase\Admin\Hell::class)->name('hell');
 
         // Customer
         Route::get('customer',              Rebase\Admin\Customers\CustomerIndex::class)->name('customer.index');

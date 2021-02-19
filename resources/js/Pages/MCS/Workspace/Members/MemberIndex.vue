@@ -78,6 +78,7 @@ export default {
                      <th>Name</th>
                      <th>Email</th>
                      <th>Role</th>
+                     <th>Activated</th>
                      <th>Verified</th>
                      <th>&nbsp;</th>
                   </template>
@@ -87,6 +88,10 @@ export default {
                         <td>{{ member.name }}</td>
                         <td>{{ member.email }}</td>
                         <td></td>
+                        <td>
+                           <template v-if="member.activated">Account Activated</template>
+                           <template v-else>Not Activated</template>
+                        </td>
                         <td>
                            <template v-if="member.email_verified_at !== null">{{ DTFormatter(member.email_verified_at) }}</template>
                            <template v-else>Never Logged In</template>
