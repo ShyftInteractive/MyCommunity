@@ -95,14 +95,10 @@ export default {
                         <td><input v-model="form.selected" type="checkbox" :value="member.id" /></td>
                         <td>{{ member.name }}</td>
                         <td>{{ member.email }}</td>
-                        <td>
-                           <template v-for="role in member.roles">
-                              <template v-if="role.workspace_id === $page.props.workspace_id || role.workspace_id === null">{{ role.type }}</template>
-                           </template>
-                        </td>
+                        <td></td>
                         <td>
                            <template v-if="member.email_verified_at !== null">{{ DTFormatter(member.email_verified_at) }}</template>
-                           <template v-else>Not Logged In</template>
+                           <template v-else>Never Logged In</template>
                         </td>
                         <td>
                            <ActionMenu>

@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers\MCS\Workspace\Members;
 
-use App\Actions\Action;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domain\Members\MemberService;
-use App\Domain\Facades\Rebase\MemberRepository;
-use App\Domain\Facades\Rebase\WorkspaceRepository;
 
 class MemberUpdate extends Controller
 {
     public function __construct(private MemberService $memberService) { }
 
-    public function __invoke(string $memberID, Request $request) {
+    public function __invoke(string $memberID, Request $request)
+    {
+        $member = $this->memberService->updateMember(
+            memberID: $memberID,
+            workspaceID: $request->get('workspace_id'),
+            updates: $request->input(),
+        );
 
-        dd ("hello there");
 
+        return redirect()->route('member.index')->with('success', "Member Updated");
     }
 }

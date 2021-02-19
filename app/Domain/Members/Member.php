@@ -6,6 +6,7 @@ use App\Domain\Roles\Role;
 use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
 use App\Domain\Workspaces\Workspace;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,9 +59,15 @@ class Member extends Authenticatable
             $member->id = (string)Str::uuid();
             $member->email_token = (string)Str::uuid();
         });
+
+        static::updating(function ($member): void {
+            if ($member->isDirty('avatar')) {
+                Storage::disk('spaces')->delete($member->avatar);
+            }
+        });
     }
 
-    public function roles(): HasMany
+    public function roles()
     {
         return $this->hasMany(Role::class);
     }

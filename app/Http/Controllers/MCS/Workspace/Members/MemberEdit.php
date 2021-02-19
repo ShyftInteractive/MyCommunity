@@ -20,8 +20,15 @@ class MemberEdit extends Controller
             memberID: $memberID,
         );
 
+        $memberRole = $this->memberService->getRoleForWorkspace(
+            workspaceID: $request->get('workspace_id'),
+            member: $member,
+        );
+
+
         return inertia(Action::getView($this), [
             'member' => $member,
+            'memberRole' => $memberRole,
         ]);
     }
 }

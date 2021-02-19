@@ -5,6 +5,7 @@ namespace App\Domain\Members;
 use App\Domain\Members\Member;
 use Illuminate\Support\Carbon;
 use App\Domain\Base\BaseRepository;
+use Illuminate\Support\Facades\Storage;
 
 class MemberRepository extends BaseRepository
 {
@@ -14,7 +15,14 @@ class MemberRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    public function resource(array $item)
+    public function appendRolesRemapped($member)
+    {
+        return $member->roles->flatMap(function($item) {
+            return [$item->workspace_id => $item->toArray()];
+        });
+    }
+
+    public function resource(array $item, ?string $relativePath = null)
     {
         return [
             'name' => $item['name'],

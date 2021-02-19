@@ -3,11 +3,13 @@
 namespace App\Domain\Members;
 
 use Exception;
+use Illuminate\Http\Request;
 use App\Domain\Members\Member;
 use Illuminate\Support\Carbon;
 use App\Domain\Base\BaseService;
 use App\Domain\Roles\RoleService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Domain\Members\MemberRepository;
 use App\Exceptions\SelfRemovalException;
 use App\Exceptions\AccountRemovalException;
@@ -19,6 +21,56 @@ class MemberService extends BaseService
     {
         parent::__construct(
             repository: new MemberRepository($model),
+        );
+    }
+
+    public function uploadMemberAvatar(string $customerID, string $workspaceID, string $memberID, Request $request)
+    {
+        $relativePath = "{$customerID}/{$workspaceID}/avatars";
+        Storage::disk('spaces')->putFileAs($relativePath, $request->file, $request->avatarName, 'public');
+
+        $fullPath = "{$relativePath}/{$request->avatarName}";
+
+        return $this->repository->updateWhere(
+            col: 'id',
+            value: $memberID,
+            updates: [
+                'avatar' => Storage::disk('spaces')->url($fullPath),
+            ]
+        );
+    }
+
+    public function removeAvatar(string $memberID, string $workspaceID)
+    {
+        $member = $this->repository->getByID(id: $memberID);
+        Storage::disk('spaces')->delete($member->avatar);
+
+        return $this->repository->updateWhere(
+            col: 'id',
+            value: $memberID,
+            updates: [
+                'avatar' => null,
+            ]
+        );
+    }
+
+    public function updateMember(string $memberID, string $workspaceID, array $updates)
+    {
+        $member = $this->getWorkspaceMember(
+            memberID: $memberID,
+            workspaceID: $workspaceID,
+        );
+
+        $member->roles()->each(function($role) use ($workspaceID, $updates) {
+            if ($role->workspace_id === $workspaceID && $updates['memberRole']['type'] !== $role->type) {
+                $role->type = $updates['memberRole']['type'];
+                $role->save();
+            }
+        });
+
+        return $this->updateItem(
+            id: $memberID,
+            updates: $this->repository->resource($updates['member'])
         );
     }
 
@@ -69,10 +121,16 @@ class MemberService extends BaseService
 
     public function getWorkspaceMember(string $workspaceID, string $memberID)
     {
-        return $this->repository->getWorkspaceMemberByID(
+        $member = $this->repository->getWorkspaceMemberByID(
             workspaceID: $workspaceID,
             id: $memberID
         );
+
+        $member->workspaceRoles = $member->roles->flatMap(function($item) {
+            return [$item->workspace_id => $item];
+        });
+
+        return $member;
     }
 
     public function removeMemberFromWorkspace(string $memberID, string $activeUser, string $workspaceID)
@@ -91,6 +149,11 @@ class MemberService extends BaseService
         }
 
         return $member->workspaces()->sync($member->workspaces->except([$workspaceID]));
+    }
+
+    public function getRoleForWorkspace(string $workspaceID, Member $member)
+    {
+        return $member->workspaceRoles->get($workspaceID);
     }
 
     public function findWorkspaceMembers(string $workspaceID, ?string $search, ?int $count)

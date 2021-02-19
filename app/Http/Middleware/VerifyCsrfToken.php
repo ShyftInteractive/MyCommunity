@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/media/upload',
-        '/media'
+        '/members/*',
+        '/media',
     ];
 }
