@@ -80,7 +80,6 @@ export default {
    font-size: var(--px-16);
    justify-content: center;
    line-height: var(--leading-normal);
-   margin: auto;
    min-height: var(--px-40);
    padding: var(--px-8) 0;
    position: relative;

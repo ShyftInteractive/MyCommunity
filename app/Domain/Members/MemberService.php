@@ -119,9 +119,19 @@ class MemberService extends BaseService
         );
     }
 
-    public function updateSelectedMembers(string $action, array $requests)
+    public function updateSelectedMembers(string $action, string $workspaceID, array $requests)
     {
+        if ($action === 'activate-all' || $action === 'deactivate-all') {
+            $ids = $this->repository->allMemberIds(workspaceID: $workspaceID)->flatMap(function($i) {
+                return [$i->id];
+            })->flatten()->toArray();
+        }
+
         return match ($action) {
+            'activate' => $this->repository->toggleActivation(ids: $requests['selected'], activate: true),
+            'deactivate' => $this->repository->toggleActivation(ids: $requests['selected'],  activate: false),
+            'activate-all' => $this->repository->toggleActivation(ids: $ids,  activate: true),
+            'deactivate-all' => $this->repository->toggleActivation(ids: $ids,  activate: false),
             'delete' => $this->removeItems(ids: $requests['selected'])
         };
     }

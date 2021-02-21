@@ -12,9 +12,9 @@ class MemberSelected extends Controller
 
     public function __invoke(string $action, Request $request)
     {
-
         $this->memberService->updateSelectedMembers(
             action: $action,
+            workspaceID: $request->get('workspace_id'),
             requests: $request->input(),
         );
 

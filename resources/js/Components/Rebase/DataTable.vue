@@ -80,6 +80,7 @@ export default {
    flex-direction: row;
    align-content: center;
    align-items: center;
+   justify-content: space-between;
    gap: var(--px-8);
 }
 .table--data {

@@ -38,9 +38,9 @@ export default {
    },
 
    methods: {
-      deleteSelected() {
-         if (confirm(`Are you sure you want to delete ${this.form.selected.length} item(s)?`)) {
-            this.$inertia.post(route("member.selected", { action: "delete" }), this.form, {
+      selectedAction(type) {
+         if (confirm(`Are you sure you want to ${type} ${this.form.selected.length} item(s)?`)) {
+            this.$inertia.post(route("member.selected", { action: type }), this.form, {
                onStart: () => (this.sending = true),
                onFinish: () => (this.sending = false),
             })
@@ -69,9 +69,14 @@ export default {
             <div class="col-12">
                <DataTable :links="members.links" routeName="member.index">
                   <template #tableActions>
-                     <Button @click="deleteSelected" class="button--secondary:xsmall">Remove Selected</Button>
-                     <Button @click="deleteSelected" class="button--secondary:xsmall">Activate Selected</Button>
-                     <Button @click="deleteSelected" class="button--secondary:xsmall">Reset Passwords</Button>
+                     <ActionMenu>
+                        <ActionButton @click="selectedAction('delete')">Remove Selected</ActionButton>
+                        <ActionButton @click="selectedAction('activate')">Activate Selected</ActionButton>
+                        <ActionButton @click="selectedAction('deactivate')">Deactivate Selected</ActionButton>
+                        <ActionButton @click="selectedAction('reset')">Reset Passwords</ActionButton>
+                        <ActionButton @click="selectedAction('activate-all')">Activate All</ActionButton>
+                        <ActionButton @click="selectedAction('deactivate-all')">Deactivate All</ActionButton>
+                     </ActionMenu>
                   </template>
                   <template #header>
                      <th>
@@ -93,7 +98,7 @@ export default {
                         <td>{{ member.email }}</td>
                         <td></td>
                         <td>
-                           <template v-if="member.activated">Account Activated</template>
+                           <template v-if="member.activated">Activated</template>
                            <template v-else>Not Activated</template>
                         </td>
                         <td>
