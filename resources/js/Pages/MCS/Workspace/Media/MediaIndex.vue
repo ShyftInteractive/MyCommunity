@@ -109,9 +109,8 @@ export default {
    <Workspace nav="documents">
       <template #header>Documents &amp; Media</template>
       <template v-slot:body>
-         <div class="grid grid--content-y:start">
+         <div class="grid--top">
             <VueFileAgent class="col-12" :theme="'list'" @upload="onUpload($event)" @upload:error="onUploadError($event)" :uploadUrl="uploadUrl" v-model="fileRecords" :deletable="true" :meta="true"></VueFileAgent>
-
             <DataTable class="col-12" :links="media.links" routeName="media.index">
                <template #header>
                   <th></th>
@@ -121,7 +120,7 @@ export default {
                   <th>Preview</th>
                   <th></th>
                </template>
-               <template #contents>
+               <template #contents v-if="media.data.length > 0">
                   <tr v-for="(item, i) in media.data" :key="i">
                      <td><input type="checkbox" /></td>
                      <td>{{ item.name }}</td>
@@ -150,6 +149,11 @@ export default {
                            <ActionButton @click="listingDelete(route('media.delete', { mediaID: item.id }), 'You want to delete this file from the server? This action is cannot be reversed.')">Delete</ActionButton>
                         </ActionMenu>
                      </td>
+                  </tr>
+               </template>
+               <template #contents v-else>
+                  <tr>
+                     <td colspan="6">No Items Found</td>
                   </tr>
                </template>
             </DataTable>

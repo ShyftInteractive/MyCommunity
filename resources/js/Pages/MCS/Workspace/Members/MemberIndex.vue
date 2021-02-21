@@ -62,13 +62,17 @@ export default {
    <Workspace nav="site-settings" secondary="member">
       <template #header>Members</template>
       <template #ribbon>
-         <li><inertia-link href="#" class="button--secondary:small">Add A New mem</inertia-link></li>
-         <li><Button @click="deleteSelected" class="button--secondary:small">Remove Selected Members</Button></li>
+         <li><inertia-link href="#" class="button:small">Add A Member</inertia-link></li>
       </template>
-      <template #body v-if="members.data.length > 0">
+      <template #body>
          <div class="grid">
             <div class="col-12">
                <DataTable :links="members.links" routeName="member.index">
+                  <template #tableActions>
+                     <Button @click="deleteSelected" class="button--secondary:xsmall">Remove Selected</Button>
+                     <Button @click="deleteSelected" class="button--secondary:xsmall">Activate Selected</Button>
+                     <Button @click="deleteSelected" class="button--secondary:xsmall">Reset Passwords</Button>
+                  </template>
                   <template #header>
                      <th>
                         <label>
@@ -82,7 +86,7 @@ export default {
                      <th>Verified</th>
                      <th>&nbsp;</th>
                   </template>
-                  <template #contents>
+                  <template #contents v-if="members.data.length > 0">
                      <tr v-for="member in members.data" :key="member.id">
                         <td><input v-model="form.selected" type="checkbox" :value="member.id" /></td>
                         <td>{{ member.name }}</td>
@@ -105,13 +109,13 @@ export default {
                         </td>
                      </tr>
                   </template>
+                  <template #contents v-else>
+                     <tr>
+                        <td colspan="7">No Items Found</td>
+                     </tr>
+                  </template>
                </DataTable>
             </div>
-         </div>
-      </template>
-      <template #body v-else>
-         <div class="grid--center">
-            <div class="col-8--centered sm::col-6--centered md::col-4--centered"></div>
          </div>
       </template>
    </Workspace>

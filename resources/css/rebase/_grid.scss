@@ -112,12 +112,21 @@
       &evenly  { justify-content: space-evenly;    }
    }
 }
-.justifyItems\: {
+.justify-items\: {
    @include with-queries {
       &start   { justify-items: start;    }
       &end     { justify-items: end;      }
       &center  { justify-items: center;   }
       &stretch { justify-items: stretch;  }
+   }
+}
+
+.direction\: {
+   @include with-queries {
+      &row   { flex-direction: row;    }
+      &row-reverse     { flex-direction: row-reverse;      }
+      &col  { flex-direction: column;   }
+      &col-reverse { flex-direction: column-reverse;  }
    }
 }
 

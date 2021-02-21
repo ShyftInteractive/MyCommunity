@@ -54,8 +54,9 @@ export default {
             <FieldLabel>Search:</FieldLabel>
             <FormInput v-model="form.s" />
          </FormFieldInline>
-         <div class="col-8 col--direction:row">
+         <div class="col-8 table--actions">
             <Button class="button--link" @click="reset">Reset</Button>
+            <slot name="tableActions" />
          </div>
       </form>
 
@@ -69,13 +70,18 @@ export default {
             <slot name="contents" />
          </tbody>
       </table>
-      <Paginator :links="links" />
+      <Paginator :links="links" v-if="links.length > 0" />
    </section>
 </template>
 
 <style lang="scss">
 @import "@@/abstract";
-
+.table--actions {
+   flex-direction: row;
+   align-content: center;
+   align-items: center;
+   gap: var(--px-8);
+}
 .table--data {
    border: 1px solid var(--color-gray-200);
    width: 100%;
