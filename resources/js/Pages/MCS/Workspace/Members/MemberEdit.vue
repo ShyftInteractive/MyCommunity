@@ -50,6 +50,7 @@ export default {
             if (response.error) {
                continue
             }
+            // this.form.member.avatarUrl = response.
          }
       },
       onDelete(fileRecord) {

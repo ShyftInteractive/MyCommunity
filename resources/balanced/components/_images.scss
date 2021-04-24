@@ -1,0 +1,19 @@
+img {
+   border-style: none;
+   font-style: italic;
+   margin: var(--px-0);
+   max-width: 100%;
+   padding: var(--px-0);
+   vertical-align: middle;
+
+   &[width],
+   &[height] {
+      max-width: none;
+   }
+}
+
+svg {
+   &:not(:root) {
+      overflow: hidden;
+   }
+}

@@ -1,0 +1,64 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+dl,
+dd,
+dt li {
+   margin: var(--px-0);
+   padding: var(--px-0);
+}
+
+h1, h2, h3, h4, h5, h6 {
+   letter-spacing: var(--kerning-tighter);
+   font-family: var(--font-display);
+   font-weight: var(--weight-black);
+}
+
+h1 { font-size: var(--px-40); }
+h2 { font-size: var(--px-32); }
+h3 { font-size: var(--px-28); }
+h4 { font-size: var(--px-24); }
+h5 { font-size: var(--px-20); }
+h6 { font-size: var(--px-16); }
+
+p,
+ul,
+ol {
+   font-size: inherit;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+   margin-bottom: var(--px-0);
+}
+
+ul, ol {
+   list-style-position: inside;
+   padding-left: var(--px-0);
+}
+nav {
+   ol,
+   ul {
+      list-style-type: none;
+      margin: var(--px-0);
+      padding: var(--px-0);
+   }
+}
+
+dfn {
+   font-style: italic;
+}
+
+address {
+   font-style: normal;
+   line-height: inherit;
+   margin: var(--px-0);
+   padding: var(--px-0);
+}

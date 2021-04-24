@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\MemberController;
 
 Route::middleware(['workspace.status'])->group(callback: function (): void {
     // Login redirects to global signin page...see rebase_auth for routes...
@@ -16,15 +18,15 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::post('/onboarding/complete', Rebase\Workspace\Onboarding\OnboardingComplete::class)->name('onboarding.complete');
 
         // Members....
-        Route::get('/members',                              MCS\Workspace\Members\MemberIndex::class)->name('member.index');
-        Route::get('/members/create',                       MCS\Workspace\Members\MemberCreate::class)->name('member.create');
-        Route::post('/members',                             MCS\Workspace\Members\MemberStore::class)->name('member.store');
-        Route::get('/members/{memberID}/edit',              MCS\Workspace\Members\MemberEdit::class)->name('member.edit');
-        Route::post('/members/{memberID}/upload',           MCS\Workspace\Members\MemberUpload::class)->name('member.upload');
-        Route::delete('/members/{memberID}/upload/delete',  MCS\Workspace\Members\MemberUploadDelete::class)->name('member.upload.delete');
-        Route::post('/members/selected/{action}',           MCS\Workspace\Members\MemberSelected::class)->name('member.selected');
-        Route::put('/members/{memberID}',                   MCS\Workspace\Members\MemberUpdate::class)->name('member.update');
-        Route::delete('/members/{memberID}',                MCS\Workspace\Members\MemberDelete::class)->name('member.delete');
+        Route::get('/members',                              [MemberController::class, 'index'])->name('member.index');
+        Route::get('/members/create',                       [MemberController::class, 'create'])->name('member.create');
+        Route::get('/members/{memberID}/edit',              [MemberController::class, 'edit'])->name('member.edit');
+        Route::post('/members',                             [MemberController::class, 'store'])->name('member.store');
+        Route::post('/members/{memberID}/upload',           [MemberController::class, 'upload'])->name('member.upload');
+        Route::post('/members/selected/{action}',           [MemberController::class, 'selected'])->name('member.selected');
+        Route::put('/members/{memberID}',                   [MemberController::class, 'update'])->name('member.update');
+        Route::delete('/members/{memberID}/upload/delete',  [MemberController::class, 'uploadDelete'])->name('member.upload.delete');
+        Route::delete('/members/{memberID}',                [MemberController::class, 'destroy'])->name('member.delete');
 
         // Media...
         Route::get('/media',                MCS\Workspace\Media\MediaIndex::class)->name('media.index');
@@ -74,7 +76,7 @@ Route::middleware(['workspace.status'])->group(callback: function (): void {
         Route::post('/notifications/selected/{action}',     MCS\Workspace\Notifications\NotificationSelected::class)->name('notification.selected');
 
         // Pages...
-        Route::get('/pages',                        MCS\Workspace\Pages\PageIndex::class)->name('page.index');
+        Route::get('/pages',                              [PageController::class, 'index'])->name('page.index');
         Route::get('/pages/create',                 MCS\Workspace\Pages\PageCreate::class)->name('page.create');
         Route::post('/pages',                       MCS\Workspace\Pages\PageStore::class)->name('page.store');
         Route::get('/pages/{pageID}/edit',          MCS\Workspace\Pages\PageEdit::class)->name('page.edit');

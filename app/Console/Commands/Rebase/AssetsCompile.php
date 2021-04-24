@@ -22,7 +22,7 @@ class AssetsCompile extends Command
         $this->info("Cleanup...\n");
 
         if ($this->option('production')) {
-            passthru('yarn run prod');
+            passthru('yarn run production');
         } else {
             passthru('yarn run dev');
         }

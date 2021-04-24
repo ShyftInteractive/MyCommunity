@@ -2,10 +2,13 @@
 
 namespace App\Domain\Base;
 
+use App\Domain\Base\BaseFactory;
+
 class BaseService
 {
 
-    public function __construct(protected BaseRepository $repository) { }
+    public function __construct(protected BaseRepository $repository,
+                                protected ?BaseFactory $factory = null) { }
 
     public function getItems()
     {
@@ -19,7 +22,7 @@ class BaseService
 
     public function getWorkspaceItem(string $id, string $workspaceID)
     {
-        return $this->repository->getByIDScopedToWorkspace(
+        return $this->repository->getByIDInWorkspace(
             workspaceID: $workspaceID,
             id: $id,
         );

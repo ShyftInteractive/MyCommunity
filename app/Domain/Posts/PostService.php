@@ -2,6 +2,7 @@
 
 namespace App\Domain\Posts;
 
+use App\Domain\Base\BaseFactory;
 use App\Domain\Posts\Post;
 use Illuminate\Support\Carbon;
 use App\Domain\Base\BaseService;
@@ -13,12 +14,13 @@ class PostService extends BaseService
     {
         parent::__construct(
             repository: new PostRepository($model),
+            factory: new BaseFactory($model),
         );
     }
 
     public function createPost(array $request, string $workspaceID, string $memberID)
     {
-        return $this->repository->create($this->repository->resource(
+        return $this->factory->create($this->repository->resource(
             workspaceID: $workspaceID,
             memberID: $memberID,
             item: $request,
@@ -27,7 +29,7 @@ class PostService extends BaseService
 
     public function updatePost(string $workspaceID, string $memberID, string $postID, array $post)
     {
-        return $this->repository->updateWhere(
+        return $this->factory->updateWhere(
             col: 'id',
             value: $postID,
             updates: $this->repository->resource(
@@ -40,7 +42,7 @@ class PostService extends BaseService
 
     public function getPost(string $workspaceID, string $postID)
     {
-        return $this->repository->getByIDScopedToWorkspace(
+        return $this->repository->getByIDInWorkspace(
             workspaceID: $workspaceID,
             id: $postID,
         );

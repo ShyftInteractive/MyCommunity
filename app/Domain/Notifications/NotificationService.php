@@ -2,6 +2,7 @@
 
 namespace App\Domain\Notifications;
 
+use App\Domain\Base\BaseFactory;
 use App\Domain\Base\BaseService;
 use App\Enums\MCS\NotificationTypes;
 use App\Domain\Notifications\Notification;
@@ -14,6 +15,7 @@ class NotificationService extends BaseService
     {
         parent::__construct(
             repository: new NotificationRepository($model),
+            factory: new BaseFactory($model),
         );
     }
 
@@ -62,7 +64,7 @@ class NotificationService extends BaseService
 
     public function createNewNotification(string $workspaceID, array $request)
     {
-        return $this->repository->create($this->resource(
+        return $this->factory->create($this->resource(
             item: $request,
             workspaceID: $workspaceID,
         ));

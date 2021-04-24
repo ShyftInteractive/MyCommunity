@@ -3,8 +3,9 @@
 namespace App\Console\Commands\Rebase;
 
 use Illuminate\Console\Command;
-use App\Helpers\Rebase\MigrationHelper;
+use App\Domain\Customers\Customer;
 use App\Helpers\Rebase\DatabaseHelper;
+use App\Helpers\Rebase\MigrationHelper;
 use App\Domain\Facades\Rebase\CustomerRepository;
 
 class MigrateWorkspaces extends Command

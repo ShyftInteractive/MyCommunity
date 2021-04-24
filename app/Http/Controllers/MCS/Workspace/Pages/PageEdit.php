@@ -15,7 +15,7 @@ class PageEdit extends Controller
     public function __invoke(string $pageID, Request $request)
     {
         return inertia(Action::getView($this), [
-            'page' => Page::byID($pageID)->first(),
+            'page' => Page::where('id', $pageID)->first(),
             'media' => Media::byWorkspace($request->get('workspace_id'))->get()
         ]);
     }

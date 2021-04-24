@@ -45,5 +45,13 @@ class Template extends Model
         return $this->hasOne(Workspace::class);
     }
 
+    public function scopeByWorkspace($query, $workspaceID)
+    {
+        return $query->where('workspace_id', $workspaceID);
+    }
+
+    public function scopeByName($query, $name) {
+        return $query->where('name', $name);
+    }
 
 }

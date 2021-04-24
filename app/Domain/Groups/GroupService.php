@@ -3,8 +3,9 @@
 namespace App\Domain\Groups;
 
 use App\Domain\Tags\Tag;
-use App\Domain\Base\BaseService;
 use App\Domain\Tags\TagService;
+use App\Domain\Base\BaseFactory;
+use App\Domain\Base\BaseService;
 
 class GroupService extends BaseService {
 
@@ -15,7 +16,8 @@ class GroupService extends BaseService {
         $this->tagModel = $tagModel;
 
         parent::__construct(
-            repository: new GroupRepository($model)
+            repository: new GroupRepository($model),
+            factory: new BaseFactory($model)
         );
     }
 
@@ -33,7 +35,7 @@ class GroupService extends BaseService {
 
     public function createGroupWithTags(string $workspaceID, array $item)
     {
-        $group = $this->repository->create($this->repository->resource(
+        $group = $this->factory->create($this->repository->resource(
             workspaceID: $workspaceID,
             item: $item
         ));

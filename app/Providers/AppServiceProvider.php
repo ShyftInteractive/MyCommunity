@@ -6,10 +6,11 @@ use App\Actions\Action;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Laravel\Cashier\Cashier;
-use App\Actions\Rebase\GetView;
 use App\Actions\Rebase\Cached;
+use App\Actions\Rebase\GetView;
 use App\Enums\Rebase\MemberRoles;
 use App\Actions\Rebase\ActiveRole;
+use App\Actions\Rebase\InertiaView;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
 
         Action::init([
             'getView' => GetView::class,
+            'inertiaView' => InertiaView::class,
             'getWorkspaceName' => GetWorkspaceName::class,
         ]);
     }

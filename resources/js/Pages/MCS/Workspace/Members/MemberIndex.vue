@@ -38,8 +38,9 @@ export default {
    },
 
    methods: {
-      selectedAction(type) {
-         if (confirm(`Are you sure you want to ${type} ${this.form.selected.length} item(s)?`)) {
+      selectedAction(type, message) {
+         let fullMessage = message ?? `Are you sure you want to ${type} ${this.form.selected.length} item(s)?`
+         if (confirm(fullMessage)) {
             this.$inertia.post(route("member.selected", { action: type }), this.form, {
                onStart: () => (this.sending = true),
                onFinish: () => (this.sending = false),
@@ -62,7 +63,7 @@ export default {
    <Workspace nav="site-settings" secondary="member">
       <template #header>Members</template>
       <template #ribbon>
-         <li><inertia-link href="#" class="button:small">Add A Member</inertia-link></li>
+         <li><inertia-link :href="route('member.create')" class="button:small">Add A Member</inertia-link></li>
       </template>
       <template #body>
          <div class="grid">
@@ -74,8 +75,8 @@ export default {
                         <ActionButton @click="selectedAction('activate')">Activate Selected</ActionButton>
                         <ActionButton @click="selectedAction('deactivate')">Deactivate Selected</ActionButton>
                         <ActionButton @click="selectedAction('reset')">Reset Passwords</ActionButton>
-                        <ActionButton @click="selectedAction('activate-all')">Activate All</ActionButton>
-                        <ActionButton @click="selectedAction('deactivate-all')">Deactivate All</ActionButton>
+                        <ActionButton @click="selectedAction('activate-all', 'Are you sure you want to activate everyone?')">Activate All</ActionButton>
+                        <ActionButton @click="selectedAction('deactivate-all', 'Are you sure you want to deactivate everyone (you will not be deactivated)')">Deactivate All</ActionButton>
                      </ActionMenu>
                   </template>
                   <template #header>
@@ -96,7 +97,7 @@ export default {
                         <td><input v-model="form.selected" type="checkbox" :value="member.id" /></td>
                         <td>{{ member.name }}</td>
                         <td>{{ member.email }}</td>
-                        <td></td>
+                        <td>{{ member.role }}</td>
                         <td>
                            <template v-if="member.activated">Activated</template>
                            <template v-else>Not Activated</template>

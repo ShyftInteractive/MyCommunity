@@ -1,7 +1,7 @@
 <script>
 import Layout from "@/Templates/Rebase/Layout"
 import Workspace from "@/Templates/Rebase/Page/Workspace"
-import { DTF } from "@/Data/MCS/Globals"
+import { DTF } from "@/Data/Globals"
 import BannerDisplay from "@/Templates/Rebase/Page/Components/BannerDisplay"
 
 export default {
@@ -55,13 +55,13 @@ export default {
                </div>
                <ul v-else class="dashboard--events">
                   <li v-for="event in events" :key="event.id" class="grid">
-                     <div class="col-12 sm::col-2">
+                     <div class="col span:12 md::span:2">
                         <h5>{{ DTF(event.start_at).shortMonth() }}</h5>
                         <h1>
                            {{ DTF(event.start_at).day() }}
                         </h1>
                      </div>
-                     <div class="col-12 sm::col-10">
+                     <div class="col span:12 md::span:10">
                         <h3>{{ event.title }}</h3>
                         <p>{{ DTF(event.start_at).fullTime() }}</p>
                         <span v-html="event.description"></span>

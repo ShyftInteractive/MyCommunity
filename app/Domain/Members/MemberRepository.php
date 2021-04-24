@@ -47,15 +47,6 @@ class MemberRepository extends BaseRepository
         });
     }
 
-    public function resource(array $item, ?string $relativePath = null)
-    {
-        return [
-            'name' => $item['name'],
-            'email' => $item['email'],
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ];
-    }
 
     public function getMemberByEmail(string $email)
     {
@@ -73,6 +64,16 @@ class MemberRepository extends BaseRepository
                     })
                     ->where("id", $id)
                     ->first();
+    }
+
+    public function resource(array $item, ?string $relativePath = null)
+    {
+        return [
+            'name' => $item['name'],
+            'email' => $item['email'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
     }
 
     public function searchableMembers(string $workspaceID, ?string $terms = null, ?array $fields = null, ?int $count, string $orderBy = 'created_at', string $orderDirection = 'asc')

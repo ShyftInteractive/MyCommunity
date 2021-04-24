@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Domain\Members\Member;
 use Illuminate\Support\Carbon;
+use App\Domain\Base\BaseFactory;
 use App\Domain\Base\BaseService;
 use App\Domain\Roles\RoleService;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,7 @@ class MemberService extends BaseService
     {
         parent::__construct(
             repository: new MemberRepository($model),
+            factory: new BaseFactory($model),
         );
     }
 
@@ -52,6 +54,31 @@ class MemberService extends BaseService
                 'avatar' => null,
             ]
         );
+    }
+
+    public function createMember(string $workspaceID, array $items)
+    {
+        $member = $this->repository->create($this->repository->resource(
+            item: $items
+        ));
+
+        $roleService = app()->make(RoleService::class);
+        $roleService->attachAs(
+            memberID: $member->id,
+            role: $items['role'],
+        );
+
+        return $member;
+    }
+
+    public function resource(array $item, ?string $relativePath = null)
+    {
+        return [
+            'name' => $item['name'],
+            'email' => $item['email'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
     }
 
     public function updateMember(string $memberID, string $workspaceID, array $updates)
@@ -136,19 +163,7 @@ class MemberService extends BaseService
         };
     }
 
-    public function getWorkspaceMember(string $workspaceID, string $memberID)
-    {
-        $member = $this->repository->getWorkspaceMemberByID(
-            workspaceID: $workspaceID,
-            id: $memberID
-        );
 
-        $member->workspaceRoles = $member->roles->flatMap(function($item) {
-            return [$item->workspace_id => $item];
-        });
-
-        return $member;
-    }
 
     public function removeMemberFromWorkspace(string $memberID, string $activeUser, string $workspaceID)
     {
@@ -168,19 +183,4 @@ class MemberService extends BaseService
         return $member->workspaces()->sync($member->workspaces->except([$workspaceID]));
     }
 
-    public function getRoleForWorkspace(string $workspaceID, Member $member)
-    {
-        return $member->workspaceRoles->get($workspaceID);
-    }
-
-    public function findWorkspaceMembers(string $workspaceID, ?string $search, ?int $count)
-    {
-        return $this->repository->searchableMembers(
-                workspaceID: $workspaceID,
-                terms: $search,
-                fields: ['name', 'email'],
-                orderBy: 'name',
-                count: $count
-        );
-    }
 }

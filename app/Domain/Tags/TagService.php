@@ -2,6 +2,7 @@
 
 namespace App\Domain\Tags;
 
+use App\Domain\Base\BaseFactory;
 use App\Domain\Base\BaseService;
 use App\Domain\Tags\TagRepository;
 
@@ -10,13 +11,14 @@ class TagService extends BaseService {
     public function __construct(Tag $model) {
 
         parent::__construct(
-            repository: new TagRepository($model)
+            repository: new TagRepository($model),
+            factory: new BaseFactory($model),
         );
     }
 
     public function createTag(string $workspaceID, string $name)
     {
-        return $this->repository->create([
+        return $this->factory->create([
             "workspace_id" => $workspaceID,
             "name" => $name,
         ]);

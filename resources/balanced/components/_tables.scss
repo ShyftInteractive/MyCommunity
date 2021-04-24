@@ -1,0 +1,14 @@
+table {
+   border-collapse: collapse;
+}
+
+caption {
+   caption-side: bottom;
+   margin: var(--px-0);
+   padding: var(--px-0);
+   text-align: left;
+}
+
+th {
+   text-align: inherit;
+}

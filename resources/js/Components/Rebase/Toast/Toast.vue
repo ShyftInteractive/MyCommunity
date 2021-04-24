@@ -83,8 +83,6 @@ $inverse: calc(-1 * #{$height});
    transform: translateY($inverse);
 }
 .toast {
-   background: var(--color-gray-800);
-   color: var(--color-gray-100);
    padding: var(--px-8) 0;
    position: absolute;
    width: 100%;

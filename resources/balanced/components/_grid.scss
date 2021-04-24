@@ -1,0 +1,69 @@
+.grid {
+   display: grid;
+   gap: var(--px-16) var(--px-16);
+   grid-template-columns: repeat($grid-cols, minmax(0, 1fr));
+   height: 100%;
+   margin: var(--px-16) 0;
+   width: 100%;
+
+   + .grid {
+      margin-top: 0;
+   }
+
+   &\: {
+      &center {
+         align-items: center;
+         align-content: center;
+      }
+
+      &full {
+         align-content: stretch;
+         align-items: stretch;
+      }
+
+      &top {
+         align-items: start;
+         align-content: start;
+      }
+
+      &bottom {
+         align-items: end;
+         align-content: end;
+      }
+   }
+
+}
+
+%column {
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+   position: relative;
+   width: 100%;
+}
+
+.col {
+   @include with-queries {
+      @for $count from $grid-cols through 1 {
+         @extend %column;
+
+         &\:#{$count} {
+            grid-column: span #{$count} / span #{$count};
+         }
+
+         &\:at-#{$count} {
+            grid-column-start: $count;
+         }
+
+         @if ($count % 2 == 0 and $count <= 10) {
+            $start : ($count / 2 ) - 1;
+
+            @at-root .centered {
+               &\:#{$count} {
+                  grid-column: #{$start} / span #{$count};
+               }
+            }
+         }
+      }
+   }
+}

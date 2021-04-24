@@ -53,7 +53,7 @@ class EventService extends BaseService
     public function findEvents(string $workspaceID, ?string $search, ?int $count)
     {
         return $this->repository
-            ->searchWorkspace(
+            ->searchInWorkspace(
                 workspaceID: $workspaceID,
                 terms: $search,
                 fields: ['title', 'description'],

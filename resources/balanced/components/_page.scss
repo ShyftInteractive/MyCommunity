@@ -1,0 +1,76 @@
+
+@at-root {
+   @-ms-viewport {
+      width: device-width;
+   }
+}
+
+* {
+   box-sizing: inherit;
+   -webkit-overflow-scrolling: touch;
+
+   &::before,
+   &::after {
+      box-sizing: inherit;
+   }
+}
+
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+   display: block;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+   vertical-align: middle;
+}
+
+:focus {
+   outline: none;
+}
+
+::selection {
+   background-color: var(--color-blue-200);
+   color: var(--color-true-black);
+   text-shadow: none;
+}
+
+html {
+   background-color: var(--color-true-white);
+   box-sizing: border-box;
+   display: flex;
+   min-height: 100%;
+   -ms-overflow-style: scrollbar;
+   -webkit-tap-highlight-color: rgba(var(--color-true-black), 0);
+   -ms-text-size-adjust: 100%;
+   overflow: hidden;
+   overflow-y: auto;
+}
+
+body {
+   background: var(--color-coolGray-100);
+   color: var(--color-blueGray-800);
+   font-family: var(--font-body);
+   font-weight: var(--weight-regular);
+   -moz-osx-font-smoothing: grayscale !important;
+   -webkit-font-smoothing: antialiased !important;
+   min-height: 100vh;
+   line-height: var(--leading-normal);
+   margin: var(--px-0);
+   min-width: $browser-min-size;
+   padding: var(--px-0);
+   text-align: left;
+   width: 100vw;
+}

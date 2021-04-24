@@ -17,7 +17,7 @@ class PageService extends BaseService {
     public function findPages(string $workspaceID, ?string $search, ?int $count)
     {
         return $this->repository
-            ->searchWorkspace(
+            ->searchInWorkspace(
                 workspaceID: $workspaceID,
                 terms: $search,
                 fields: ['slug', 'title'],

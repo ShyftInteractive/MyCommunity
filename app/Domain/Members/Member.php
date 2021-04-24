@@ -3,6 +3,7 @@
 namespace App\Domain\Members;
 
 use App\Domain\Roles\Role;
+use App\Domain\Roles\RoleCollection;
 use App\Traits\ModelScopes;
 use Illuminate\Support\Str;
 use App\Domain\Workspaces\Workspace;
@@ -36,9 +37,6 @@ class Member extends Authenticatable
         'updated_at',
     ];
 
-    /**
-     * @var string[]
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -68,14 +66,39 @@ class Member extends Authenticatable
         });
     }
 
-    public function roles()
+    /**
+     * @return HasMany
+     */
+    public function roles(): HasMany
     {
         return $this->hasMany(Role::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function workspaces(): BelongsToMany
     {
         return $this->belongsToMany(Workspace::class);
     }
 
+    /**
+     * @return RoleCollection
+     */
+    public function workspaceRoles(): RoleCollection {
+        return $this->roles->flatMap(function($item) {
+            return [$item->workspace_id => $item];
+        });
+    }
+
+    /**
+     * @param string|null $workspaceID
+     * @return Role
+     */
+    public function role(?string $workspaceID): Role
+    {
+        return $this->roles->filter(function($role) use ($workspaceID) {
+            return $role->workspace_id == $workspaceID || $role->workspace_id == null;
+        })->first();
+    }
 }

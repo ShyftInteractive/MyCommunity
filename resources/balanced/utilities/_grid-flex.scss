@@ -1,0 +1,49 @@
+.justify\: {
+   @include with-queries {
+      &start   { justify-content: start;           }
+      &end     { justify-content: end;             }
+      &center  { justify-content: center;          }
+      &stretch { justify-content: stretch;         }
+      &around  { justify-content: space-around;    }
+      &between { justify-content: space-between;   }
+      &evenly  { justify-content: space-evenly;    }
+   }
+}
+.justify-items\: {
+   @include with-queries {
+      &start   { justify-items: start;    }
+      &end     { justify-items: end;      }
+      &center  { justify-items: center;   }
+      &stretch { justify-items: stretch;  }
+   }
+}
+
+.direction\: {
+   @include with-queries {
+      &row           { flex-direction: row;           }
+      &row-reverse   { flex-direction: row-reverse;   }
+      &col           { flex-direction: column;        }
+      &col-reverse   { flex-direction: column-reverse;}
+   }
+}
+
+.content\: {
+   @include with-queries {
+      &start   { align-content: start;          }
+      &end     { align-content: end;            }
+      &center  { align-content: center;         }
+      &stretch { align-content: stretch;        }
+      &around  { align-content: space-around;   }
+      &between { align-content: space-between;  }
+      &evenly  { align-content: space-evenly;   }
+   }
+}
+
+.items\: {
+   @include with-queries {
+      &start   { align-items: start;   }
+      &end     { align-items: end;     }
+      &center  { align-items: center;  }
+      &stretch { align-items: stretch; }
+   }
+}

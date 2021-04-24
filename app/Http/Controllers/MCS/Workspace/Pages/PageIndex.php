@@ -14,9 +14,10 @@ class PageIndex extends Controller
     public function __invoke(Request $request)
     {
 
-        $pages = $this->pageService->findPages(
+        $pages = $this->repository->searchInWorkspace(
             workspaceID: $request->get('workspace_id'),
-            search: $request->get('s'),
+            terms: $request->get('s'),
+            fields: ['name'],
             count: (int) $request->get('count'),
         );
 

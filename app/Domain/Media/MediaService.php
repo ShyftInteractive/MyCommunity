@@ -2,6 +2,7 @@
 
 namespace App\Domain\Media;
 
+use App\Domain\Base\BaseFactory;
 use App\Domain\Tags\Tag;
 use App\Domain\Media\Media;
 use App\Enums\MCS\MediaTypes;
@@ -18,6 +19,7 @@ class MediaService extends BaseService
     {
         parent::__construct(
             repository: new MediaRepository($model),
+            factory: new BaseFactory($model)
         );
     }
 
@@ -82,7 +84,7 @@ class MediaService extends BaseService
         $relativePath = "{$customerID}/{$workspaceID}";
         Storage::disk('spaces')->putFileAs($relativePath, $request->file, $request->name, 'public');
 
-        return $this->repository->create(item: $this->resource(
+        return $this->factory->create(item: $this->resource(
             items: $request->input(),
             relativePath:$relativePath,
             workspaceID: $workspaceID,

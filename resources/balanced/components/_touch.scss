@@ -1,0 +1,43 @@
+a,
+area,
+button,
+input,
+label,
+select,
+summary,
+textarea,
+[tabindex] {
+   -ms-touch-action: manipulation;
+   touch-action: manipulation;
+}
+
+[aria-busy='true'] {
+   cursor: progress;
+}
+
+[aria-controls] {
+   cursor: pointer;
+}
+
+[aria-disabled] {
+   cursor: default;
+}
+
+pre {
+   margin-bottom: 1rem;
+   margin-top: 0;
+   overflow: auto;
+   -ms-overflow-style: scrollbar;
+}
+
+figure {
+   margin: 0 0 1rem;
+}
+
+output {
+   display: inline-block;
+}
+
+summary {
+   cursor: pointer;
+}

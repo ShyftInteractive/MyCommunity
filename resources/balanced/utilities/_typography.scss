@@ -1,0 +1,32 @@
+.text\: {
+   @include with-queries {
+      &left    { text-align: left;  }
+      &right   { text-align: right; }
+      &center  { text-align: center;}
+   }
+}
+
+.display\: {
+   @include with-queries {
+      &xl {
+         font-size: var(--px-80);
+         line-height: var(--leading-none);
+      }
+      &lg {
+         font-size: var(--px-72);
+         line-height: var(--leading-none);
+      }
+      &md {
+         font-size: var(--px-64);
+         line-height: var(--leading-none);
+      }
+      &sm {
+         font-size: var(--px-56);
+         line-height: var(--leading-none);
+      }
+      &xs {
+         font-size: var(--px-48);
+         line-height: var(--leading-none);
+      }
+   }
+}

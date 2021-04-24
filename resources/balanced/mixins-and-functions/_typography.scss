@@ -1,0 +1,22 @@
+@mixin font($family, $weight, $path) {
+   @font-face {
+      font-family: $family;
+      font-style: normal;
+      font-weight: $weight;
+      src: url('#{$path}.eot'); /* IE9 Compat Modes */
+      src: local(''),
+           url('#{$path}.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+           url('#{$path}.woff2') format('woff2'), /* Super Modern Browsers */
+           url('#{$path}.woff') format('woff'), /* Modern Browsers */
+           url('#{$path}.ttf') format('truetype'), /* Safari, Android, iOS */
+           url('#{$path}.svg##{$family}') format('svg'); /* Legacy iOS */
+    }
+}
+
+@function line-height($pxFont) {
+   @return $pxFont / $font-base;
+}
+
+@function rem($pxFont) {
+   @return (($pxFont / $font-base)) * 1rem;
+}
